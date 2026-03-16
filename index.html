@@ -4,23 +4,29 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
   <title>Soul Pet</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Instrument+Serif&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --black: #080808;
+      --black: #000000;
       --silver-core: #E8E8E8;
       --silver-mid: #A0A0B8;
       --silver-edge: #4A4A6A;
-      --text: #F0F0F0;
-      --text-dim: #888899;
+      --text: #E0E0E0;
+      --text-dim: #666666;
       --accent: rgba(224, 224, 240, 0.15);
+      --font-mono: 'Space Mono', 'SF Mono', 'Courier New', monospace;
+      --font-serif: 'Instrument Serif', Georgia, serif;
     }
 
     body {
       background: var(--black);
       color: var(--text);
-      font-family: -apple-system, 'SF Pro Display', 'Helvetica Neue', sans-serif;
+      font-family: var(--font-mono);
+      font-size: 13px;
       height: 100vh;
       overflow: hidden;
       display: flex;
@@ -126,65 +132,74 @@
       margin-bottom: 64px;
     }
     #screen-splash .line1 {
-      font-size: 20px;
-      font-weight: 300;
-      letter-spacing: 0.04em;
+      font-family: var(--font-serif);
+      font-size: 26px;
+      font-weight: 400;
+      letter-spacing: 0.01em;
       color: var(--text);
       opacity: 0;
       animation: fadeUp 1s ease 1.2s forwards;
     }
     #screen-splash .line2 {
-      font-size: 15px;
-      font-weight: 300;
-      letter-spacing: 0.06em;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 0.1em;
       color: var(--text-dim);
-      margin-top: 10px;
+      margin-top: 14px;
+      text-transform: uppercase;
       opacity: 0;
       animation: fadeUp 1s ease 2s forwards;
     }
 
     /* ──────────────── BUTTONS ──────────────── */
     .btn-ghost {
-      border: 1px solid rgba(224,224,240,0.3);
+      border: 1px solid rgba(255,255,255,0.2);
       background: transparent;
       color: var(--text);
       padding: 14px 48px;
-      border-radius: 40px;
-      font-size: 15px;
+      border-radius: 0;
+      font-family: var(--font-mono);
+      font-size: 11px;
       font-weight: 400;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
       cursor: pointer;
       transition: border-color 0.3s, background 0.3s;
       opacity: 0;
       animation: fadeIn 0.8s ease 2.8s forwards;
     }
     .btn-ghost:hover {
-      border-color: rgba(224,224,240,0.7);
-      background: rgba(224,224,240,0.06);
+      border-color: rgba(255,255,255,0.6);
+      background: rgba(255,255,255,0.04);
     }
     .btn-solid {
-      background: rgba(220,220,235,0.12);
-      border: 1px solid rgba(220,220,235,0.25);
-      color: var(--text);
+      background: #fff;
+      border: none;
+      color: #000;
       padding: 16px 52px;
-      border-radius: 40px;
-      font-size: 15px;
-      font-weight: 400;
-      letter-spacing: 0.1em;
+      border-radius: 0;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
       cursor: pointer;
-      transition: background 0.3s, border-color 0.3s;
+      transition: opacity 0.3s;
       width: 100%;
-      max-width: 280px;
+      max-width: 320px;
     }
     .btn-solid:hover {
-      background: rgba(220,220,235,0.2);
+      opacity: 0.85;
     }
     .btn-skip {
       background: none;
       border: none;
       color: var(--text-dim);
-      font-size: 13px;
-      letter-spacing: 0.08em;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
       cursor: pointer;
       margin-top: 20px;
       padding: 8px 20px;
@@ -194,30 +209,34 @@
 
     /* ──────────────── INPUT SCREENS ──────────────── */
     .screen-label {
-      font-size: 13px;
-      letter-spacing: 0.2em;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.25em;
       color: var(--text-dim);
       text-transform: uppercase;
       margin-bottom: 16px;
     }
     .screen-question {
-      font-size: 26px;
-      font-weight: 300;
-      letter-spacing: 0.02em;
+      font-family: var(--font-serif);
+      font-size: 28px;
+      font-weight: 400;
+      letter-spacing: 0.01em;
       text-align: center;
-      line-height: 1.4;
+      line-height: 1.35;
       margin-bottom: 48px;
       color: var(--text);
     }
     .text-input {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 12px;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+      border-radius: 0;
       color: var(--text);
-      font-size: 22px;
-      font-weight: 300;
+      font-family: var(--font-mono);
+      font-size: 18px;
+      font-weight: 400;
       letter-spacing: 0.04em;
-      padding: 18px 24px;
+      padding: 16px 4px;
       width: 100%;
       max-width: 320px;
       text-align: center;
@@ -226,9 +245,9 @@
       margin-bottom: 32px;
     }
     .text-input:focus {
-      border-color: rgba(200,200,220,0.4);
+      border-color: rgba(255,255,255,0.6);
     }
-    .text-input::placeholder { color: var(--text-dim); }
+    .text-input::placeholder { color: var(--text-dim); font-size: 14px; }
 
     /* ──────────────── SCREEN 3: IDENTITY PICKER ──────────────── */
     .identity-grid {
@@ -240,32 +259,33 @@
       margin-bottom: 40px;
     }
     .identity-tile {
-      border: 1px solid rgba(200,200,220,0.15);
-      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 0;
       padding: 22px 16px;
       text-align: center;
       cursor: pointer;
-      transition: border-color 0.25s, background 0.25s, transform 0.15s;
-      background: rgba(255,255,255,0.02);
+      transition: border-color 0.25s, background 0.25s;
+      background: transparent;
     }
     .identity-tile:hover {
-      border-color: rgba(200,200,220,0.35);
-      background: rgba(255,255,255,0.05);
+      border-color: rgba(255,255,255,0.4);
     }
     .identity-tile.selected {
-      border-color: rgba(220,220,240,0.7);
-      background: rgba(220,220,240,0.1);
+      border-color: #fff;
+      background: rgba(255,255,255,0.05);
     }
-    .identity-tile:active { transform: scale(0.97); }
+    .identity-tile:active { transform: scale(0.98); }
     .identity-tile .tile-icon {
-      font-size: 28px;
+      font-size: 22px;
       margin-bottom: 10px;
       display: block;
     }
     .identity-tile .tile-name {
-      font-size: 14px;
-      font-weight: 500;
-      letter-spacing: 0.08em;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
       color: var(--text);
       margin-bottom: 4px;
     }
@@ -285,25 +305,26 @@
       margin-bottom: 36px;
     }
     .select-chip {
-      border: 1px solid rgba(200,200,220,0.18);
-      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 0;
       padding: 12px 6px;
       text-align: center;
       cursor: pointer;
-      font-size: 13px;
+      font-family: var(--font-mono);
+      font-size: 11px;
       font-weight: 400;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.08em;
       color: var(--text-dim);
-      background: rgba(255,255,255,0.02);
+      background: transparent;
       transition: border-color 0.2s, background 0.2s, color 0.2s;
     }
     .select-chip:hover {
-      border-color: rgba(200,200,220,0.4);
+      border-color: rgba(255,255,255,0.4);
       color: var(--text);
     }
     .select-chip.chosen {
-      border-color: rgba(220,220,240,0.7);
-      background: rgba(220,220,240,0.1);
+      border-color: #fff;
+      background: rgba(255,255,255,0.06);
       color: var(--text);
     }
     .astro-grid {
@@ -315,20 +336,20 @@
       margin-bottom: 36px;
     }
     .astro-chip {
-      border: 1px solid rgba(200,200,220,0.18);
-      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 0;
       padding: 14px 6px;
       text-align: center;
       cursor: pointer;
       transition: border-color 0.2s, background 0.2s;
-      background: rgba(255,255,255,0.02);
+      background: transparent;
     }
     .astro-chip:hover {
-      border-color: rgba(200,200,220,0.4);
+      border-color: rgba(255,255,255,0.4);
     }
     .astro-chip.chosen {
-      border-color: rgba(220,220,240,0.7);
-      background: rgba(220,220,240,0.1);
+      border-color: #fff;
+      background: rgba(255,255,255,0.06);
     }
     .astro-chip .astro-symbol {
       font-size: 20px;
@@ -336,9 +357,11 @@
       margin-bottom: 4px;
     }
     .astro-chip .astro-name {
-      font-size: 11px;
+      font-family: var(--font-mono);
+      font-size: 10px;
       color: var(--text-dim);
-      letter-spacing: 0.06em;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
     }
 
     /* ──────────────── PROGRESS ──────────────── */
@@ -350,7 +373,7 @@
     }
     .progress-fill {
       height: 100%;
-      background: linear-gradient(90deg, var(--silver-edge), var(--silver-core));
+      background: #fff;
       transition: width 0.5s ease;
     }
 
@@ -367,7 +390,7 @@
     #intro-overlay {
       position: fixed;
       inset: 0;
-      background: #080808;
+      background: #000;
       z-index: 100;
       display: flex;
       align-items: center;
@@ -377,7 +400,7 @@
       width: 4px;
       height: 4px;
       border-radius: 50%;
-      background: #E8E8E8;
+      background: #fff;
       animation: starBorn 1.6s ease 0.5s forwards;
       opacity: 0;
     }
@@ -505,20 +528,20 @@
 <div class="screen" id="screen-unseen">
   <div class="progress-bar"><div class="progress-fill" style="width:95%"></div></div>
   <div class="screen-label">One last thing</div>
-  <div class="screen-question" style="font-size:22px;">What do you wish people<br/>knew about you —<br/>but no one ever gets it?</div>
+  <div class="screen-question" style="font-size:24px;">What do you wish people<br/>knew about you —<br/>but no one ever gets it?</div>
   <textarea
     id="input-unseen"
     placeholder="Type anything. No wrong answers."
     style="
-      background: rgba(255,255,255,0.04);
+      background: transparent;
       border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 14px;
+      border-radius: 0;
       color: var(--text);
-      font-size: 15px;
-      font-weight: 300;
-      font-family: inherit;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 400;
       letter-spacing: 0.02em;
-      line-height: 1.6;
+      line-height: 1.7;
       padding: 18px 20px;
       width: 100%;
       max-width: 320px;
@@ -537,14 +560,15 @@
 <!-- SCREEN 4: Soul Read (report) -->
 <div class="screen" id="screen-read" style="overflow-y:auto;justify-content:flex-start;padding-top:60px;padding-bottom:60px;">
   <div style="width:100%;max-width:340px;">
-    <div style="font-size:11px;letter-spacing:0.18em;color:var(--text-dim);text-transform:uppercase;margin-bottom:8px;">Your Soul Stage</div>
-    <div id="read-stage" style="font-size:28px;font-weight:300;letter-spacing:0.04em;color:var(--text);margin-bottom:32px;line-height:1.2;">The Controlled Storm</div>
+    <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.25em;color:var(--text-dim);text-transform:uppercase;margin-bottom:12px;">Your Soul Stage</div>
+    <div id="read-stage" style="font-family:var(--font-serif);font-size:32px;font-weight:400;letter-spacing:0.01em;color:var(--text);margin-bottom:8px;line-height:1.2;">The Controlled Storm</div>
+    <div style="width:40px;height:1px;background:rgba(255,255,255,0.2);margin-bottom:32px;"></div>
 
-    <div id="read-body" style="font-size:15px;font-weight:300;color:#C8C8D8;line-height:1.75;letter-spacing:0.02em;">
+    <div id="read-body" style="font-family:var(--font-mono);font-size:13px;font-weight:400;color:#999;line-height:1.85;letter-spacing:0.01em;">
       <!-- filled by JS -->
     </div>
 
-    <div id="read-closer" style="margin-top:32px;font-size:15px;font-style:italic;color:var(--text-dim);line-height:1.6;border-left:1px solid rgba(255,255,255,0.12);padding-left:16px;">
+    <div id="read-closer" style="margin-top:36px;font-family:var(--font-serif);font-size:18px;font-style:italic;color:var(--text);line-height:1.5;padding-left:0;">
       <!-- filled by JS -->
     </div>
 
@@ -623,8 +647,8 @@
 
     <!-- Top bar -->
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;">
-      <div style="font-size:13px;letter-spacing:0.12em;color:var(--text-dim);text-transform:uppercase;">My Pet</div>
-      <div style="font-size:13px;color:var(--text-dim);cursor:pointer;" onclick="goTo('screen-home')">Explore ›</div>
+      <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.2em;color:var(--text-dim);text-transform:uppercase;">My Pet</div>
+      <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.1em;color:var(--text-dim);cursor:pointer;text-transform:uppercase;" onclick="goTo('screen-home')">Explore ›</div>
     </div>
 
     <!-- Egg hero -->
@@ -650,15 +674,15 @@
           pointer-events:none;
         "></div>
       </div>
-      <div id="pet-stage" style="font-size:20px;font-weight:300;color:var(--text);letter-spacing:0.04em;margin-bottom:4px;">The Controlled Storm</div>
-      <div style="font-size:12px;color:var(--text-dim);letter-spacing:0.06em;">Hatching in progress</div>
+      <div id="pet-stage" style="font-family:var(--font-serif);font-size:22px;font-weight:400;color:var(--text);letter-spacing:0.01em;margin-bottom:4px;">The Controlled Storm</div>
+      <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-dim);letter-spacing:0.15em;text-transform:uppercase;">Hatching in progress</div>
     </div>
 
     <!-- XP bar -->
     <div style="
       background:rgba(255,255,255,0.02);
       border:1px solid rgba(255,255,255,0.07);
-      border-radius:16px;
+      border-radius:0;
       padding:18px 20px;
       margin-bottom:20px;
     ">
@@ -695,7 +719,7 @@
     <div style="
       background:rgba(255,255,255,0.02);
       border:1px solid rgba(255,255,255,0.06);
-      border-radius:16px;
+      border-radius:0;
       padding:18px 20px;
     ">
       <div style="font-size:11px;letter-spacing:0.14em;color:var(--text-dim);text-transform:uppercase;margin-bottom:10px;">Last insight</div>
@@ -711,8 +735,8 @@
 
     <!-- Top bar -->
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;">
-      <div style="font-size:13px;letter-spacing:0.12em;color:var(--text-dim);text-transform:uppercase;">Explore</div>
-      <div style="font-size:13px;color:var(--text-dim);cursor:pointer;" onclick="goTo('screen-pet')">My Pet ›</div>
+      <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.2em;color:var(--text-dim);text-transform:uppercase;">Explore</div>
+      <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.1em;color:var(--text-dim);cursor:pointer;text-transform:uppercase;" onclick="goTo('screen-pet')">My Pet ›</div>
     </div>
 
     <!-- Activity grid — 4 cards, no dupes -->
@@ -720,46 +744,49 @@
 
       <!-- 1. Daily Reflection -->
       <div style="
-        background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);
-        border-radius:18px;padding:20px 16px;cursor:pointer;
-      " onclick="goTo('screen-emotion')">
-        <div style="font-size:22px;margin-bottom:10px;">🌊</div>
-        <div style="font-size:14px;font-weight:400;color:var(--text);margin-bottom:4px;">Daily Reflection</div>
-        <div style="font-size:11px;color:var(--text-dim);line-height:1.4;">Pick a colour. AI names what you're feeling and why.</div>
-        <div style="margin-top:12px;font-size:11px;color:rgba(200,200,220,0.5);">+10 XP</div>
+        background:transparent;border:1px solid rgba(255,255,255,0.1);
+        border-radius:0;padding:24px 16px;cursor:pointer;
+        transition:border-color 0.2s;
+      " onclick="goTo('screen-emotion')" onmouseover="this.style.borderColor='rgba(255,255,255,0.3)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.1)'">
+        <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.2em;color:var(--text-dim);text-transform:uppercase;margin-bottom:12px;">01</div>
+        <div style="font-family:var(--font-serif);font-size:18px;color:var(--text);margin-bottom:6px;">Daily Reflection</div>
+        <div style="font-family:var(--font-mono);font-size:11px;color:var(--text-dim);line-height:1.5;">Pick a colour. Name what you feel.</div>
+        <div style="margin-top:14px;font-family:var(--font-mono);font-size:10px;color:rgba(255,255,255,0.25);letter-spacing:0.1em;">+10 XP</div>
       </div>
 
       <!-- 2. Decision Scan -->
       <div style="
-        background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);
-        border-radius:18px;padding:20px 16px;cursor:pointer;
-      " onclick="goTo('screen-decision')">
-        <div style="font-size:22px;margin-bottom:10px;">⚖️</div>
-        <div style="font-size:14px;font-weight:400;color:var(--text);margin-bottom:4px;">Decision Scan</div>
-        <div style="font-size:11px;color:var(--text-dim);line-height:1.4;">Speak it out. AI reflects why you're really stuck.</div>
-        <div style="margin-top:12px;font-size:11px;color:rgba(200,200,220,0.5);">+15 XP</div>
+        background:transparent;border:1px solid rgba(255,255,255,0.1);
+        border-radius:0;padding:24px 16px;cursor:pointer;
+        transition:border-color 0.2s;
+      " onclick="goTo('screen-decision')" onmouseover="this.style.borderColor='rgba(255,255,255,0.3)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.1)'">
+        <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.2em;color:var(--text-dim);text-transform:uppercase;margin-bottom:12px;">02</div>
+        <div style="font-family:var(--font-serif);font-size:18px;color:var(--text);margin-bottom:6px;">Decision Scan</div>
+        <div style="font-family:var(--font-mono);font-size:11px;color:var(--text-dim);line-height:1.5;">Say it out loud. See why you're stuck.</div>
+        <div style="margin-top:14px;font-family:var(--font-mono);font-size:10px;color:rgba(255,255,255,0.25);letter-spacing:0.1em;">+15 XP</div>
       </div>
 
       <!-- 3. Relationship Mirror -->
       <div style="
-        background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);
-        border-radius:18px;padding:20px 16px;cursor:pointer;
-      " onclick="goTo('screen-person')">
-        <div style="font-size:22px;margin-bottom:10px;">🫂</div>
-        <div style="font-size:14px;font-weight:400;color:var(--text);margin-bottom:4px;">Relationship Mirror</div>
-        <div style="font-size:11px;color:var(--text-dim);line-height:1.4;">Why do they treat me this way? AI flips the mirror.</div>
-        <div style="margin-top:12px;font-size:11px;color:rgba(200,200,220,0.5);">+15 XP</div>
+        background:transparent;border:1px solid rgba(255,255,255,0.1);
+        border-radius:0;padding:24px 16px;cursor:pointer;
+        transition:border-color 0.2s;
+      " onclick="goTo('screen-person')" onmouseover="this.style.borderColor='rgba(255,255,255,0.3)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.1)'">
+        <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.2em;color:var(--text-dim);text-transform:uppercase;margin-bottom:12px;">03</div>
+        <div style="font-family:var(--font-serif);font-size:18px;color:var(--text);margin-bottom:6px;">Relationship Mirror</div>
+        <div style="font-family:var(--font-mono);font-size:11px;color:var(--text-dim);line-height:1.5;">Who hurt you. What it reveals about you.</div>
+        <div style="margin-top:14px;font-family:var(--font-mono);font-size:10px;color:rgba(255,255,255,0.25);letter-spacing:0.1em;">+15 XP</div>
       </div>
 
-      <!-- 4. Convo Decoder — coming soon placeholder -->
+      <!-- 4. Convo Decoder — coming soon -->
       <div style="
-        background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);
-        border-radius:18px;padding:20px 16px;cursor:default;opacity:0.5;
+        background:transparent;border:1px solid rgba(255,255,255,0.05);
+        border-radius:0;padding:24px 16px;cursor:default;opacity:0.4;
       ">
-        <div style="font-size:22px;margin-bottom:10px;">💬</div>
-        <div style="font-size:14px;font-weight:400;color:var(--text);margin-bottom:4px;">Convo Decoder</div>
-        <div style="font-size:11px;color:var(--text-dim);line-height:1.4;">Paste a convo. AI reads what's really being said.</div>
-        <div style="margin-top:12px;font-size:11px;color:rgba(200,200,220,0.3);">Coming soon</div>
+        <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.2em;color:var(--text-dim);text-transform:uppercase;margin-bottom:12px;">04</div>
+        <div style="font-family:var(--font-serif);font-size:18px;color:var(--text);margin-bottom:6px;">Convo Decoder</div>
+        <div style="font-family:var(--font-mono);font-size:11px;color:var(--text-dim);line-height:1.5;">Paste a conversation. Read between the lines.</div>
+        <div style="margin-top:14px;font-family:var(--font-mono);font-size:10px;color:rgba(255,255,255,0.15);letter-spacing:0.1em;">COMING SOON</div>
       </div>
 
     </div>
@@ -778,7 +805,7 @@
       <div onclick="goTo('screen-home')" style="font-size:18px;color:var(--text-dim);cursor:pointer;">‹</div>
       <div>
         <div style="font-size:11px;letter-spacing:0.16em;color:var(--text-dim);text-transform:uppercase;">Daily Reflection</div>
-        <div style="font-size:18px;font-weight:300;color:var(--text);">What does today feel like?</div>
+        <div style="font-family:var(--font-serif);font-size:20px;font-weight:400;color:var(--text);">What does today feel like?</div>
       </div>
     </div>
 
@@ -814,7 +841,7 @@
     <textarea id="emotion-text" placeholder="What happened today that left this feeling?" style="
       background:rgba(255,255,255,0.04);
       border:1px solid rgba(255,255,255,0.1);
-      border-radius:14px;color:var(--text);
+      border-radius:0;color:var(--text);
       font-size:14px;font-weight:300;font-family:inherit;
       line-height:1.6;padding:16px;width:100%;
       min-height:90px;resize:none;outline:none;
@@ -830,16 +857,16 @@
   <div style="width:100%;max-width:340px;">
     <div style="display:flex;align-items:center;gap:12px;margin-bottom:32px;">
       <div onclick="goTo('screen-home')" style="font-size:18px;color:var(--text-dim);cursor:pointer;">‹</div>
-      <div style="font-size:18px;font-weight:300;color:var(--text);">What this is</div>
+      <div style="font-family:var(--font-serif);font-size:22px;font-weight:400;color:var(--text);">What this is</div>
     </div>
     <!-- Color swatch -->
     <div id="result-swatch" style="width:48px;height:48px;border-radius:12px;margin-bottom:20px;"></div>
-    <div id="result-emotion-name" style="font-size:26px;font-weight:300;color:var(--text);margin-bottom:24px;"></div>
-    <div id="result-emotion-body" style="font-size:15px;font-weight:300;color:#C0C0D0;line-height:1.8;"></div>
+    <div id="result-emotion-name" style="font-family:var(--font-serif);font-size:28px;font-weight:400;color:var(--text);margin-bottom:24px;"></div>
+    <div id="result-emotion-body" style="font-family:var(--font-mono);font-size:13px;font-weight:400;color:#888;line-height:1.85;"></div>
     <div style="margin-top:32px;padding:16px;border-left:1px solid rgba(255,255,255,0.1);">
-      <div id="result-emotion-closer" style="font-size:14px;font-style:italic;color:var(--text-dim);line-height:1.6;"></div>
+      <div id="result-emotion-closer" style="font-family:var(--font-serif);font-size:16px;font-style:italic;color:var(--text);line-height:1.5;"></div>
     </div>
-    <div style="margin-top:32px;background:rgba(200,200,220,0.06);border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:10px;">
+    <div style="margin-top:32px;background:transparent;border:1px solid rgba(255,255,255,0.08);border-radius:0;padding:14px 16px;display:flex;align-items:center;gap:10px;">
       <div style="font-size:18px;">✦</div>
       <div style="font-size:13px;color:var(--text-dim);">+10 XP earned — your egg felt this too.</div>
     </div>
@@ -858,7 +885,7 @@
       <div onclick="goTo('screen-home')" style="font-size:18px;color:var(--text-dim);cursor:pointer;">‹</div>
       <div>
         <div style="font-size:11px;letter-spacing:0.16em;color:var(--text-dim);text-transform:uppercase;">Relationship Mirror</div>
-        <div style="font-size:18px;font-weight:300;color:var(--text);">Why do they treat me this way?</div>
+        <div style="font-family:var(--font-serif);font-size:20px;font-weight:400;color:var(--text);">Why do they treat me this way?</div>
       </div>
     </div>
 
@@ -866,7 +893,7 @@
     <div style="font-size:11px;letter-spacing:0.12em;color:var(--text-dim);text-transform:uppercase;margin-bottom:8px;">Who is this person?</div>
     <input id="person-who" type="text" placeholder="e.g. my best friend, my ex, my boss" style="
       background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);
-      border-radius:12px;color:var(--text);font-size:14px;font-family:inherit;
+      border-radius:0;color:var(--text);font-size:14px;font-family:inherit;
       padding:14px 16px;width:100%;outline:none;margin-bottom:20px;
       transition:border-color 0.3s;
     " oninput="this.style.borderColor=this.value?'rgba(200,200,220,0.35)':'rgba(255,255,255,0.1)'"/>
@@ -875,7 +902,7 @@
     <div style="font-size:11px;letter-spacing:0.12em;color:var(--text-dim);text-transform:uppercase;margin-bottom:8px;">What do they do that confuses or hurts you?</div>
     <textarea id="person-what" placeholder="Describe the behaviour. Be specific." style="
       background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);
-      border-radius:12px;color:var(--text);font-size:14px;font-family:inherit;
+      border-radius:0;color:var(--text);font-size:14px;font-family:inherit;
       line-height:1.6;padding:14px 16px;width:100%;min-height:100px;
       resize:none;outline:none;transition:border-color 0.3s;margin-bottom:20px;
     " oninput="this.style.borderColor=this.value?'rgba(200,200,220,0.35)':'rgba(255,255,255,0.1)'"></textarea>
@@ -883,7 +910,7 @@
     <!-- Screenshot or text toggle -->
     <div style="font-size:11px;letter-spacing:0.12em;color:var(--text-dim);text-transform:uppercase;margin-bottom:8px;">Got a screenshot? (optional)</div>
     <div style="
-      border:1px dashed rgba(255,255,255,0.12);border-radius:12px;
+      border:1px dashed rgba(255,255,255,0.12);border-radius:0;
       padding:20px;text-align:center;cursor:pointer;margin-bottom:24px;
     " onclick="document.getElementById('person-upload').click()">
       <div style="font-size:20px;margin-bottom:6px;">📎</div>
@@ -901,14 +928,14 @@
   <div style="width:100%;max-width:340px;">
     <div style="display:flex;align-items:center;gap:12px;margin-bottom:32px;">
       <div onclick="goTo('screen-home')" style="font-size:18px;color:var(--text-dim);cursor:pointer;">‹</div>
-      <div style="font-size:18px;font-weight:300;color:var(--text);">The mirror</div>
+      <div style="font-family:var(--font-serif);font-size:22px;font-weight:400;color:var(--text);">The mirror</div>
     </div>
-    <div id="result-person-title" style="font-size:13px;letter-spacing:0.12em;color:var(--text-dim);text-transform:uppercase;margin-bottom:8px;"></div>
-    <div id="result-person-body" style="font-size:15px;font-weight:300;color:#C0C0D0;line-height:1.8;"></div>
+    <div id="result-person-title" style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.2em;color:var(--text-dim);text-transform:uppercase;margin-bottom:8px;"></div>
+    <div id="result-person-body" style="font-family:var(--font-mono);font-size:13px;font-weight:400;color:#888;line-height:1.85;"></div>
     <div style="margin-top:28px;padding:16px;border-left:1px solid rgba(255,255,255,0.1);">
-      <div id="result-person-closer" style="font-size:14px;font-style:italic;color:var(--text-dim);line-height:1.6;"></div>
+      <div id="result-person-closer" style="font-family:var(--font-serif);font-size:16px;font-style:italic;color:var(--text);line-height:1.5;"></div>
     </div>
-    <div style="margin-top:32px;background:rgba(200,200,220,0.06);border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:10px;">
+    <div style="margin-top:32px;background:transparent;border:1px solid rgba(255,255,255,0.08);border-radius:0;padding:14px 16px;display:flex;align-items:center;gap:10px;">
       <div style="font-size:18px;">✦</div>
       <div style="font-size:13px;color:var(--text-dim);">+15 XP earned — your egg felt this shift.</div>
     </div>
@@ -927,7 +954,7 @@
       <div onclick="goTo('screen-home')" style="font-size:18px;color:var(--text-dim);cursor:pointer;">‹</div>
       <div>
         <div style="font-size:11px;letter-spacing:0.16em;color:var(--text-dim);text-transform:uppercase;">Decision Scan</div>
-        <div style="font-size:18px;font-weight:300;color:var(--text);">Say what you're stuck on.</div>
+        <div style="font-family:var(--font-serif);font-size:20px;font-weight:400;color:var(--text);">Say what you're stuck on.</div>
       </div>
     </div>
 
@@ -989,7 +1016,7 @@
     <textarea id="decision-text" placeholder="Or type it here instead..." style="
       background:rgba(255,255,255,0.03);
       border:1px solid rgba(255,255,255,0.08);
-      border-radius:14px;color:var(--text);
+      border-radius:0;color:var(--text);
       font-size:14px;font-weight:300;font-family:inherit;
       line-height:1.6;padding:16px;width:100%;
       min-height:70px;resize:none;outline:none;
@@ -1005,14 +1032,14 @@
   <div style="width:100%;max-width:340px;">
     <div style="display:flex;align-items:center;gap:12px;margin-bottom:32px;">
       <div onclick="goTo('screen-home')" style="font-size:18px;color:var(--text-dim);cursor:pointer;">‹</div>
-      <div style="font-size:18px;font-weight:300;color:var(--text);">Why you're stuck</div>
+      <div style="font-family:var(--font-serif);font-size:22px;font-weight:400;color:var(--text);">Why you're stuck</div>
     </div>
     <div id="result-decision-stage" style="font-size:11px;letter-spacing:0.16em;color:var(--text-dim);text-transform:uppercase;margin-bottom:8px;"></div>
-    <div id="result-decision-body" style="font-size:15px;font-weight:300;color:#C0C0D0;line-height:1.8;"></div>
+    <div id="result-decision-body" style="font-family:var(--font-mono);font-size:13px;font-weight:400;color:#888;line-height:1.85;"></div>
     <div style="margin-top:28px;padding:16px;border-left:1px solid rgba(255,255,255,0.1);">
-      <div id="result-decision-q" style="font-size:14px;font-style:italic;color:var(--text-dim);line-height:1.6;"></div>
+      <div id="result-decision-q" style="font-family:var(--font-serif);font-size:16px;font-style:italic;color:var(--text);line-height:1.5;"></div>
     </div>
-    <div style="margin-top:32px;background:rgba(200,200,220,0.06);border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:10px;">
+    <div style="margin-top:32px;background:transparent;border:1px solid rgba(255,255,255,0.08);border-radius:0;padding:14px 16px;display:flex;align-items:center;gap:10px;">
       <div style="font-size:18px;">✦</div>
       <div style="font-size:13px;color:var(--text-dim);">+15 XP earned — crack deepens.</div>
     </div>
