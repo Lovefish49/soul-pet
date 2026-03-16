@@ -74,7 +74,9 @@ Rules:
 - Never use: journey, healing, boundaries, self-care, toxic, red flag, growth mindset.
 - If she asks something shallow, go deeper anyway. Find what's underneath the question.
 - If she asks about a person, don't diagnose them. Show her what the dynamic reveals about HER.
-- Reference her previous questions when relevant — show you remember.
+- Reference previous questions only when it genuinely adds depth. Don't be meta about "you keep asking."
+- Use her name sparingly — once per answer at most. If no name was provided, never invent one or use a number.
+- Each answer should feel fresh, even if the questions are similar. Find a new angle.
 - Plain text only. No markdown, no bold, no asterisks.`,
 
   person: `You are a relationship mirror. She's come to you hurt or confused by someone — a friend, a guy, a parent, a colleague. She wants to understand why they treat her this way.
@@ -130,16 +132,22 @@ What happened today: "${input}"`;
     userMessage = `Who: ${context?.who || 'someone'}
 What they do: "${input}"`;
   } else if (activity === 'ask') {
-    // Build context-rich message with conversation history
-    const history = (context?.history || [])
-      .map(m => `${m.role === 'user' ? 'Her' : 'You'}: ${m.text}`)
-      .join('\n');
-    userMessage = `Her name: ${context?.name || 'unknown'}
+    // Only include last 6 exchanges max, trim pet responses to first 80 chars
+    const hist = (context?.history || []).slice(-12)
+      .map(m => {
+        const label = m.role === 'user' ? 'Her' : 'Pet';
+        const txt = m.role === 'pet' ? (m.text || '').slice(0, 80) + '...' : m.text;
+        return `${label}: ${txt}`;
+      }).join('\n');
+    const name = (context?.name || '').trim();
+    userMessage = `${name ? `Her name: ${name}` : 'She did not share her name.'}
 Sun sign: ${context?.astro || 'unknown'}
 Soul stage: ${context?.stage || 'unknown'}
-What she wishes people understood: "${context?.unseen || 'unknown'}"
+What she wishes people understood: "${context?.unseen || 'not shared'}"
 
-${history ? `Previous conversation:\n${history}\n\n` : ''}Her new question: "${input}"`;
+${hist ? `Recent conversation:\n${hist}\n\n` : ''}Her new question: "${input}"
+
+Respond in 2-4 short paragraphs. End with one closing line after a blank line. Plain text only.`;
   } else if (activity === 'onboarding') {
     userMessage = `Name: ${context?.name || 'unknown'}
 MBTI: ${context?.mbti || 'unknown'}
@@ -154,7 +162,7 @@ What they wish people knew about them: "${input}"`;
   const geminiBody = {
     system_instruction: { parts: [{ text: systemPrompt }] },
     contents: [{ role: 'user', parts: [{ text: userMessage }] }],
-    generationConfig: { maxOutputTokens: 900, temperature: 0.85 }
+    generationConfig: { maxOutputTokens: activity === 'ask' ? 600 : 900, temperature: 0.85 }
   };
 
   const upstream = await fetch(url, {

@@ -736,14 +736,17 @@
       renderAnswer(aDiv, fullText, true);
       chatHistory.push({ role: 'pet', text: fullText });
 
-      // Extract closer for insights
-      const paras = fullText.trim().split('\n\n').filter(Boolean);
-      if (paras.length > 1) {
-        const closer = cleanMd(paras[paras.length - 1]);
-        if (closer.length < 160) {
-          insights.unshift({ q, closer, timestamp: Date.now() });
-          renderInsights();
+      // Extract insight — always save the last paragraph or a snippet
+      const paras = fullText.trim().split('\n\n').map(p => cleanMd(p)).filter(Boolean);
+      if (paras.length > 0) {
+        let insight = paras[paras.length - 1];
+        // If last para is too long, take first sentence
+        if (insight.length > 200) {
+          const firstSentence = insight.match(/^[^.!?]+[.!?]/);
+          insight = firstSentence ? firstSentence[0] : insight.slice(0, 150) + '...';
         }
+        insights.unshift({ q, closer: insight, timestamp: Date.now() });
+        renderInsights();
       }
 
     } catch {
