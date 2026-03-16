@@ -572,13 +572,26 @@
       opacity:0;
       transition: opacity 1s ease;
     ">
-      <div style="
-        width:90px;height:114px;
-        background:radial-gradient(ellipse at 38% 30%, #f0f0ff 0%, #b0b0d0 45%, #3a3a5a 100%);
-        border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;
-        box-shadow:0 0 50px rgba(160,160,220,0.4), inset 0 -10px 30px rgba(80,80,120,0.3);
-        animation: eggFloat 3s ease-in-out infinite;
-      "></div>
+      <div style="position:relative;width:90px;height:114px;">
+        <!-- Egg body -->
+        <div style="
+          width:90px;height:114px;
+          background:radial-gradient(ellipse at 38% 30%, #f0f0ff 0%, #b0b0d0 45%, #3a3a5a 100%);
+          border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;
+          box-shadow:0 0 50px rgba(160,160,220,0.4), inset 0 -10px 30px rgba(80,80,120,0.3);
+          animation: eggFloat 3s ease-in-out infinite;
+        "></div>
+        <!-- Crack SVG overlay -->
+        <svg id="egg-crack" viewBox="0 0 90 114" style="
+          position:absolute;top:0;left:0;
+          width:90px;height:114px;
+          opacity:0;
+          transition:opacity 0.8s ease;
+        ">
+          <polyline points="50,38 46,50 52,56 45,70" stroke="rgba(20,20,40,0.55)" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <polyline points="46,50 42,55 44,62" stroke="rgba(20,20,40,0.35)" stroke-width="1" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
     </div>
 
   </div>
@@ -586,8 +599,83 @@
   <div id="unbox-label" style="font-size:16px;font-weight:300;color:var(--text);letter-spacing:0.06em;text-align:center;margin-bottom:8px;">
     Reading your soul...
   </div>
-  <div style="font-size:13px;color:var(--text-dim);text-align:center;letter-spacing:0.04em;">
+  <div id="unbox-sub" style="font-size:13px;color:var(--text-dim);text-align:center;letter-spacing:0.04em;margin-bottom:48px;">
     Your pet knows you're here.
+  </div>
+
+  <button id="btn-enter" class="btn-solid" onclick="goTo('screen-home')" style="opacity:0;transition:opacity 0.8s ease;pointer-events:none;">
+    Enter the app
+  </button>
+</div>
+
+<!-- SCREEN 6: Home -->
+<div class="screen" id="screen-home">
+  <div style="width:100%;max-width:340px;">
+
+    <!-- Top bar -->
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:40px;">
+      <div style="font-size:13px;letter-spacing:0.12em;color:var(--text-dim);text-transform:uppercase;">Soul Pet</div>
+      <div style="font-size:13px;color:var(--text-dim);">⚙</div>
+    </div>
+
+    <!-- Egg card -->
+    <div style="
+      background:rgba(255,255,255,0.03);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:24px;
+      padding:36px 24px;
+      text-align:center;
+      margin-bottom:24px;
+    ">
+      <div style="font-size:11px;letter-spacing:0.18em;color:var(--text-dim);text-transform:uppercase;margin-bottom:16px;">Your Soul Pet</div>
+
+      <!-- Mini egg -->
+      <div style="position:relative;width:70px;height:88px;margin:0 auto 20px;">
+        <div style="
+          width:70px;height:88px;
+          background:radial-gradient(ellipse at 38% 30%, #f0f0ff 0%, #b0b0d0 45%, #3a3a5a 100%);
+          border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;
+          box-shadow:0 0 30px rgba(160,160,220,0.35);
+          animation: eggFloat 3s ease-in-out infinite;
+        "></div>
+        <svg viewBox="0 0 70 88" style="position:absolute;top:0;left:0;width:70px;height:88px;">
+          <polyline points="38,29 36,39 40,43 35,54" stroke="rgba(20,20,40,0.5)" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <polyline points="36,39 33,43 34,49" stroke="rgba(20,20,40,0.3)" stroke-width="0.9" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
+
+      <div id="home-stage" style="font-size:18px;font-weight:300;color:var(--text);letter-spacing:0.04em;margin-bottom:8px;">The Controlled Storm</div>
+      <div style="font-size:12px;color:var(--text-dim);letter-spacing:0.06em;">Hatches when you're ready</div>
+    </div>
+
+    <!-- Daily prompt card -->
+    <div style="
+      background:rgba(255,255,255,0.02);
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:18px;
+      padding:24px;
+      margin-bottom:16px;
+    ">
+      <div style="font-size:11px;letter-spacing:0.14em;color:var(--text-dim);text-transform:uppercase;margin-bottom:12px;">Today's question</div>
+      <div style="font-size:15px;font-weight:300;color:var(--text);line-height:1.6;">What decision are you avoiding right now — and what are you telling yourself about why?</div>
+    </div>
+
+    <!-- XP bar -->
+    <div style="
+      background:rgba(255,255,255,0.02);
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:18px;
+      padding:20px 24px;
+    ">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <div style="font-size:12px;color:var(--text-dim);letter-spacing:0.06em;">Soul XP</div>
+        <div style="font-size:12px;color:var(--text-dim);">12 / 100</div>
+      </div>
+      <div style="height:3px;background:rgba(255,255,255,0.08);border-radius:2px;">
+        <div style="height:3px;width:12%;background:rgba(200,200,220,0.6);border-radius:2px;transition:width 1s ease;"></div>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -792,36 +880,56 @@
     return readProfiles.default;
   }
 
+  let currentStage = '';
+
   function goToRead() {
     const profile = getProfile();
+    currentStage  = profile.stage;
     document.getElementById('read-stage').textContent = profile.stage;
     document.getElementById('read-body').innerHTML = profile.paragraphs
       .map(p => `<p style="margin-bottom:20px;">${p}</p>`).join('');
     document.getElementById('read-closer').innerHTML = profile.closer;
+    document.getElementById('home-stage').textContent = profile.stage;
     goTo('screen-read');
   }
 
   // ── Unboxing animation ──
   function startUnboxing() {
-    const soul = document.getElementById('soul-orb');
-    const egg  = document.getElementById('egg-shape');
+    const soul  = document.getElementById('soul-orb');
+    const egg   = document.getElementById('egg-shape');
+    const crack = document.getElementById('egg-crack');
     const label = document.getElementById('unbox-label');
+    const sub   = document.getElementById('unbox-sub');
+    const btn   = document.getElementById('btn-enter');
 
-    // Phase 1: soul pulses intensely
+    // Phase 1: soul pulses fast
     soul.style.animation = 'soulPulse 0.6s ease-in-out infinite';
 
+    // Phase 2: collapse inward
     setTimeout(() => {
-      // Phase 2: soul collapses inward
       soul.style.transition = 'transform 0.5s ease-in, opacity 0.5s ease-in';
-      soul.style.transform = 'scale(0.1)';
-      soul.style.opacity = '0';
-    }, 1200);
+      soul.style.transform  = 'scale(0.1)';
+      soul.style.opacity    = '0';
+    }, 1000);
 
+    // Phase 3: egg emerges
     setTimeout(() => {
-      // Phase 3: egg emerges
       egg.style.opacity = '1';
-      label.textContent = 'Your Soul Pet is here.';
-    }, 1900);
+      label.textContent = 'Your Soul Pet is forming.';
+    }, 1700);
+
+    // Phase 4: crack appears
+    setTimeout(() => {
+      crack.style.opacity = '1';
+      label.textContent   = 'Something is trying to get out.';
+      sub.textContent     = 'Come back tomorrow to see what hatches.';
+    }, 3000);
+
+    // Phase 5: CTA appears
+    setTimeout(() => {
+      btn.style.opacity      = '1';
+      btn.style.pointerEvents = 'all';
+    }, 4200);
   }
 
   // Override goTo to trigger unboxing when entering screen-unbox
