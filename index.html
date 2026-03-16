@@ -1298,33 +1298,58 @@
     document.getElementById('pet-stage').textContent   = profile.stage;
   }
 
-  function renderOnboardingStream(text) {
-    const lines  = text.split('\n');
-    const stage  = lines[0].trim();
-    const rest   = lines.slice(1).join('\n').trim();
+  function cleanMarkdown(s) {
+    return s.replace(/\*\*/g, '').replace(/\*/g, '').replace(/_/g, '').trim();
+  }
 
-    if (stage) {
-      document.getElementById('read-stage').textContent = stage;
-      currentStage = stage;
-      document.getElementById('pet-stage').textContent  = stage;
+  function isValidStageName(s) {
+    // Must be short (≤8 words), no sentence-ending punctuation mid-text
+    const words = s.split(/\s+/);
+    return words.length >= 2 && words.length <= 8 && !s.includes(',') && !s.endsWith('.');
+  }
+
+  function renderOnboardingStream(text) {
+    const parts = text.trim().split('\n\n');
+    const firstLine = cleanMarkdown((text.split('\n')[0] || '').trim());
+
+    // Only set stage name if first line looks like a title
+    if (firstLine && isValidStageName(firstLine)) {
+      document.getElementById('read-stage').textContent = firstLine;
+      currentStage = firstLine;
+      document.getElementById('pet-stage').textContent  = firstLine;
     }
-    if (rest) {
-      document.getElementById('read-body').innerHTML =
-        `<p style="margin-bottom:20px;white-space:pre-wrap;">${rest}</p>`;
+
+    // Body: everything after first paragraph, streamed as-is
+    const bodyParts = parts.slice(1);
+    if (bodyParts.length) {
+      document.getElementById('read-body').innerHTML = bodyParts
+        .map(p => `<p style="margin-bottom:20px;">${cleanMarkdown(p.trim())}</p>`).join('');
     }
   }
 
   function parseAndRenderOnboarding(text) {
-    const parts  = text.trim().split('\n\n');
-    const stage  = parts[0]?.trim() || 'The Controlled Storm';
-    const closer = parts[parts.length - 1]?.trim() || '';
-    const middle = parts.length > 2 ? parts.slice(1, -1) : parts.slice(1);
+    const parts = text.trim().split('\n\n').map(p => cleanMarkdown(p.trim())).filter(Boolean);
+    if (!parts.length) return;
+
+    const firstLine = parts[0];
+    let stage, bodyParts, closer;
+
+    if (isValidStageName(firstLine)) {
+      stage     = firstLine;
+      closer    = parts.length > 2 ? parts[parts.length - 1] : '';
+      bodyParts = parts.length > 2 ? parts.slice(1, -1) : parts.slice(1);
+    } else {
+      // Gemini didn't put title on its own line — use fallback name, all as body
+      stage     = 'The Controlled Storm';
+      closer    = parts.length > 1 ? parts[parts.length - 1] : '';
+      bodyParts = parts.length > 1 ? parts.slice(0, -1) : parts;
+    }
 
     currentStage = stage;
     document.getElementById('read-stage').textContent = stage;
     document.getElementById('pet-stage').textContent  = stage;
-    document.getElementById('read-body').innerHTML    = middle
-      .map(p => `<p style="margin-bottom:20px;">${p.trim()}</p>`).join('');
+    document.getElementById('read-body').innerHTML    = bodyParts
+      .map(p => `<p style="margin-bottom:20px;">${p}</p>`).join('');
     document.getElementById('read-closer').innerHTML  = closer;
   }
 
@@ -1741,12 +1766,12 @@
           try {
             const data = JSON.parse(line.slice(6));
             if (data.text) {
-              if (!started) {
-                body.innerHTML = '';
-                started = true;
-              }
+              if (!started) { body.innerHTML = ''; started = true; }
               fullText += data.text;
-              renderStreamText(fullText, body, closer);
+              renderStreamText(fullText, body, closer, false);
+            }
+            if (data.done) {
+              renderStreamText(fullText, body, closer, true);
             }
           } catch {}
         }
@@ -1756,22 +1781,24 @@
     }
   }
 
-  function renderStreamText(text, bodyEl, closerEl) {
-    // Split on double newlines for paragraphs
-    // Last line starting with * or in italics goes to closer
+  function renderStreamText(text, bodyEl, closerEl, isFinal = false) {
     const paras = text.split(/\n\n+/).filter(p => p.trim());
-    const last  = paras[paras.length - 1] || '';
-    const isCloser = paras.length > 1 && (last.startsWith('*') || last.startsWith('"') || last.length < 120);
+    if (!paras.length) return;
 
-    const bodyParas  = isCloser ? paras.slice(0, -1) : paras;
-    const closerText = isCloser ? last.replace(/^\*|\*$/g, '') : '';
-
-    bodyEl.innerHTML = bodyParas.map(p =>
-      `<p style="margin-bottom:18px;">${p}</p>`
-    ).join('');
-
-    if (closerText) {
-      closerEl.textContent = closerText;
+    // Only split closer on final render — never mid-stream
+    if (isFinal && paras.length > 1) {
+      const last = paras[paras.length - 1] || '';
+      const isCloser = last.startsWith('*') || last.startsWith('"') || last.startsWith('_') ||
+        (last.length < 140 && !last.endsWith('...'));
+      const bodyParas  = isCloser ? paras.slice(0, -1) : paras;
+      const closerText = isCloser ? last.replace(/^\*+|\*+$/g, '').replace(/^_+|_+$/g, '') : '';
+      bodyEl.innerHTML = bodyParas.map(p =>
+        `<p style="margin-bottom:18px;">${p}</p>`).join('');
+      if (closerText) closerEl.textContent = closerText;
+    } else {
+      // Mid-stream: render everything as body, don't touch closer
+      bodyEl.innerHTML = paras.map(p =>
+        `<p style="margin-bottom:18px;">${p}</p>`).join('');
     }
   }
 </script>
