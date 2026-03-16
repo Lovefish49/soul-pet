@@ -275,6 +275,72 @@
       letter-spacing: 0.04em;
     }
 
+    /* ──────────────── MBTI / ASTRO INPUT SCREENS ──────────────── */
+    .select-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      width: 100%;
+      max-width: 340px;
+      margin-bottom: 36px;
+    }
+    .select-chip {
+      border: 1px solid rgba(200,200,220,0.18);
+      border-radius: 10px;
+      padding: 12px 6px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: var(--text-dim);
+      background: rgba(255,255,255,0.02);
+      transition: border-color 0.2s, background 0.2s, color 0.2s;
+    }
+    .select-chip:hover {
+      border-color: rgba(200,200,220,0.4);
+      color: var(--text);
+    }
+    .select-chip.chosen {
+      border-color: rgba(220,220,240,0.7);
+      background: rgba(220,220,240,0.1);
+      color: var(--text);
+    }
+    .astro-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      width: 100%;
+      max-width: 340px;
+      margin-bottom: 36px;
+    }
+    .astro-chip {
+      border: 1px solid rgba(200,200,220,0.18);
+      border-radius: 10px;
+      padding: 14px 6px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      background: rgba(255,255,255,0.02);
+    }
+    .astro-chip:hover {
+      border-color: rgba(200,200,220,0.4);
+    }
+    .astro-chip.chosen {
+      border-color: rgba(220,220,240,0.7);
+      background: rgba(220,220,240,0.1);
+    }
+    .astro-chip .astro-symbol {
+      font-size: 20px;
+      display: block;
+      margin-bottom: 4px;
+    }
+    .astro-chip .astro-name {
+      font-size: 11px;
+      color: var(--text-dim);
+      letter-spacing: 0.06em;
+    }
+
     /* ──────────────── PROGRESS ──────────────── */
     .progress-bar {
       position: absolute;
@@ -386,8 +452,32 @@
       <div class="tile-desc">How you love</div>
     </div>
   </div>
-  <button class="btn-solid" onclick="goTo('screen-ready')">Continue</button>
+  <button class="btn-solid" onclick="afterIdentity()">Continue</button>
   <button class="btn-skip" onclick="goTo('screen-ready')">I'll discover this later</button>
+</div>
+
+<!-- SCREEN 3b: MBTI Input -->
+<div class="screen" id="screen-mbti">
+  <div class="progress-bar"><div class="progress-fill" style="width:80%"></div></div>
+  <div class="screen-label">MBTI</div>
+  <div class="screen-question">What's your<br/>personality type?</div>
+  <div class="select-grid" id="mbti-grid">
+    <!-- filled by JS -->
+  </div>
+  <button class="btn-solid" id="btn-mbti-continue" onclick="afterMbti()">Continue</button>
+  <button class="btn-skip" onclick="afterMbti()">Not sure yet</button>
+</div>
+
+<!-- SCREEN 3c: Astrology Input -->
+<div class="screen" id="screen-astro">
+  <div class="progress-bar"><div class="progress-fill" style="width:90%"></div></div>
+  <div class="screen-label">Astrology</div>
+  <div class="screen-question">What's your<br/>sun sign?</div>
+  <div class="astro-grid" id="astro-grid">
+    <!-- filled by JS -->
+  </div>
+  <button class="btn-solid" onclick="goTo('screen-ready')">Continue</button>
+  <button class="btn-skip" onclick="goTo('screen-ready')">Not sure yet</button>
 </div>
 
 <!-- SCREEN 4: Ready -->
@@ -491,6 +581,70 @@
       tile.classList.add('selected');
     }
   }
+
+  // ── Identity continue: route through MBTI/Astro if selected ──
+  function afterIdentity() {
+    if (selected.has('mbti')) {
+      goTo('screen-mbti');
+    } else if (selected.has('astro')) {
+      goTo('screen-astro');
+    } else {
+      goTo('screen-ready');
+    }
+  }
+
+  function afterMbti() {
+    if (selected.has('astro')) {
+      goTo('screen-astro');
+    } else {
+      goTo('screen-ready');
+    }
+  }
+
+  // ── MBTI chips ──
+  const mbtiTypes = ['INTJ','INTP','ENTJ','ENTP','INFJ','INFP','ENFJ','ENFP','ISTJ','ISFJ','ESTJ','ESFJ','ISTP','ISFP','ESTP','ESFP'];
+  let chosenMbti = null;
+  const mbtiGrid = document.getElementById('mbti-grid');
+  mbtiTypes.forEach(t => {
+    const chip = document.createElement('div');
+    chip.className = 'select-chip';
+    chip.textContent = t;
+    chip.onclick = () => {
+      document.querySelectorAll('#mbti-grid .select-chip').forEach(c => c.classList.remove('chosen'));
+      chip.classList.add('chosen');
+      chosenMbti = t;
+    };
+    mbtiGrid.appendChild(chip);
+  });
+
+  // ── Astro chips ──
+  const zodiac = [
+    { name: 'Aries',       symbol: '♈' },
+    { name: 'Taurus',      symbol: '♉' },
+    { name: 'Gemini',      symbol: '♊' },
+    { name: 'Cancer',      symbol: '♋' },
+    { name: 'Leo',         symbol: '♌' },
+    { name: 'Virgo',       symbol: '♍' },
+    { name: 'Libra',       symbol: '♎' },
+    { name: 'Scorpio',     symbol: '♏' },
+    { name: 'Sagittarius', symbol: '♐' },
+    { name: 'Capricorn',   symbol: '♑' },
+    { name: 'Aquarius',    symbol: '♒' },
+    { name: 'Pisces',      symbol: '♓' },
+  ];
+  let chosenAstro = null;
+  const astroGrid = document.getElementById('astro-grid');
+  zodiac.forEach(z => {
+    const chip = document.createElement('div');
+    chip.className = 'astro-chip';
+    chip.innerHTML = `<span class="astro-symbol">${z.symbol}</span><div class="astro-name">${z.name}</div>`;
+    chip.onclick = () => {
+      document.querySelectorAll('#astro-grid .astro-chip').forEach(c => c.classList.remove('chosen'));
+      chip.classList.add('chosen');
+      chosenAstro = z.name;
+    };
+    astroGrid.appendChild(chip);
+  });
 
   // ── Dynamic ready text ──
   function updateReadyText() {
