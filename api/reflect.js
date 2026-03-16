@@ -160,7 +160,7 @@ What they wish people knew about them: "${input}"`;
 
   const apiKey = process.env.GEMINI_API_KEY;
   // Use Flash for ask (fast, cheap, conversational) — Pro for onboarding (quality matters)
-  const model  = activity === 'ask' ? 'gemini-2.5-flash' : 'gemini-3-pro-preview';
+  const model  = activity === 'ask' ? 'gemini-3-flash-preview' : 'gemini-3-pro-preview';
   const url    = `https://generativelanguage.googleapis.com/v1beta/models/${model}:streamGenerateContent?alt=sse&key=${apiKey}`;
 
   const geminiBody = {

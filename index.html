@@ -557,6 +557,7 @@
   <div class="bottom-nav">
     <button class="nav-tab active" onclick="goTo('screen-ask')">Ask</button>
     <button class="nav-tab" onclick="goTo('screen-insights')">Insights</button>
+    <button class="nav-tab" onclick="goTo('screen-profile')">Pet</button>
   </div>
 </div>
 
@@ -577,6 +578,97 @@
   <div class="bottom-nav">
     <button class="nav-tab" onclick="goTo('screen-ask')">Ask</button>
     <button class="nav-tab active" onclick="goTo('screen-insights')">Insights</button>
+    <button class="nav-tab" onclick="goTo('screen-profile')">Pet</button>
+  </div>
+</div>
+
+<!-- ═══ SCREEN 8: PROFILE ═══ -->
+<div class="screen" id="screen-profile" style="justify-content:flex-start;padding-top:32px;padding-bottom:80px;overflow-y:auto;">
+  <div style="width:100%;max-width:340px;">
+
+    <!-- Egg hero -->
+    <div style="text-align:center;margin-bottom:32px;">
+      <div style="position:relative;width:100px;height:126px;margin:0 auto 20px;">
+        <div style="
+          width:100px;height:126px;
+          background:radial-gradient(ellipse at 38% 30%, #f0f0ff 0%, #999 50%, #333 100%);
+          border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;
+          box-shadow:0 0 40px rgba(160,160,220,0.3);
+          animation: eggFloat 3s ease-in-out infinite;
+        "></div>
+        <!-- Crack overlay -->
+        <svg viewBox="0 0 100 126" style="position:absolute;top:0;left:0;width:100px;height:126px;">
+          <polyline points="54,40 50,55 57,62 49,78" stroke="rgba(20,20,40,0.5)" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <polyline points="50,55 45,61 47,70" stroke="rgba(20,20,40,0.3)" stroke-width="1.1" fill="none" stroke-linecap="round"/>
+        </svg>
+        <!-- Glow ring -->
+        <div style="
+          position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+          width:120px;height:120px;border-radius:50%;
+          border:1px solid rgba(180,180,220,0.1);
+          animation:eggFloat 3s ease-in-out infinite reverse;
+          pointer-events:none;
+        "></div>
+      </div>
+      <div id="profile-stage" style="font-family:var(--font-serif);font-size:22px;color:var(--text);margin-bottom:4px;"></div>
+      <div id="profile-status" class="label" style="margin-top:6px;">Hatching in progress</div>
+    </div>
+
+    <!-- XP bar -->
+    <div style="border:1px solid rgba(255,255,255,0.08);padding:20px;margin-bottom:16px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <div class="label">Soul XP</div>
+        <div id="xp-count" class="label">0 / 100</div>
+      </div>
+      <div style="height:2px;background:rgba(255,255,255,0.06);margin-bottom:16px;">
+        <div id="xp-bar" style="height:2px;width:0%;background:#fff;transition:width 0.5s;"></div>
+      </div>
+      <div class="label" style="margin-bottom:10px;">What cracks the shell</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,0.2);flex-shrink:0;"></div>
+          <div style="font-family:var(--font-mono);font-size:11px;color:var(--text-dim);">Ask a question <span style="color:rgba(255,255,255,0.2);">+10 XP</span></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,0.2);flex-shrink:0;"></div>
+          <div style="font-family:var(--font-mono);font-size:11px;color:var(--text-dim);">Ask something vulnerable <span style="color:rgba(255,255,255,0.2);">+20 XP</span></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,0.2);flex-shrink:0;"></div>
+          <div style="font-family:var(--font-mono);font-size:11px;color:var(--text-dim);">Return daily <span style="color:rgba(255,255,255,0.2);">+15 XP</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+      <div style="border:1px solid rgba(255,255,255,0.08);padding:18px;text-align:center;">
+        <div id="stat-asks" style="font-family:var(--font-serif);font-size:28px;color:var(--text);margin-bottom:4px;">0</div>
+        <div class="label">Questions asked</div>
+      </div>
+      <div style="border:1px solid rgba(255,255,255,0.08);padding:18px;text-align:center;">
+        <div id="stat-insights" style="font-family:var(--font-serif);font-size:28px;color:var(--text);margin-bottom:4px;">0</div>
+        <div class="label">Insights earned</div>
+      </div>
+    </div>
+
+    <!-- Last insight teaser -->
+    <div id="profile-last-insight" style="border:1px solid rgba(255,255,255,0.06);padding:20px;display:none;">
+      <div class="label" style="margin-bottom:10px;">Last insight</div>
+      <div id="profile-insight-text" style="font-family:var(--font-serif);font-size:16px;font-style:italic;color:var(--text);line-height:1.5;"></div>
+    </div>
+
+    <!-- Identity summary -->
+    <div id="profile-identity" style="border:1px solid rgba(255,255,255,0.06);padding:20px;margin-top:16px;">
+      <div class="label" style="margin-bottom:12px;">Your signals</div>
+      <div id="profile-signals" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
+    </div>
+
+  </div>
+  <div class="bottom-nav">
+    <button class="nav-tab" onclick="goTo('screen-ask')">Ask</button>
+    <button class="nav-tab" onclick="goTo('screen-insights')">Insights</button>
+    <button class="nav-tab active" onclick="goTo('screen-profile')">Pet</button>
   </div>
 </div>
 
@@ -631,13 +723,13 @@
     const next = document.getElementById(id);
     if (next) setTimeout(() => next.classList.add('active'), 50);
     // Update nav active state
-    if (id === 'screen-ask' || id === 'screen-insights') {
+    if (id === 'screen-ask' || id === 'screen-insights' || id === 'screen-profile') {
       document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+      const tabMap = { 'screen-ask': 'Ask', 'screen-insights': 'Insights', 'screen-profile': 'Pet' };
       document.querySelectorAll('.nav-tab').forEach(t => {
-        if ((id === 'screen-ask' && t.textContent === 'Ask') ||
-            (id === 'screen-insights' && t.textContent === 'Insights'))
-          t.classList.add('active');
+        if (t.textContent === tabMap[id]) t.classList.add('active');
       });
+      if (id === 'screen-profile') updateProfile();
     }
     if (id === 'screen-unbox') setTimeout(startUnboxing, 400);
   }
@@ -868,6 +960,7 @@
 
       renderAnswer(aDiv, fullText, true);
       chatHistory.push({ role: 'pet', text: fullText });
+      addXP(10);
 
       // Extract insight — always save the last paragraph or a snippet
       const paras = fullText.trim().split('\n\n').map(p => cleanMd(p)).filter(Boolean);
@@ -880,6 +973,7 @@
         }
         insights.unshift({ q, closer: insight, timestamp: Date.now() });
         renderInsights();
+        updateProfile();
       }
 
     } catch {
@@ -905,6 +999,49 @@
     } else {
       el.innerHTML = `<div class="answer-body">${paras.map(p => `<p style="margin-bottom:12px;">${p}</p>`).join('')}</div>`;
     }
+  }
+
+  // ── XP & PROFILE ──
+  let totalXP = 0;
+  let totalAsks = 0;
+
+  function addXP(amount) {
+    totalXP += amount;
+    totalAsks++;
+    updateProfile();
+  }
+
+  function updateProfile() {
+    const xpCapped = Math.min(totalXP, 100);
+    document.getElementById('xp-bar').style.width = xpCapped + '%';
+    document.getElementById('xp-count').textContent = xpCapped + ' / 100';
+    document.getElementById('stat-asks').textContent = totalAsks;
+    document.getElementById('stat-insights').textContent = insights.length;
+    document.getElementById('profile-stage').textContent = currentStage;
+
+    // Status text based on XP
+    const status = document.getElementById('profile-status');
+    if (xpCapped >= 100) status.textContent = 'Ready to hatch';
+    else if (xpCapped >= 50) status.textContent = 'Shell is cracking';
+    else if (xpCapped >= 20) status.textContent = 'Something stirs inside';
+    else status.textContent = 'Hatching in progress';
+
+    // Last insight
+    if (insights.length > 0) {
+      document.getElementById('profile-last-insight').style.display = 'block';
+      document.getElementById('profile-insight-text').textContent = '"' + insights[0].closer + '"';
+    }
+
+    // Identity signals
+    const signals = document.getElementById('profile-signals');
+    const tags = [];
+    if (chosenMbti) tags.push(chosenMbti);
+    if (chosenAstro) tags.push(chosenAstro);
+    if (chosenAttach) tags.push(chosenAttach);
+    if (!tags.length) tags.push('Discovering...');
+    signals.innerHTML = tags.map(t =>
+      `<div style="border:1px solid rgba(255,255,255,0.12);padding:8px 14px;font-family:var(--font-mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim);">${t}</div>`
+    ).join('');
   }
 
   // ── INSIGHTS ──
