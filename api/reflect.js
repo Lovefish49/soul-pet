@@ -166,7 +166,7 @@ What they wish people knew about them: "${input}"`;
   const geminiBody = {
     system_instruction: { parts: [{ text: systemPrompt }] },
     contents: [{ role: 'user', parts: [{ text: userMessage }] }],
-    generationConfig: { maxOutputTokens: 1024, temperature: 0.85 }
+    generationConfig: { maxOutputTokens: 8192, temperature: 0.85 }
   };
 
   const upstream = await fetch(url, {
