@@ -1264,10 +1264,10 @@
 
       while (true) {
         const { done, value } = await reader.read();
-        if (done) break;
-        buf += decoder.decode(value, { stream: true });
+        buf += decoder.decode(value ?? new Uint8Array(), { stream: !done });
         const lines = buf.split('\n');
-        buf = lines.pop();
+        buf = done ? '' : lines.pop();
+
         for (const line of lines) {
           if (!line.startsWith('data: ')) continue;
           try {
@@ -1275,11 +1275,12 @@
             if (data.text) {
               fullText += data.text;
               renderOnboardingStream(fullText, stageSet);
-              // Once first newline appears, stage name is set
               if (!stageSet && fullText.includes('\n')) stageSet = true;
             }
           } catch {}
         }
+
+        if (done) break;
       }
 
       // Final parse after stream complete
@@ -1756,11 +1757,9 @@
 
       while (true) {
         const { done, value } = await reader.read();
-        if (done) break;
-
-        buffer += decoder.decode(value, { stream: true });
+        buffer += decoder.decode(value ?? new Uint8Array(), { stream: !done });
         const lines = buffer.split('\n');
-        buffer = lines.pop();
+        buffer = done ? '' : lines.pop();
 
         for (const line of lines) {
           if (!line.startsWith('data: ')) continue;
@@ -1771,12 +1770,14 @@
               fullText += data.text;
               renderStreamText(fullText, body, closer, false);
             }
-            if (data.done) {
-              renderStreamText(fullText, body, closer, true);
-            }
           } catch {}
         }
+
+        if (done) break;
       }
+
+      // Final render with closer splitting
+      if (fullText) renderStreamText(fullText, body, closer, true);
     } catch (err) {
       body.innerHTML = `<p style="color:rgba(200,200,220,0.5);">Couldn't reach the mirror right now. Try again.</p>`;
     }
