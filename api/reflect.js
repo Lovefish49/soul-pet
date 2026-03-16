@@ -1,6 +1,4 @@
-import Anthropic from '@anthropic-ai/sdk';
-
-const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+export const config = { runtime: 'edge' };
 
 const SYSTEM_PROMPTS = {
   emotion: `You are a precise emotional mirror. The user has picked a color on a 2D emotional field and described what happened today.
@@ -12,7 +10,7 @@ Rules:
 - Never use therapy-speak ("it sounds like", "I hear you", "that must be hard")
 - Never be cheerful or upbeat about difficult emotions
 - Write like a sharp, warm friend who has read too much psychology — not a chatbot
-- 3 short paragraphs max. End with one sentence in italics that lands like a gut punch.
+- 3 short paragraphs. End with one sentence that lands like a gut punch — put it on its own line after a blank line.
 - Match your register to their emotional color: if they're in grief/numbness, write slow and heavy. If they're in joy/clarity, write lighter.`,
 
   decision: `You are a decision mirror. The user has described something they're stuck on.
@@ -24,79 +22,122 @@ Rules:
 - Never give a pros/cons list
 - Identify the actual psychological block: identity threat, loss aversion, fear of visibility, attachment, grief of a path not taken
 - Write in 3 short paragraphs
-- End with exactly ONE question — not advice disguised as a question, a genuine mirror question that makes them stop
-- Tone: like a brilliant therapist who doesn't sugarcoat anything`,
+- End with exactly ONE question on its own line — a genuine mirror question, not advice in disguise
+- Tone: like a brilliant friend who doesn't sugarcoat anything`,
 
   person: `You are a relationship mirror. The user has described someone in their life and the behaviour that confuses or hurts them.
 
 Your job: flip the mirror. Don't analyze the other person — analyze what their behaviour ACTIVATES in the user. What does their reaction reveal about them?
 
 Rules:
-- Never diagnose or label the other person (no "they're a narcissist")
+- Never diagnose or label the other person
 - Never take sides or validate the user's hurt directly — acknowledge it, then move to what it reveals
 - The insight should be about the user, not the other person
 - 3 short paragraphs
-- End with one line that reframes who actually has the power here
+- End with one line on its own that reframes who actually has the power here
 - Tone: direct, warm, no softening`
 };
 
-export default async function handler(req, res) {
+export default async function handler(req) {
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+    return new Response(JSON.stringify({ error: 'Method not allowed' }), { status: 405 });
   }
 
-  const { activity, input, context } = req.body;
+  let body;
+  try { body = await req.json(); } catch {
+    return new Response(JSON.stringify({ error: 'Invalid JSON' }), { status: 400 });
+  }
 
+  const { activity, input, context } = body;
   if (!activity || !input) {
-    return res.status(400).json({ error: 'Missing activity or input' });
+    return new Response(JSON.stringify({ error: 'Missing activity or input' }), { status: 400 });
   }
 
   const systemPrompt = SYSTEM_PROMPTS[activity];
   if (!systemPrompt) {
-    return res.status(400).json({ error: 'Unknown activity' });
+    return new Response(JSON.stringify({ error: 'Unknown activity' }), { status: 400 });
   }
 
-  // Build user message based on activity
   let userMessage = '';
   if (activity === 'emotion') {
-    userMessage = `Emotional color picked: ${context?.emotionName || 'unknown'} (${context?.register || 'unknown zone'} — ${context?.texture || ''})
+    userMessage = `Emotional color: ${context?.emotionName || 'unknown'} (${context?.register || ''} — ${context?.texture || ''})
 
-What they wrote: "${input}"`;
+What happened today: "${input}"`;
   } else if (activity === 'decision') {
-    userMessage = `What they said (voice or typed): "${input}"`;
+    userMessage = `What they said: "${input}"`;
   } else if (activity === 'person') {
-    userMessage = `Who: ${context?.who || 'someone in their life'}
+    userMessage = `Who: ${context?.who || 'someone'}
 What they do: "${input}"`;
   }
 
-  // Stream response
-  res.setHeader('Content-Type', 'text/event-stream');
-  res.setHeader('Cache-Control', 'no-cache');
-  res.setHeader('Connection', 'keep-alive');
+  const apiKey = process.env.GEMINI_API_KEY;
+  const model  = 'gemini-2.0-flash';
+  const url    = `https://generativelanguage.googleapis.com/v1beta/models/${model}:streamGenerateContent?alt=sse&key=${apiKey}`;
 
-  try {
-    const stream = client.messages.stream({
-      model: 'claude-sonnet-4-5-20250929',
-      max_tokens: 500,
-      system: systemPrompt,
-      messages: [{ role: 'user', content: userMessage }]
-    });
+  const geminiBody = {
+    system_instruction: { parts: [{ text: systemPrompt }] },
+    contents: [{ role: 'user', parts: [{ text: userMessage }] }],
+    generationConfig: { maxOutputTokens: 500, temperature: 0.85 }
+  };
 
-    stream.on('text', (text) => {
-      res.write(`data: ${JSON.stringify({ text })}\n\n`);
-    });
+  const upstream = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(geminiBody)
+  });
 
-    stream.on('finalMessage', () => {
-      res.write(`data: ${JSON.stringify({ done: true })}\n\n`);
-      res.end();
+  if (!upstream.ok) {
+    const err = await upstream.text();
+    return new Response(`data: ${JSON.stringify({ error: err })}\n\n`, {
+      status: 200,
+      headers: { 'Content-Type': 'text/event-stream' }
     });
-
-    stream.on('error', (err) => {
-      res.write(`data: ${JSON.stringify({ error: err.message })}\n\n`);
-      res.end();
-    });
-  } catch (err) {
-    res.write(`data: ${JSON.stringify({ error: err.message })}\n\n`);
-    res.end();
   }
+
+  // Transform Gemini SSE → our SSE format
+  const { readable, writable } = new TransformStream();
+  const writer = writable.getWriter();
+  const encoder = new TextEncoder();
+
+  (async () => {
+    const reader = upstream.body.getReader();
+    const decoder = new TextDecoder();
+    let buf = '';
+
+    try {
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buf += decoder.decode(value, { stream: true });
+        const lines = buf.split('\n');
+        buf = lines.pop();
+
+        for (const line of lines) {
+          if (!line.startsWith('data: ')) continue;
+          const raw = line.slice(6).trim();
+          if (!raw || raw === '[DONE]') continue;
+          try {
+            const parsed = JSON.parse(raw);
+            const text = parsed?.candidates?.[0]?.content?.parts?.[0]?.text;
+            if (text) {
+              await writer.write(encoder.encode(`data: ${JSON.stringify({ text })}\n\n`));
+            }
+          } catch {}
+        }
+      }
+      await writer.write(encoder.encode(`data: ${JSON.stringify({ done: true })}\n\n`));
+    } catch (e) {
+      await writer.write(encoder.encode(`data: ${JSON.stringify({ error: e.message })}\n\n`));
+    } finally {
+      writer.close();
+    }
+  })();
+
+  return new Response(readable, {
+    headers: {
+      'Content-Type': 'text/event-stream',
+      'Cache-Control': 'no-cache',
+      'Connection': 'keep-alive'
+    }
+  });
 }
