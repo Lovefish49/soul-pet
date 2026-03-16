@@ -381,6 +381,15 @@
       animation: starBorn 1.6s ease 0.5s forwards;
       opacity: 0;
     }
+  .dot-pulse {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: rgba(200,200,220,0.4);
+    animation: dotPulse 1s ease-in-out infinite;
+  }
+  @keyframes dotPulse {
+    0%, 100% { opacity: 0.3; transform: scale(0.8); }
+    50%       { opacity: 1;   transform: scale(1.2); }
+  }
   @keyframes soulPulse {
     0%, 100% { transform: scale(1);   box-shadow: 0 0 40px rgba(160,160,220,0.5); }
     50%       { transform: scale(1.08); box-shadow: 0 0 60px rgba(160,160,220,0.8); }
@@ -1424,20 +1433,31 @@
     Shame:    { body: 'Something today made you feel like you shouldn\'t be exactly as you are. That\'s the specific texture of shame — it\'s not about what you did, it\'s about what that makes you.\n\nThe sting of it is real. But shame lies about permanence. What it\'s telling you about who you are is almost always wrong.', closer: 'The fact that you can feel this means your values are intact. Shame and integrity come from the same place.' },
   };
 
-  function submitEmotion() {
+  async function submitEmotion() {
     if (!emotionQuadrant) {
       document.getElementById('emotion-sub').textContent = 'Tap the colour field first.';
       return;
     }
-    const name    = emotionQuadrant.name;
-    const profile = emotionProfiles[name] || emotionProfiles.Stillness;
-    const swatch  = document.getElementById('result-swatch');
+    const text = document.getElementById('emotion-text').value.trim();
+    if (!text) {
+      document.getElementById('emotion-text').style.borderColor = 'rgba(200,200,220,0.4)';
+      document.getElementById('emotion-text').placeholder = 'Tell me what happened first.';
+      return;
+    }
+
+    const name   = emotionQuadrant.name;
+    const swatch = document.getElementById('result-swatch');
     swatch.style.background = emotionColor;
-    document.getElementById('result-emotion-name').textContent  = name;
-    document.getElementById('result-emotion-body').innerHTML    =
-      profile.body.split('\n\n').map(p => `<p style="margin-bottom:18px;">${p}</p>`).join('');
-    document.getElementById('result-emotion-closer').textContent = profile.closer;
+    document.getElementById('result-emotion-name').textContent = name;
+    document.getElementById('result-emotion-body').innerHTML   = '';
+    document.getElementById('result-emotion-closer').textContent = '';
     goTo('screen-emotion-result');
+
+    await streamReflection('emotion', text, {
+      emotionName: name,
+      register: emotionQuadrant.ny < 0.4 ? 'light' : emotionQuadrant.ny > 0.7 ? 'dark' : 'mid',
+      texture: emotionSubs[name] || ''
+    }, 'result-emotion-body', 'result-emotion-closer');
   }
 
   // ══════════════════════════════════════════
@@ -1559,37 +1579,103 @@
     },
   ];
 
-  function submitDecision() {
-    const text = (document.getElementById('decision-text').value || '').toLowerCase();
-    if (!text.trim()) return;
+  async function submitDecision() {
+    const text = (document.getElementById('decision-text').value || '').trim();
+    if (!text) return;
 
-    let profile = decisionProfiles[decisionProfiles.length - 1];
-    for (const p of decisionProfiles) {
-      if (p.keywords.some(k => text.includes(k))) { profile = p; break; }
-    }
-
-    document.getElementById('result-decision-stage').textContent = profile.stage;
-    document.getElementById('result-decision-body').innerHTML =
-      profile.body.split('\n\n').map(p => `<p style="margin-bottom:18px;">${p}</p>`).join('');
-    document.getElementById('result-decision-q').textContent = profile.q;
+    document.getElementById('result-decision-stage').textContent = '';
+    document.getElementById('result-decision-body').innerHTML    = '';
+    document.getElementById('result-decision-q').textContent     = '';
     goTo('screen-decision-result');
+
+    await streamReflection('decision', text, {}, 'result-decision-body', 'result-decision-q');
   }
 
-  function submitPerson() {
-    const who  = (document.getElementById('person-who').value  || '').toLowerCase();
-    const what = (document.getElementById('person-what').value || '').toLowerCase();
-    const combined = who + ' ' + what;
+  async function submitPerson() {
+    const who  = (document.getElementById('person-who').value  || '').trim();
+    const what = (document.getElementById('person-what').value || '').trim();
+    if (!what) return;
 
-    let profile = personProfiles[0]; // default
-    for (const p of personProfiles) {
-      if (p.keywords.some(k => combined.includes(k))) { profile = p; break; }
-    }
-
-    document.getElementById('result-person-title').textContent = profile.title;
-    document.getElementById('result-person-body').innerHTML =
-      profile.body.split('\n\n').map(p => `<p style="margin-bottom:18px;">${p}</p>`).join('');
-    document.getElementById('result-person-closer').textContent = profile.closer;
+    document.getElementById('result-person-title').textContent = who ? `You and ${who}` : 'The mirror';
+    document.getElementById('result-person-body').innerHTML    = '';
+    document.getElementById('result-person-closer').textContent = '';
     goTo('screen-person-result');
+
+    await streamReflection('person', what, { who }, 'result-person-body', 'result-person-closer');
+  }
+
+  // ══════════════════════════════════════════
+  // STREAMING ENGINE
+  // ══════════════════════════════════════════
+  async function streamReflection(activity, input, context, bodyEl, closerEl) {
+    const body   = document.getElementById(bodyEl);
+    const closer = document.getElementById(closerEl);
+
+    // Loading state
+    body.innerHTML = `<div id="stream-loading" style="display:flex;gap:5px;align-items:center;padding:8px 0;">
+      <div class="dot-pulse"></div><div class="dot-pulse" style="animation-delay:0.2s"></div><div class="dot-pulse" style="animation-delay:0.4s"></div>
+    </div>`;
+
+    try {
+      const res = await fetch('/api/reflect', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ activity, input, context })
+      });
+
+      if (!res.ok) throw new Error(`API error ${res.status}`);
+
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = '';
+      let fullText = '';
+      let started = false;
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop();
+
+        for (const line of lines) {
+          if (!line.startsWith('data: ')) continue;
+          try {
+            const data = JSON.parse(line.slice(6));
+            if (data.text) {
+              if (!started) {
+                body.innerHTML = '';
+                started = true;
+              }
+              fullText += data.text;
+              renderStreamText(fullText, body, closer);
+            }
+          } catch {}
+        }
+      }
+    } catch (err) {
+      body.innerHTML = `<p style="color:rgba(200,200,220,0.5);">Couldn't reach the mirror right now. Try again.</p>`;
+    }
+  }
+
+  function renderStreamText(text, bodyEl, closerEl) {
+    // Split on double newlines for paragraphs
+    // Last line starting with * or in italics goes to closer
+    const paras = text.split(/\n\n+/).filter(p => p.trim());
+    const last  = paras[paras.length - 1] || '';
+    const isCloser = paras.length > 1 && (last.startsWith('*') || last.startsWith('"') || last.length < 120);
+
+    const bodyParas  = isCloser ? paras.slice(0, -1) : paras;
+    const closerText = isCloser ? last.replace(/^\*|\*$/g, '') : '';
+
+    bodyEl.innerHTML = bodyParas.map(p =>
+      `<p style="margin-bottom:18px;">${p}</p>`
+    ).join('');
+
+    if (closerText) {
+      closerEl.textContent = closerText;
+    }
   }
 </script>
 </body>
