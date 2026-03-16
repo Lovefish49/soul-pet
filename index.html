@@ -712,15 +712,15 @@
     <!-- Activity grid -->
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px;">
 
-      <!-- Decision Scan -->
+      <!-- Daily Reflection shortcut -->
       <div style="
         background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);
         border-radius:18px;padding:20px 16px;cursor:pointer;
-      " onclick="alert('Decision Scan — coming soon')">
-        <div style="font-size:22px;margin-bottom:10px;">⚖️</div>
-        <div style="font-size:14px;font-weight:400;color:var(--text);margin-bottom:4px;">Decision Scan</div>
-        <div style="font-size:11px;color:var(--text-dim);line-height:1.4;">Stuck on something? AI breaks down what you actually want.</div>
-        <div style="margin-top:12px;font-size:11px;color:rgba(200,200,220,0.5);">+15 XP</div>
+      " onclick="goTo('screen-emotion')">
+        <div style="font-size:22px;margin-bottom:10px;">🌊</div>
+        <div style="font-size:14px;font-weight:400;color:var(--text);margin-bottom:4px;">Daily Reflection</div>
+        <div style="font-size:11px;color:var(--text-dim);line-height:1.4;">Pick a colour. AI names what you're feeling and why.</div>
+        <div style="margin-top:12px;font-size:11px;color:rgba(200,200,220,0.5);">+10 XP</div>
       </div>
 
       <!-- Daily Reflection -->
@@ -745,15 +745,15 @@
         <div style="margin-top:12px;font-size:11px;color:rgba(200,200,220,0.5);">+12 XP</div>
       </div>
 
-      <!-- Pattern Check -->
+      <!-- Decision Scan -->
       <div style="
         background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);
         border-radius:18px;padding:20px 16px;cursor:pointer;
-      " onclick="alert('Pattern Check — coming soon')">
-        <div style="font-size:22px;margin-bottom:10px;">🔁</div>
-        <div style="font-size:14px;font-weight:400;color:var(--text);margin-bottom:4px;">Pattern Check</div>
-        <div style="font-size:11px;color:var(--text-dim);line-height:1.4;">Describe something that keeps happening. AI names the loop.</div>
-        <div style="margin-top:12px;font-size:11px;color:rgba(200,200,220,0.5);">+20 XP</div>
+      " onclick="goTo('screen-decision')">
+        <div style="font-size:22px;margin-bottom:10px;">⚖️</div>
+        <div style="font-size:14px;font-weight:400;color:var(--text);margin-bottom:4px;">Decision Scan</div>
+        <div style="font-size:11px;color:var(--text-dim);line-height:1.4;">Speak it out. AI reflects why you're really stuck.</div>
+        <div style="margin-top:12px;font-size:11px;color:rgba(200,200,220,0.5);">+15 XP</div>
       </div>
 
     </div>
@@ -934,6 +934,110 @@
     <div style="margin-top:32px;background:rgba(200,200,220,0.06);border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:10px;">
       <div style="font-size:18px;">✦</div>
       <div style="font-size:13px;color:var(--text-dim);">+15 XP earned — your egg felt this shift.</div>
+    </div>
+    <button class="btn-solid" style="width:100%;margin-top:24px;" onclick="goTo('screen-home')">Done</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     ACTIVITY: Decision Scan (Voice)
+     ═══════════════════════════════════════════ -->
+<div class="screen" id="screen-decision" style="justify-content:flex-start;padding-top:48px;padding-bottom:40px;">
+  <div style="width:100%;max-width:340px;display:flex;flex-direction:column;align-items:center;">
+
+    <!-- Header -->
+    <div style="width:100%;display:flex;align-items:center;gap:12px;margin-bottom:40px;">
+      <div onclick="goTo('screen-home')" style="font-size:18px;color:var(--text-dim);cursor:pointer;">‹</div>
+      <div>
+        <div style="font-size:11px;letter-spacing:0.16em;color:var(--text-dim);text-transform:uppercase;">Decision Scan</div>
+        <div style="font-size:18px;font-weight:300;color:var(--text);">Say what you're stuck on.</div>
+      </div>
+    </div>
+
+    <!-- Voice button -->
+    <div style="position:relative;margin-bottom:36px;">
+      <!-- Ripple rings -->
+      <div id="voice-ring-2" style="
+        position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+        width:130px;height:130px;border-radius:50%;
+        border:1px solid rgba(200,200,220,0.08);
+        pointer-events:none;transition:transform 0.3s,opacity 0.3s;
+      "></div>
+      <div id="voice-ring-1" style="
+        position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+        width:106px;height:106px;border-radius:50%;
+        border:1px solid rgba(200,200,220,0.15);
+        pointer-events:none;transition:transform 0.3s,opacity 0.3s;
+      "></div>
+      <!-- Core button -->
+      <div id="voice-btn" style="
+        width:86px;height:86px;border-radius:50%;
+        background:radial-gradient(circle at 38% 35%, #d0d0f0 0%, #7070a0 60%, #2a2a4a 100%);
+        box-shadow:0 0 30px rgba(140,140,200,0.35);
+        display:flex;align-items:center;justify-content:center;
+        cursor:pointer;user-select:none;
+        transition:transform 0.15s,box-shadow 0.15s;
+        position:relative;z-index:1;
+      "
+        onmousedown="startVoice()" onmouseup="stopVoice()"
+        ontouchstart="startVoice(event)" ontouchend="stopVoice()"
+      >
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="1.8" stroke-linecap="round">
+          <path d="M12 2a3 3 0 0 1 3 3v7a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z"/>
+          <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+          <line x1="12" y1="19" x2="12" y2="23"/>
+          <line x1="8" y1="23" x2="16" y2="23"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Status label -->
+    <div id="voice-status" style="font-size:13px;color:var(--text-dim);letter-spacing:0.08em;text-align:center;margin-bottom:24px;">
+      Hold to speak
+    </div>
+
+    <!-- Transcript -->
+    <div id="voice-transcript-wrap" style="
+      width:100%;min-height:80px;
+      background:rgba(255,255,255,0.03);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:14px;padding:16px;
+      margin-bottom:20px;display:none;
+    ">
+      <div style="font-size:11px;letter-spacing:0.12em;color:var(--text-dim);text-transform:uppercase;margin-bottom:8px;">What you said</div>
+      <div id="voice-transcript" style="font-size:14px;font-weight:300;color:var(--text);line-height:1.6;"></div>
+    </div>
+
+    <!-- Edit fallback -->
+    <textarea id="decision-text" placeholder="Or type it here instead..." style="
+      background:rgba(255,255,255,0.03);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:14px;color:var(--text);
+      font-size:14px;font-weight:300;font-family:inherit;
+      line-height:1.6;padding:16px;width:100%;
+      min-height:70px;resize:none;outline:none;
+      transition:border-color 0.3s;margin-bottom:20px;
+    " oninput="this.style.borderColor=this.value?'rgba(200,200,220,0.3)':'rgba(255,255,255,0.08)'"></textarea>
+
+    <button class="btn-solid" style="width:100%;" onclick="submitDecision()">Scan it</button>
+  </div>
+</div>
+
+<!-- Decision Scan Result -->
+<div class="screen" id="screen-decision-result" style="justify-content:flex-start;padding-top:48px;padding-bottom:40px;overflow-y:auto;">
+  <div style="width:100%;max-width:340px;">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:32px;">
+      <div onclick="goTo('screen-home')" style="font-size:18px;color:var(--text-dim);cursor:pointer;">‹</div>
+      <div style="font-size:18px;font-weight:300;color:var(--text);">Why you're stuck</div>
+    </div>
+    <div id="result-decision-stage" style="font-size:11px;letter-spacing:0.16em;color:var(--text-dim);text-transform:uppercase;margin-bottom:8px;"></div>
+    <div id="result-decision-body" style="font-size:15px;font-weight:300;color:#C0C0D0;line-height:1.8;"></div>
+    <div style="margin-top:28px;padding:16px;border-left:1px solid rgba(255,255,255,0.1);">
+      <div id="result-decision-q" style="font-size:14px;font-style:italic;color:var(--text-dim);line-height:1.6;"></div>
+    </div>
+    <div style="margin-top:32px;background:rgba(200,200,220,0.06);border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:10px;">
+      <div style="font-size:18px;">✦</div>
+      <div style="font-size:13px;color:var(--text-dim);">+15 XP earned — crack deepens.</div>
     </div>
     <button class="btn-solid" style="width:100%;margin-top:24px;" onclick="goTo('screen-home')">Done</button>
   </div>
@@ -1391,6 +1495,117 @@
       closer: 'You\'re not failing to understand them. They\'re genuinely unresolved. That\'s theirs to carry, not yours to solve.'
     },
   ];
+
+  // ══════════════════════════════════════════
+  // DECISION SCAN — Voice
+  // ══════════════════════════════════════════
+  let recognition = null;
+  let voiceActive = false;
+
+  function startVoice(e) {
+    if (e) e.preventDefault();
+    const btn    = document.getElementById('voice-btn');
+    const status = document.getElementById('voice-status');
+    const ring1  = document.getElementById('voice-ring-1');
+    const ring2  = document.getElementById('voice-ring-2');
+
+    voiceActive = true;
+    btn.style.transform  = 'scale(0.93)';
+    btn.style.boxShadow  = '0 0 50px rgba(140,140,220,0.7)';
+    status.textContent   = 'Listening...';
+    ring1.style.transform = 'translate(-50%,-50%) scale(1.15)';
+    ring2.style.transform = 'translate(-50%,-50%) scale(1.25)';
+    ring1.style.borderColor = 'rgba(200,200,220,0.35)';
+    ring2.style.borderColor = 'rgba(200,200,220,0.18)';
+
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      status.textContent = 'Voice not supported — type below';
+      return;
+    }
+    recognition = new SpeechRecognition();
+    recognition.continuous    = true;
+    recognition.interimResults = true;
+    recognition.lang          = 'en-US';
+
+    let finalText = '';
+    recognition.onresult = e => {
+      let interim = '';
+      for (let i = e.resultIndex; i < e.results.length; i++) {
+        if (e.results[i].isFinal) finalText += e.results[i][0].transcript + ' ';
+        else interim = e.results[i][0].transcript;
+      }
+      const display = (finalText + interim).trim();
+      document.getElementById('voice-transcript').textContent = display;
+      document.getElementById('decision-text').value          = display;
+      document.getElementById('voice-transcript-wrap').style.display = 'block';
+    };
+
+    recognition.onerror = () => { status.textContent = 'Couldn\'t hear that — type below'; };
+    recognition.start();
+  }
+
+  function stopVoice() {
+    if (!voiceActive) return;
+    voiceActive = false;
+    const btn    = document.getElementById('voice-btn');
+    const status = document.getElementById('voice-status');
+    const ring1  = document.getElementById('voice-ring-1');
+    const ring2  = document.getElementById('voice-ring-2');
+
+    btn.style.transform  = 'scale(1)';
+    btn.style.boxShadow  = '0 0 30px rgba(140,140,200,0.35)';
+    ring1.style.transform = 'translate(-50%,-50%) scale(1)';
+    ring2.style.transform = 'translate(-50%,-50%) scale(1)';
+    ring1.style.borderColor = 'rgba(200,200,220,0.15)';
+    ring2.style.borderColor = 'rgba(200,200,220,0.08)';
+    status.textContent   = 'Done — tap Scan or edit below';
+
+    if (recognition) { try { recognition.stop(); } catch(e) {} }
+  }
+
+  const decisionProfiles = [
+    {
+      keywords: ['job','work','career','quit','leave','stay','offer','salary','promotion'],
+      stage: 'The Safety Trap',
+      body: 'You already know what you want to do. The fact that you\'re describing this as a decision is the first signal — real uncertainty doesn\'t feel like being stuck, it feels like not knowing. Being stuck means you know, and something is blocking the move.\n\nWhat\'s usually underneath a career decision isn\'t the logic of the options. It\'s the identity threat. One path says something about who you are that you\'re not sure you\'re ready to own yet.\n\nThe fear isn\'t failure. It\'s visibility — that if you choose the thing you actually want, you become someone who can be judged for wanting it.',
+      q: 'What does choosing the thing you want make you responsible for?'
+    },
+    {
+      keywords: ['relationship','him','her','they','partner','together','break','leave','stay','love','feelings'],
+      stage: 'The Attachment Calculation',
+      body: 'You\'re not weighing two options. You\'re weighing what you\'ve already invested against what you actually want going forward — and those are different problems.\n\nThe pull to stay is often not about the present reality. It\'s about who this person was, or who you were when it was good. Leaving means letting that version of the story end.\n\nThe pull to go is usually clearer than you\'re letting yourself admit. You already know which parts of this aren\'t working. The question is whether you believe something better is possible — for you, specifically.',
+      q: 'What are you protecting by not deciding yet?'
+    },
+    {
+      keywords: ['move','city','country','relocate','home','where','place','live'],
+      stage: 'The Roots Question',
+      body: 'This kind of decision drags because it\'s not really about logistics — it\'s about identity. Where you live shapes who you become, who you meet, what version of yourself you get to be.\n\nThe place you\'re considering leaving holds a version of you. The place you\'re considering going holds a version you haven\'t met yet. That unknown can feel like excitement or threat depending on where your baseline is right now.',
+      q: 'Which version of yourself are you afraid to leave behind — and which one are you afraid won\'t survive the move?'
+    },
+    {
+      keywords: [],
+      stage: 'The Known Unknown',
+      body: 'The reason this feels like a decision is that both paths require you to give something up — and you haven\'t fully grieved what you\'d lose on either side yet.\n\nMost stuckness isn\'t about not knowing the answer. It\'s about not being ready to bear the cost of knowing. The answer is usually already there, quieter than the noise around it.\n\nThe question worth sitting with: if no one in your life would ever know which option you chose, which would you take? That answer is the signal underneath all the analysis.',
+      q: 'What does staying stuck protect you from having to own?'
+    },
+  ];
+
+  function submitDecision() {
+    const text = (document.getElementById('decision-text').value || '').toLowerCase();
+    if (!text.trim()) return;
+
+    let profile = decisionProfiles[decisionProfiles.length - 1];
+    for (const p of decisionProfiles) {
+      if (p.keywords.some(k => text.includes(k))) { profile = p; break; }
+    }
+
+    document.getElementById('result-decision-stage').textContent = profile.stage;
+    document.getElementById('result-decision-body').innerHTML =
+      profile.body.split('\n\n').map(p => `<p style="margin-bottom:18px;">${p}</p>`).join('');
+    document.getElementById('result-decision-q').textContent = profile.q;
+    goTo('screen-decision-result');
+  }
 
   function submitPerson() {
     const who  = (document.getElementById('person-who').value  || '').toLowerCase();
