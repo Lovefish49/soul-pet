@@ -458,7 +458,7 @@
 
 <!-- SCREEN 3b: MBTI Input -->
 <div class="screen" id="screen-mbti">
-  <div class="progress-bar"><div class="progress-fill" style="width:80%"></div></div>
+  <div class="progress-bar"><div class="progress-fill" style="width:75%"></div></div>
   <div class="screen-label">MBTI</div>
   <div class="screen-question">What's your<br/>personality type?</div>
   <div class="select-grid" id="mbti-grid">
@@ -470,14 +470,47 @@
 
 <!-- SCREEN 3c: Astrology Input -->
 <div class="screen" id="screen-astro">
-  <div class="progress-bar"><div class="progress-fill" style="width:90%"></div></div>
+  <div class="progress-bar"><div class="progress-fill" style="width:85%"></div></div>
   <div class="screen-label">Astrology</div>
   <div class="screen-question">What's your<br/>sun sign?</div>
   <div class="astro-grid" id="astro-grid">
     <!-- filled by JS -->
   </div>
+  <button class="btn-solid" onclick="afterAstro()">Continue</button>
+  <button class="btn-skip" onclick="afterAstro()">Not sure yet</button>
+</div>
+
+<!-- SCREEN 3d: The real question -->
+<div class="screen" id="screen-unseen">
+  <div class="progress-bar"><div class="progress-fill" style="width:95%"></div></div>
+  <div class="screen-label">One last thing</div>
+  <div class="screen-question" style="font-size:22px;">What do you wish people<br/>knew about you —<br/>but no one ever gets it?</div>
+  <textarea
+    id="input-unseen"
+    placeholder="Type anything. No wrong answers."
+    style="
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 14px;
+      color: var(--text);
+      font-size: 15px;
+      font-weight: 300;
+      font-family: inherit;
+      letter-spacing: 0.02em;
+      line-height: 1.6;
+      padding: 18px 20px;
+      width: 100%;
+      max-width: 320px;
+      min-height: 120px;
+      resize: none;
+      outline: none;
+      transition: border-color 0.3s;
+      margin-bottom: 28px;
+    "
+    oninput="this.style.borderColor = this.value ? 'rgba(200,200,220,0.4)' : 'rgba(255,255,255,0.12)'"
+  ></textarea>
   <button class="btn-solid" onclick="goTo('screen-ready')">Continue</button>
-  <button class="btn-skip" onclick="goTo('screen-ready')">Not sure yet</button>
+  <button class="btn-skip" onclick="goTo('screen-ready')">Skip for now</button>
 </div>
 
 <!-- SCREEN 4: Ready -->
@@ -582,14 +615,14 @@
     }
   }
 
-  // ── Identity continue: route through MBTI/Astro if selected ──
+  // ── Identity continue: route through MBTI/Astro if selected, always end at unseen ──
   function afterIdentity() {
     if (selected.has('mbti')) {
       goTo('screen-mbti');
     } else if (selected.has('astro')) {
       goTo('screen-astro');
     } else {
-      goTo('screen-ready');
+      goTo('screen-unseen');
     }
   }
 
@@ -597,8 +630,12 @@
     if (selected.has('astro')) {
       goTo('screen-astro');
     } else {
-      goTo('screen-ready');
+      goTo('screen-unseen');
     }
+  }
+
+  function afterAstro() {
+    goTo('screen-unseen');
   }
 
   // ── MBTI chips ──
