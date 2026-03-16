@@ -723,7 +723,7 @@
       padding:18px 20px;
     ">
       <div style="font-size:11px;letter-spacing:0.14em;color:var(--text-dim);text-transform:uppercase;margin-bottom:10px;">Last insight</div>
-      <div style="font-size:14px;font-weight:300;color:#B0B0C8;line-height:1.6;font-style:italic;">"You extend context to others they haven't earned. But rarely allow yourself to receive the same."</div>
+      <div style="font-family:var(--font-serif);font-size:16px;font-weight:400;color:var(--text);line-height:1.5;font-style:italic;">"You extend context to others they haven't earned. But rarely allow yourself to receive the same."</div>
     </div>
 
   </div>
@@ -804,14 +804,14 @@
     <div style="width:100%;display:flex;align-items:center;gap:12px;margin-bottom:32px;">
       <div onclick="goTo('screen-home')" style="font-size:18px;color:var(--text-dim);cursor:pointer;">‹</div>
       <div>
-        <div style="font-size:11px;letter-spacing:0.16em;color:var(--text-dim);text-transform:uppercase;">Daily Reflection</div>
+        <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.2em;color:var(--text-dim);text-transform:uppercase;">Daily Reflection</div>
         <div style="font-family:var(--font-serif);font-size:20px;font-weight:400;color:var(--text);">What does today feel like?</div>
       </div>
     </div>
 
     <!-- Color field -->
     <div style="position:relative;margin-bottom:16px;">
-      <canvas id="emotion-canvas" width="300" height="240" style="border-radius:20px;cursor:crosshair;touch-action:none;display:block;"></canvas>
+      <canvas id="emotion-canvas" width="300" height="240" style="border-radius:0;cursor:crosshair;touch-action:none;display:block;"></canvas>
       <!-- Crosshair cursor -->
       <div id="emotion-cursor" style="
         position:absolute;width:22px;height:22px;
@@ -842,7 +842,7 @@
       background:rgba(255,255,255,0.04);
       border:1px solid rgba(255,255,255,0.1);
       border-radius:0;color:var(--text);
-      font-size:14px;font-weight:300;font-family:inherit;
+      font-size:13px;font-weight:400;font-family:var(--font-mono);
       line-height:1.6;padding:16px;width:100%;
       min-height:90px;resize:none;outline:none;
       transition:border-color 0.3s;margin-bottom:20px;
@@ -868,7 +868,7 @@
     </div>
     <div style="margin-top:32px;background:transparent;border:1px solid rgba(255,255,255,0.08);border-radius:0;padding:14px 16px;display:flex;align-items:center;gap:10px;">
       <div style="font-size:18px;">✦</div>
-      <div style="font-size:13px;color:var(--text-dim);">+10 XP earned — your egg felt this too.</div>
+      <div style="font-family:var(--font-mono);font-size:11px;color:var(--text-dim);">+10 XP earned — your egg felt this too.</div>
     </div>
     <button class="btn-solid" style="width:100%;margin-top:24px;" onclick="goTo('screen-home')">Done</button>
   </div>
@@ -884,7 +884,7 @@
     <div style="display:flex;align-items:center;gap:12px;margin-bottom:32px;">
       <div onclick="goTo('screen-home')" style="font-size:18px;color:var(--text-dim);cursor:pointer;">‹</div>
       <div>
-        <div style="font-size:11px;letter-spacing:0.16em;color:var(--text-dim);text-transform:uppercase;">Relationship Mirror</div>
+        <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.2em;color:var(--text-dim);text-transform:uppercase;">Relationship Mirror</div>
         <div style="font-family:var(--font-serif);font-size:20px;font-weight:400;color:var(--text);">Why do they treat me this way?</div>
       </div>
     </div>
@@ -937,7 +937,7 @@
     </div>
     <div style="margin-top:32px;background:transparent;border:1px solid rgba(255,255,255,0.08);border-radius:0;padding:14px 16px;display:flex;align-items:center;gap:10px;">
       <div style="font-size:18px;">✦</div>
-      <div style="font-size:13px;color:var(--text-dim);">+15 XP earned — your egg felt this shift.</div>
+      <div style="font-family:var(--font-mono);font-size:11px;color:var(--text-dim);">+15 XP earned — your egg felt this shift.</div>
     </div>
     <button class="btn-solid" style="width:100%;margin-top:24px;" onclick="goTo('screen-home')">Done</button>
   </div>
@@ -953,7 +953,7 @@
     <div style="width:100%;display:flex;align-items:center;gap:12px;margin-bottom:40px;">
       <div onclick="goTo('screen-home')" style="font-size:18px;color:var(--text-dim);cursor:pointer;">‹</div>
       <div>
-        <div style="font-size:11px;letter-spacing:0.16em;color:var(--text-dim);text-transform:uppercase;">Decision Scan</div>
+        <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.2em;color:var(--text-dim);text-transform:uppercase;">Decision Scan</div>
         <div style="font-family:var(--font-serif);font-size:20px;font-weight:400;color:var(--text);">Say what you're stuck on.</div>
       </div>
     </div>
@@ -1017,7 +1017,7 @@
       background:rgba(255,255,255,0.03);
       border:1px solid rgba(255,255,255,0.08);
       border-radius:0;color:var(--text);
-      font-size:14px;font-weight:300;font-family:inherit;
+      font-size:13px;font-weight:400;font-family:var(--font-mono);
       line-height:1.6;padding:16px;width:100%;
       min-height:70px;resize:none;outline:none;
       transition:border-color 0.3s;margin-bottom:20px;
@@ -1034,14 +1034,14 @@
       <div onclick="goTo('screen-home')" style="font-size:18px;color:var(--text-dim);cursor:pointer;">‹</div>
       <div style="font-family:var(--font-serif);font-size:22px;font-weight:400;color:var(--text);">Why you're stuck</div>
     </div>
-    <div id="result-decision-stage" style="font-size:11px;letter-spacing:0.16em;color:var(--text-dim);text-transform:uppercase;margin-bottom:8px;"></div>
+    <div id="result-decision-stage" style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.2em;color:var(--text-dim);text-transform:uppercase;margin-bottom:8px;"></div>
     <div id="result-decision-body" style="font-family:var(--font-mono);font-size:13px;font-weight:400;color:#888;line-height:1.85;"></div>
     <div style="margin-top:28px;padding:16px;border-left:1px solid rgba(255,255,255,0.1);">
       <div id="result-decision-q" style="font-family:var(--font-serif);font-size:16px;font-style:italic;color:var(--text);line-height:1.5;"></div>
     </div>
     <div style="margin-top:32px;background:transparent;border:1px solid rgba(255,255,255,0.08);border-radius:0;padding:14px 16px;display:flex;align-items:center;gap:10px;">
       <div style="font-size:18px;">✦</div>
-      <div style="font-size:13px;color:var(--text-dim);">+15 XP earned — crack deepens.</div>
+      <div style="font-family:var(--font-mono);font-size:11px;color:var(--text-dim);">+15 XP earned — crack deepens.</div>
     </div>
     <button class="btn-solid" style="width:100%;margin-top:24px;" onclick="goTo('screen-home')">Done</button>
   </div>
