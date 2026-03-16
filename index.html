@@ -767,10 +767,10 @@
       <div style="
         background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);
         border-radius:18px;padding:20px 16px;cursor:pointer;
-      " onclick="alert('Relationship Mirror — coming soon')">
+      " onclick="goTo('screen-person')">
         <div style="font-size:22px;margin-bottom:10px;">🫂</div>
         <div style="font-size:14px;font-weight:400;color:var(--text);margin-bottom:4px;">Relationship Mirror</div>
-        <div style="font-size:11px;color:var(--text-dim);line-height:1.4;">What does someone bring out in you? AI maps the dynamic.</div>
+        <div style="font-size:11px;color:var(--text-dim);line-height:1.4;">Why do they treat me this way? AI flips the mirror.</div>
         <div style="margin-top:12px;font-size:11px;color:rgba(200,200,220,0.5);">+15 XP</div>
       </div>
 
@@ -778,10 +778,10 @@
       <div style="
         background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);
         border-radius:18px;padding:20px 16px;cursor:pointer;
-      " onclick="alert('Emotion Translator — coming soon')">
+      " onclick="goTo('screen-emotion')">
         <div style="font-size:22px;margin-bottom:10px;">🌊</div>
-        <div style="font-size:14px;font-weight:400;color:var(--text);margin-bottom:4px;">Emotion Translator</div>
-        <div style="font-size:11px;color:var(--text-dim);line-height:1.4;">Feeling something you can't name? AI gives it language.</div>
+        <div style="font-size:14px;font-weight:400;color:var(--text);margin-bottom:4px;">Daily Reflection</div>
+        <div style="font-size:11px;color:var(--text-dim);line-height:1.4;">Pick a colour. AI names what you're feeling and why.</div>
         <div style="margin-top:12px;font-size:11px;color:rgba(200,200,220,0.5);">+10 XP</div>
       </div>
 
@@ -790,8 +790,154 @@
   </div>
 </div>
 
-<!-- SCREEN 4: Ready -->
-<!-- screen-ready removed; flow goes unseen → read → unbox -->
+<!-- ═══════════════════════════════════════════
+     ACTIVITY: Emotion Color Picker (Daily Reflection)
+     ═══════════════════════════════════════════ -->
+<div class="screen" id="screen-emotion" style="justify-content:flex-start;padding-top:48px;padding-bottom:40px;">
+  <div style="width:100%;max-width:340px;display:flex;flex-direction:column;align-items:center;">
+
+    <!-- Header -->
+    <div style="width:100%;display:flex;align-items:center;gap:12px;margin-bottom:32px;">
+      <div onclick="goTo('screen-home')" style="font-size:18px;color:var(--text-dim);cursor:pointer;">‹</div>
+      <div>
+        <div style="font-size:11px;letter-spacing:0.16em;color:var(--text-dim);text-transform:uppercase;">Daily Reflection</div>
+        <div style="font-size:18px;font-weight:300;color:var(--text);">What does today feel like?</div>
+      </div>
+    </div>
+
+    <!-- Color field -->
+    <div style="position:relative;margin-bottom:16px;">
+      <canvas id="emotion-canvas" width="300" height="240" style="border-radius:20px;cursor:crosshair;touch-action:none;display:block;"></canvas>
+      <!-- Crosshair cursor -->
+      <div id="emotion-cursor" style="
+        position:absolute;width:22px;height:22px;
+        border-radius:50%;border:2px solid rgba(255,255,255,0.9);
+        box-shadow:0 0 12px rgba(0,0,0,0.6);
+        pointer-events:none;transform:translate(-50%,-50%);
+        left:50%;top:50%;transition:left 0.05s,top 0.05s;
+        display:none;
+      "></div>
+    </div>
+
+    <!-- Axis labels -->
+    <div style="width:300px;display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:1fr 1fr;gap:0;margin-bottom:20px;position:relative;height:32px;">
+      <div style="font-size:10px;color:rgba(255,255,255,0.25);letter-spacing:0.08em;grid-column:1;text-align:left;">inward</div>
+      <div style="font-size:10px;color:rgba(255,255,255,0.25);letter-spacing:0.08em;grid-column:3;text-align:right;">outward</div>
+    </div>
+
+    <!-- Emotion label -->
+    <div id="emotion-label" style="
+      font-size:22px;font-weight:300;color:var(--text);
+      letter-spacing:0.06em;text-align:center;min-height:32px;margin-bottom:6px;
+      transition:all 0.3s ease;
+    ">—</div>
+    <div id="emotion-sub" style="font-size:12px;color:var(--text-dim);text-align:center;min-height:18px;margin-bottom:24px;">tap the field to place your feeling</div>
+
+    <!-- What happened -->
+    <textarea id="emotion-text" placeholder="What happened today that left this feeling?" style="
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.1);
+      border-radius:14px;color:var(--text);
+      font-size:14px;font-weight:300;font-family:inherit;
+      line-height:1.6;padding:16px;width:100%;
+      min-height:90px;resize:none;outline:none;
+      transition:border-color 0.3s;margin-bottom:20px;
+    " oninput="this.style.borderColor=this.value?'rgba(200,200,220,0.35)':'rgba(255,255,255,0.1)'"></textarea>
+
+    <button class="btn-solid" style="width:100%;" onclick="submitEmotion()">Reflect</button>
+  </div>
+</div>
+
+<!-- Emotion Result -->
+<div class="screen" id="screen-emotion-result" style="justify-content:flex-start;padding-top:48px;padding-bottom:40px;overflow-y:auto;">
+  <div style="width:100%;max-width:340px;">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:32px;">
+      <div onclick="goTo('screen-home')" style="font-size:18px;color:var(--text-dim);cursor:pointer;">‹</div>
+      <div style="font-size:18px;font-weight:300;color:var(--text);">What this is</div>
+    </div>
+    <!-- Color swatch -->
+    <div id="result-swatch" style="width:48px;height:48px;border-radius:12px;margin-bottom:20px;"></div>
+    <div id="result-emotion-name" style="font-size:26px;font-weight:300;color:var(--text);margin-bottom:24px;"></div>
+    <div id="result-emotion-body" style="font-size:15px;font-weight:300;color:#C0C0D0;line-height:1.8;"></div>
+    <div style="margin-top:32px;padding:16px;border-left:1px solid rgba(255,255,255,0.1);">
+      <div id="result-emotion-closer" style="font-size:14px;font-style:italic;color:var(--text-dim);line-height:1.6;"></div>
+    </div>
+    <div style="margin-top:32px;background:rgba(200,200,220,0.06);border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:10px;">
+      <div style="font-size:18px;">✦</div>
+      <div style="font-size:13px;color:var(--text-dim);">+10 XP earned — your egg felt this too.</div>
+    </div>
+    <button class="btn-solid" style="width:100%;margin-top:24px;" onclick="goTo('screen-home')">Done</button>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════
+     ACTIVITY: Why Does This Person Treat Me This Way
+     ═══════════════════════════════════════════ -->
+<div class="screen" id="screen-person" style="justify-content:flex-start;padding-top:48px;padding-bottom:40px;overflow-y:auto;">
+  <div style="width:100%;max-width:340px;">
+
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:32px;">
+      <div onclick="goTo('screen-home')" style="font-size:18px;color:var(--text-dim);cursor:pointer;">‹</div>
+      <div>
+        <div style="font-size:11px;letter-spacing:0.16em;color:var(--text-dim);text-transform:uppercase;">Relationship Mirror</div>
+        <div style="font-size:18px;font-weight:300;color:var(--text);">Why do they treat me this way?</div>
+      </div>
+    </div>
+
+    <!-- Who -->
+    <div style="font-size:11px;letter-spacing:0.12em;color:var(--text-dim);text-transform:uppercase;margin-bottom:8px;">Who is this person?</div>
+    <input id="person-who" type="text" placeholder="e.g. my best friend, my ex, my boss" style="
+      background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);
+      border-radius:12px;color:var(--text);font-size:14px;font-family:inherit;
+      padding:14px 16px;width:100%;outline:none;margin-bottom:20px;
+      transition:border-color 0.3s;
+    " oninput="this.style.borderColor=this.value?'rgba(200,200,220,0.35)':'rgba(255,255,255,0.1)'"/>
+
+    <!-- What they do -->
+    <div style="font-size:11px;letter-spacing:0.12em;color:var(--text-dim);text-transform:uppercase;margin-bottom:8px;">What do they do that confuses or hurts you?</div>
+    <textarea id="person-what" placeholder="Describe the behaviour. Be specific." style="
+      background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);
+      border-radius:12px;color:var(--text);font-size:14px;font-family:inherit;
+      line-height:1.6;padding:14px 16px;width:100%;min-height:100px;
+      resize:none;outline:none;transition:border-color 0.3s;margin-bottom:20px;
+    " oninput="this.style.borderColor=this.value?'rgba(200,200,220,0.35)':'rgba(255,255,255,0.1)'"></textarea>
+
+    <!-- Screenshot or text toggle -->
+    <div style="font-size:11px;letter-spacing:0.12em;color:var(--text-dim);text-transform:uppercase;margin-bottom:8px;">Got a screenshot? (optional)</div>
+    <div style="
+      border:1px dashed rgba(255,255,255,0.12);border-radius:12px;
+      padding:20px;text-align:center;cursor:pointer;margin-bottom:24px;
+    " onclick="document.getElementById('person-upload').click()">
+      <div style="font-size:20px;margin-bottom:6px;">📎</div>
+      <div style="font-size:13px;color:var(--text-dim);">Tap to upload a conversation screenshot</div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.2);margin-top:4px;">Vision analysis coming soon</div>
+    </div>
+    <input id="person-upload" type="file" accept="image/*" style="display:none;" />
+
+    <button class="btn-solid" style="width:100%;" onclick="submitPerson()">Show me the mirror</button>
+  </div>
+</div>
+
+<!-- Person Result -->
+<div class="screen" id="screen-person-result" style="justify-content:flex-start;padding-top:48px;padding-bottom:40px;overflow-y:auto;">
+  <div style="width:100%;max-width:340px;">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:32px;">
+      <div onclick="goTo('screen-home')" style="font-size:18px;color:var(--text-dim);cursor:pointer;">‹</div>
+      <div style="font-size:18px;font-weight:300;color:var(--text);">The mirror</div>
+    </div>
+    <div id="result-person-title" style="font-size:13px;letter-spacing:0.12em;color:var(--text-dim);text-transform:uppercase;margin-bottom:8px;"></div>
+    <div id="result-person-body" style="font-size:15px;font-weight:300;color:#C0C0D0;line-height:1.8;"></div>
+    <div style="margin-top:28px;padding:16px;border-left:1px solid rgba(255,255,255,0.1);">
+      <div id="result-person-closer" style="font-size:14px;font-style:italic;color:var(--text-dim);line-height:1.6;"></div>
+    </div>
+    <div style="margin-top:32px;background:rgba(200,200,220,0.06);border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:10px;">
+      <div style="font-size:18px;">✦</div>
+      <div style="font-size:13px;color:var(--text-dim);">+15 XP earned — your egg felt this shift.</div>
+    </div>
+    <button class="btn-solid" style="width:100%;margin-top:24px;" onclick="goTo('screen-home')">Done</button>
+  </div>
+</div>
 
 <script>
   // ── Particle background ──
@@ -1057,8 +1203,210 @@
       setTimeout(() => {
         next.classList.add('active');
         if (id === 'screen-unbox') setTimeout(startUnboxing, 400);
+        if (id === 'screen-emotion') setTimeout(initEmotionCanvas, 100);
       }, 50);
     }
+  }
+
+  // ══════════════════════════════════════════
+  // EMOTION COLOR PICKER
+  // ══════════════════════════════════════════
+  let emotionColor = null;
+  let emotionQuadrant = null;
+
+  const emotionMap = [
+    // [xRange, yRange, name, subtitle, aiRegister]
+    { x:[0,.5], y:[0,.5], name:'Grief',        sub:'heavy, still, far away',        register:'cool-dark'  },
+    { x:[.5,1], y:[0,.5], name:'Shame',        sub:'hot, shrinking, exposed',        register:'warm-dark'  },
+    { x:[0,.5], y:[.5,1], name:'Longing',      sub:'soft, searching, unfinished',   register:'cool-light' },
+    { x:[.5,1], y:[.5,1], name:'Hope',         sub:'warm, cautious, opening',        register:'warm-light' },
+  ];
+
+  // Richer zone grid (3×3)
+  const emotionGrid = [
+    // row 0 (top = light), cols left→right (cool→warm)
+    ['Peace',     'Clarity',    'Joy'      ],
+    ['Longing',   'Stillness',  'Warmth'   ],
+    ['Grief',     'Numbness',   'Shame'    ],
+  ];
+  const emotionSubs = {
+    Peace:    'quiet, settled, enough',
+    Clarity:  'sharp, clean, unhurried',
+    Joy:      'bright, spilling outward',
+    Longing:  'soft, searching, unfinished',
+    Stillness:'flat, waiting, suspended',
+    Warmth:   'close, open, tender',
+    Grief:    'heavy, still, far away',
+    Numbness: 'hollow, distant, muffled',
+    Shame:    'hot, shrinking, exposed',
+  };
+
+  function initEmotionCanvas() {
+    const canvas = document.getElementById('emotion-canvas');
+    if (!canvas || canvas._init) return;
+    canvas._init = true;
+    const ctx = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height;
+
+    // Build 2D gradient field
+    // X: cool (left) → warm (right)
+    // Y: light (top) → dark (bottom)
+    const imageData = ctx.createImageData(W, H);
+    for (let y = 0; y < H; y++) {
+      for (let x = 0; x < W; x++) {
+        const nx = x / W; // 0=cool, 1=warm
+        const ny = y / H; // 0=light, 1=dark
+
+        // Base hue: cool=220 (blue-violet), warm=10 (red-orange)
+        const hue = 220 - nx * 210;
+        // Saturation: more saturated in corners, desaturated center
+        const sat = 40 + 40 * Math.abs(nx - 0.5) * 2 * 0.5 + 20 * Math.abs(ny - 0.5) * 2;
+        // Lightness: top=65%, bottom=18%
+        const lig = 65 - ny * 47;
+
+        const [r, g, b] = hslToRgb(hue / 360, sat / 100, lig / 100);
+        const i = (y * W + x) * 4;
+        imageData.data[i]   = r;
+        imageData.data[i+1] = g;
+        imageData.data[i+2] = b;
+        imageData.data[i+3] = 255;
+      }
+    }
+    ctx.putImageData(imageData, 0, 0);
+
+    // Subtle grid lines
+    ctx.strokeStyle = 'rgba(0,0,0,0.08)';
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(W/3,0); ctx.lineTo(W/3,H); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(2*W/3,0); ctx.lineTo(2*W/3,H); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(0,H/3); ctx.lineTo(W,H/3); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(0,2*H/3); ctx.lineTo(W,2*H/3); ctx.stroke();
+
+    const cursor = document.getElementById('emotion-cursor');
+
+    function onPick(e) {
+      const rect = canvas.getBoundingClientRect();
+      const cx = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+      const cy = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
+      const nx = Math.max(0, Math.min(1, cx / rect.width));
+      const ny = Math.max(0, Math.min(1, cy / rect.height));
+
+      // Map to canvas pixel
+      const px = Math.floor(nx * W);
+      const py = Math.floor(ny * H);
+      const px2 = Math.min(px, W-1), py2 = Math.min(py, H-1);
+      const d = ctx.getImageData(px2, py2, 1, 1).data;
+      emotionColor = `rgb(${d[0]},${d[1]},${d[2]})`;
+
+      // Zone
+      const col = Math.floor(nx * 3);
+      const row = Math.floor(ny * 3);
+      const name = emotionGrid[Math.min(row,2)][Math.min(col,2)];
+      emotionQuadrant = { nx, ny, name };
+
+      document.getElementById('emotion-label').textContent = name;
+      document.getElementById('emotion-sub').textContent   = emotionSubs[name] || '';
+
+      cursor.style.display = 'block';
+      cursor.style.left    = (cx / rect.width  * 300) + 'px';
+      cursor.style.top     = (cy / rect.height * 240) + 'px';
+      cursor.style.background = emotionColor;
+    }
+
+    canvas.addEventListener('click',      onPick);
+    canvas.addEventListener('mousemove',  e => { if (e.buttons) onPick(e); });
+    canvas.addEventListener('touchstart', e => { e.preventDefault(); onPick(e); }, {passive:false});
+    canvas.addEventListener('touchmove',  e => { e.preventDefault(); onPick(e); }, {passive:false});
+  }
+
+  function hslToRgb(h, s, l) {
+    let r, g, b;
+    if (s === 0) { r = g = b = l; }
+    else {
+      const hue2rgb = (p, q, t) => {
+        if (t < 0) t += 1; if (t > 1) t -= 1;
+        if (t < 1/6) return p + (q-p)*6*t;
+        if (t < 1/2) return q;
+        if (t < 2/3) return p + (q-p)*(2/3-t)*6;
+        return p;
+      };
+      const q = l < 0.5 ? l*(1+s) : l+s-l*s;
+      const p = 2*l - q;
+      r = hue2rgb(p, q, h + 1/3);
+      g = hue2rgb(p, q, h);
+      b = hue2rgb(p, q, h - 1/3);
+    }
+    return [Math.round(r*255), Math.round(g*255), Math.round(b*255)];
+  }
+
+  // Emotion result profiles
+  const emotionProfiles = {
+    Peace:    { body: 'This is the quiet that comes after something has been accepted — not forced, not performed. You\'re not suppressing anything right now. Something settled, and you let it.\n\nPeace isn\'t the absence of everything difficult. It\'s the presence of something that no longer needs resolving.', closer: 'Notice what you did today that made room for this. Do more of that.' },
+    Clarity:  { body: 'Your mind cut through something today. The noise dropped, and you could see the shape of things clearly — maybe a decision, maybe a relationship, maybe just yourself.\n\nClarity is rarely comfortable when it arrives. But it\'s always honest.', closer: 'What you saw clearly today — don\'t let tomorrow\'s noise bury it.' },
+    Joy:      { body: 'Something today opened you outward. Joy isn\'t always big — sometimes it\'s just a moment where life asked nothing of you and you said yes anyway.\n\nYou let it in. That matters more than you think.', closer: 'The parts of you that know how to receive joy are the same parts that know how to give it.' },
+    Longing:  { body: 'You\'re reaching toward something that isn\'t here yet — or isn\'t here anymore. Longing is one of the most honest emotions there is. It knows exactly what it wants. The painful part is the distance.\n\nThis isn\'t sadness. It\'s direction.', closer: 'What you\'re longing for is telling you something about what you actually value. Listen to it.' },
+    Stillness:{ body: 'You\'re between things. Not numb — suspended. The world kept moving today and you watched it from somewhere slightly outside of it.\n\nStillness can be avoidance. But it can also be the thing that happens right before something clarifies.', closer: 'You\'re not stuck. You\'re waiting for something to become obvious. Give it a little more time.' },
+    Warmth:   { body: 'Someone or something today made you feel close. Not just connected — seen. That\'s a different feeling and it\'s rarer than people admit.\n\nYou let yourself be affected today. That takes more courage than people name.', closer: 'The warmth you felt is evidence that you\'re still open. Don\'t take that for granted.' },
+    Grief:    { body: 'Something is absent today that used to be present. It doesn\'t have to be a death — grief shows up for versions of people, of futures, of who we thought we were becoming.\n\nThe weight of it is real. You don\'t have to explain it or resolve it right now.', closer: 'Grief is love with nowhere to go. It doesn\'t mean something went wrong. It means it mattered.' },
+    Numbness: { body: 'You\'re buffered right now. The feelings are there but they\'re arriving through glass — muted, distant, slightly unreal. This is usually protection, not emptiness.\n\nSomething happened — maybe recently, maybe a while ago — that your system decided was too much to process all at once.', closer: 'You\'re not broken. You\'re pacing yourself. The feeling will come back when you\'re ready.' },
+    Shame:    { body: 'Something today made you feel like you shouldn\'t be exactly as you are. That\'s the specific texture of shame — it\'s not about what you did, it\'s about what that makes you.\n\nThe sting of it is real. But shame lies about permanence. What it\'s telling you about who you are is almost always wrong.', closer: 'The fact that you can feel this means your values are intact. Shame and integrity come from the same place.' },
+  };
+
+  function submitEmotion() {
+    if (!emotionQuadrant) {
+      document.getElementById('emotion-sub').textContent = 'Tap the colour field first.';
+      return;
+    }
+    const name    = emotionQuadrant.name;
+    const profile = emotionProfiles[name] || emotionProfiles.Stillness;
+    const swatch  = document.getElementById('result-swatch');
+    swatch.style.background = emotionColor;
+    document.getElementById('result-emotion-name').textContent  = name;
+    document.getElementById('result-emotion-body').innerHTML    =
+      profile.body.split('\n\n').map(p => `<p style="margin-bottom:18px;">${p}</p>`).join('');
+    document.getElementById('result-emotion-closer').textContent = profile.closer;
+    goTo('screen-emotion-result');
+  }
+
+  // ══════════════════════════════════════════
+  // RELATIONSHIP MIRROR
+  // ══════════════════════════════════════════
+  const personProfiles = [
+    {
+      keywords: ['cold','distant','ignore','ignores','pulls away','withdraws'],
+      title: 'What their distance activates in you',
+      body: 'The way they pull back triggers something specific in you — a particular kind of reaching, or a particular kind of shutting down. That reaction isn\'t random.\n\nPeople who go cold tend to surface one of two things: either a wound around abandonment (the feeling that closeness is never safe to count on), or a wound around worth (the fear that their withdrawal means something true about you).\n\nThe question isn\'t why they go cold. It\'s: what story do you tell yourself in the silence?',
+      closer: 'Their behaviour is data about them. Your reaction is data about you. Only one of those is yours to work with.'
+    },
+    {
+      keywords: ['rude','dismissive','disrespect','doesn\'t listen','talks over','belittles'],
+      title: 'What their dismissal reveals',
+      body: 'Being dismissed by someone who matters to you doesn\'t just sting — it confirms something you\'ve been quietly afraid of. That\'s what makes it land so hard.\n\nThe question worth sitting with: why does this person\'s opinion of you carry that much weight? Not everyone\'s dismissal hits equally. The ones that land hard are the ones where, somewhere underneath, you\'ve been hoping for the opposite.\n\nTheir behaviour is probably not about you. Your response almost certainly is.',
+      closer: 'You can\'t control who sees you clearly. You can control who gets to matter.'
+    },
+    {
+      keywords: ['hot and cold','inconsistent','unpredictable','sometimes nice','blows hot'],
+      title: 'What inconsistency does to you',
+      body: 'Inconsistency is one of the most psychologically destabilising things another person can do — not because it\'s cruel, but because it keeps you in a state of constant recalibration. You can\'t settle. You can\'t trust the good moments. You\'re always waiting for the shift.\n\nWhat this reveals about you: you\'re probably someone who reads people quickly and accurately. Which means the inconsistency genuinely confuses you — you keep trying to find the pattern that explains it. There isn\'t one. That\'s the pattern.',
+      closer: 'You\'re not failing to understand them. They\'re genuinely unresolved. That\'s theirs to carry, not yours to solve.'
+    },
+  ];
+
+  function submitPerson() {
+    const who  = (document.getElementById('person-who').value  || '').toLowerCase();
+    const what = (document.getElementById('person-what').value || '').toLowerCase();
+    const combined = who + ' ' + what;
+
+    let profile = personProfiles[0]; // default
+    for (const p of personProfiles) {
+      if (p.keywords.some(k => combined.includes(k))) { profile = p; break; }
+    }
+
+    document.getElementById('result-person-title').textContent = profile.title;
+    document.getElementById('result-person-body').innerHTML =
+      profile.body.split('\n\n').map(p => `<p style="margin-bottom:18px;">${p}</p>`).join('');
+    document.getElementById('result-person-closer').textContent = profile.closer;
+    goTo('screen-person-result');
   }
 </script>
 </body>
