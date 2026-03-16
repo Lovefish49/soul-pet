@@ -1,4 +1,4 @@
-export const config = { runtime: 'edge' };
+export const config = { runtime: 'edge', maxDuration: 60 };
 
 const SYSTEM_PROMPTS = {
   onboarding: `You are a soul reader. A girl just completed onboarding — she shared her name, MBTI, sun sign, and answered: "What do you wish people knew about you but no one ever gets it?"
