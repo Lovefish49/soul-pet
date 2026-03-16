@@ -381,6 +381,18 @@
       animation: starBorn 1.6s ease 0.5s forwards;
       opacity: 0;
     }
+  @keyframes soulPulse {
+    0%, 100% { transform: scale(1);   box-shadow: 0 0 40px rgba(160,160,220,0.5); }
+    50%       { transform: scale(1.08); box-shadow: 0 0 60px rgba(160,160,220,0.8); }
+  }
+  @keyframes eggFloat {
+    0%, 100% { transform: translateY(0px); }
+    50%       { transform: translateY(-8px); }
+  }
+  @keyframes eggGlow {
+    0%, 100% { box-shadow: 0 0 50px rgba(160,160,220,0.4); }
+    50%       { box-shadow: 0 0 80px rgba(160,160,220,0.7); }
+  }
   </style>
 </head>
 <body>
@@ -509,22 +521,78 @@
     "
     oninput="this.style.borderColor = this.value ? 'rgba(200,200,220,0.4)' : 'rgba(255,255,255,0.12)'"
   ></textarea>
-  <button class="btn-solid" onclick="goTo('screen-ready')">Continue</button>
-  <button class="btn-skip" onclick="goTo('screen-ready')">Skip for now</button>
+  <button class="btn-solid" onclick="goToRead()">Continue</button>
+  <button class="btn-skip" onclick="goToRead()">Skip for now</button>
+</div>
+
+<!-- SCREEN 4: Soul Read (report) -->
+<div class="screen" id="screen-read" style="overflow-y:auto;justify-content:flex-start;padding-top:60px;padding-bottom:60px;">
+  <div style="width:100%;max-width:340px;">
+    <div style="font-size:11px;letter-spacing:0.18em;color:var(--text-dim);text-transform:uppercase;margin-bottom:8px;">Your Soul Stage</div>
+    <div id="read-stage" style="font-size:28px;font-weight:300;letter-spacing:0.04em;color:var(--text);margin-bottom:32px;line-height:1.2;">The Controlled Storm</div>
+
+    <div id="read-body" style="font-size:15px;font-weight:300;color:#C8C8D8;line-height:1.75;letter-spacing:0.02em;">
+      <!-- filled by JS -->
+    </div>
+
+    <div id="read-closer" style="margin-top:32px;font-size:15px;font-style:italic;color:var(--text-dim);line-height:1.6;border-left:1px solid rgba(255,255,255,0.12);padding-left:16px;">
+      <!-- filled by JS -->
+    </div>
+
+    <button class="btn-solid" onclick="goTo('screen-unbox')" style="margin-top:48px;width:100%;">See Your Pet</button>
+  </div>
+</div>
+
+<!-- SCREEN 5: Unboxing -->
+<div class="screen" id="screen-unbox">
+  <div style="font-size:12px;letter-spacing:0.16em;color:var(--text-dim);text-transform:uppercase;margin-bottom:48px;">Something is forming</div>
+
+  <!-- Soul particle burst → egg -->
+  <div id="unbox-stage" style="position:relative;width:160px;height:200px;margin-bottom:48px;">
+
+    <!-- Particle ring (pre-egg) -->
+    <div id="soul-ring" style="
+      position:absolute;inset:0;
+      display:flex;align-items:center;justify-content:center;
+    ">
+      <div id="soul-orb" style="
+        width:80px;height:80px;border-radius:50%;
+        background:radial-gradient(circle at 40% 35%, #e8e8ff 0%, #9090c0 40%, #2a2a4a 100%);
+        box-shadow:0 0 40px rgba(160,160,220,0.5);
+        animation: soulPulse 1.5s ease-in-out infinite;
+        opacity:1;
+        transition: opacity 0.8s ease, transform 0.8s ease;
+      "></div>
+    </div>
+
+    <!-- Egg (post-transform) -->
+    <div id="egg-shape" style="
+      position:absolute;inset:0;
+      display:flex;align-items:center;justify-content:center;
+      opacity:0;
+      transition: opacity 1s ease;
+    ">
+      <div style="
+        width:90px;height:114px;
+        background:radial-gradient(ellipse at 38% 30%, #f0f0ff 0%, #b0b0d0 45%, #3a3a5a 100%);
+        border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;
+        box-shadow:0 0 50px rgba(160,160,220,0.4), inset 0 -10px 30px rgba(80,80,120,0.3);
+        animation: eggFloat 3s ease-in-out infinite;
+      "></div>
+    </div>
+
+  </div>
+
+  <div id="unbox-label" style="font-size:16px;font-weight:300;color:var(--text);letter-spacing:0.06em;text-align:center;margin-bottom:8px;">
+    Reading your soul...
+  </div>
+  <div style="font-size:13px;color:var(--text-dim);text-align:center;letter-spacing:0.04em;">
+    Your pet knows you're here.
+  </div>
 </div>
 
 <!-- SCREEN 4: Ready -->
-<div class="screen" id="screen-ready">
-  <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
-  <div class="orb-wrap" style="width:120px;height:120px;margin-bottom:40px;">
-    <div class="orb-ring-2"></div>
-    <div class="orb-ring"></div>
-    <div class="orb"></div>
-  </div>
-  <div class="screen-question" id="ready-text" style="margin-bottom:16px;">Your soul is<br/>taking shape.</div>
-  <div style="font-size:14px;color:var(--text-dim);text-align:center;margin-bottom:48px;letter-spacing:0.04em;">We'll learn the rest as we go.</div>
-  <button class="btn-solid" onclick="alert('🐾 Soul Pet coming soon...')">Meet your Soul Pet</button>
-</div>
+<!-- screen-ready removed; flow goes unseen → read → unbox -->
 
 <script>
   // ── Particle background ──
@@ -683,12 +751,94 @@
     astroGrid.appendChild(chip);
   });
 
-  // ── Dynamic ready text ──
-  function updateReadyText() {
-    const name = document.getElementById('input-name').value.trim();
-    const el = document.getElementById('ready-text');
-    if (name) {
-      el.innerHTML = `${name},<br/>your soul is taking shape.`;
+  // ── Soul Read: stage profiles ──
+  const readProfiles = {
+    default: {
+      stage: 'The Controlled Storm',
+      paragraphs: [
+        'You process the world faster than most. You read the room before anyone else has even settled in — and you\'ve already mapped three possible outcomes before the conversation begins.',
+        'The problem is you process <em>yourself</em> just as fast. Which means you\'ve already talked yourself out of half the things you actually need — before anyone else gets a chance to give them to you.',
+        'You understand people quickly and deeply. But that same ability makes real intimacy feel risky. If you can already see how something ends, why let it start?',
+        'The version of you that the world sees is real — but it\'s curated. There\'s a warmer, messier, more uncertain version underneath that only surfaces when you genuinely feel safe. Most people never get there.',
+      ],
+      closer: 'You don\'t want to be saved. You want someone who doesn\'t need you to explain yourself.'
+    },
+    growth: {
+      stage: 'The Becoming',
+      paragraphs: [
+        'You\'re in the middle of something. You can feel it — a version of yourself that\'s still forming, not quite who you were and not yet who you\'re going to be.',
+        'You absorb information fast and you apply it faster. But the real work you\'re doing isn\'t external — it\'s the slow, unglamorous process of unlearning what you were taught to want.',
+        'People sense something alive in you. An intensity that\'s hard to name. It\'s not ambition exactly — it\'s more like urgency. Like something in you already knows what it\'s moving toward, even if your conscious mind hasn\'t caught up yet.',
+        'The hardest part isn\'t the growth itself. It\'s resisting the pressure to have it all figured out before you\'ve actually lived it.',
+      ],
+      closer: 'The most interesting chapter of you hasn\'t been written yet. That\'s not a problem. That\'s the whole point.'
+    },
+    seen: {
+      stage: 'The Unseen Depth',
+      paragraphs: [
+        'People have categories for you. You\'ve heard them your whole life. Quiet. Intense. Hard to read. Too much, sometimes. Not enough, other times. None of them are wrong — they\'re just looking at one layer.',
+        'You understand others quickly and generously. You extend them context they haven\'t earned. But the same openness you give freely to others — you rarely allow yourself to receive.',
+        'There\'s something in you that\'s been waiting to be properly witnessed. Not validated — you don\'t need approval. Just seen. Someone who takes one look and gets it without you having to translate yourself.',
+        'What you actually want is rare: a person who can keep up, stay curious, and not flinch when you finally show them the parts you usually keep under glass.',
+      ],
+      closer: 'You\'re not complicated. You\'re layered. There\'s a difference — and the right people already know it.'
+    }
+  };
+
+  function getProfile() {
+    const unseen = (document.getElementById('input-unseen')?.value || '').toLowerCase();
+    if (unseen.includes('grow') || unseen.includes('learn') || unseen.includes('becom')) return readProfiles.growth;
+    if (unseen.includes('understand') || unseen.includes('seen') || unseen.includes('feel') || unseen.includes('deep')) return readProfiles.seen;
+    return readProfiles.default;
+  }
+
+  function goToRead() {
+    const profile = getProfile();
+    document.getElementById('read-stage').textContent = profile.stage;
+    document.getElementById('read-body').innerHTML = profile.paragraphs
+      .map(p => `<p style="margin-bottom:20px;">${p}</p>`).join('');
+    document.getElementById('read-closer').innerHTML = profile.closer;
+    goTo('screen-read');
+  }
+
+  // ── Unboxing animation ──
+  function startUnboxing() {
+    const soul = document.getElementById('soul-orb');
+    const egg  = document.getElementById('egg-shape');
+    const label = document.getElementById('unbox-label');
+
+    // Phase 1: soul pulses intensely
+    soul.style.animation = 'soulPulse 0.6s ease-in-out infinite';
+
+    setTimeout(() => {
+      // Phase 2: soul collapses inward
+      soul.style.transition = 'transform 0.5s ease-in, opacity 0.5s ease-in';
+      soul.style.transform = 'scale(0.1)';
+      soul.style.opacity = '0';
+    }, 1200);
+
+    setTimeout(() => {
+      // Phase 3: egg emerges
+      egg.style.opacity = '1';
+      label.textContent = 'Your Soul Pet is here.';
+    }, 1900);
+  }
+
+  // Override goTo to trigger unboxing when entering screen-unbox
+  const _goTo = goTo;
+  // patch goTo to intercept screen-unbox
+  window.addEventListener('DOMContentLoaded', () => {});
+
+  // Re-patch after scripts load
+  const origGoTo = goTo;
+  function goTo(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    const next = document.getElementById(id);
+    if (next) {
+      setTimeout(() => {
+        next.classList.add('active');
+        if (id === 'screen-unbox') setTimeout(startUnboxing, 400);
+      }, 50);
     }
   }
 </script>
