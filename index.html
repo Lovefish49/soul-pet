@@ -603,77 +603,188 @@
     Your pet knows you're here.
   </div>
 
-  <button id="btn-enter" class="btn-solid" onclick="goTo('screen-home')" style="opacity:0;transition:opacity 0.8s ease;pointer-events:none;">
+  <button id="btn-enter" class="btn-solid" onclick="goTo('screen-pet')" style="opacity:0;transition:opacity 0.8s ease;pointer-events:none;">
     Enter the app
   </button>
 </div>
 
-<!-- SCREEN 6: Home -->
-<div class="screen" id="screen-home">
+<!-- SCREEN 6: Pet Screen (personal) -->
+<div class="screen" id="screen-pet" style="overflow-y:auto;justify-content:flex-start;padding-top:48px;padding-bottom:80px;">
   <div style="width:100%;max-width:340px;">
 
     <!-- Top bar -->
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:40px;">
-      <div style="font-size:13px;letter-spacing:0.12em;color:var(--text-dim);text-transform:uppercase;">Soul Pet</div>
-      <div style="font-size:13px;color:var(--text-dim);">⚙</div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;">
+      <div style="font-size:13px;letter-spacing:0.12em;color:var(--text-dim);text-transform:uppercase;">My Pet</div>
+      <div style="font-size:13px;color:var(--text-dim);cursor:pointer;" onclick="goTo('screen-home')">Explore ›</div>
     </div>
 
-    <!-- Egg card -->
-    <div style="
-      background:rgba(255,255,255,0.03);
-      border:1px solid rgba(255,255,255,0.08);
-      border-radius:24px;
-      padding:36px 24px;
-      text-align:center;
-      margin-bottom:24px;
-    ">
-      <div style="font-size:11px;letter-spacing:0.18em;color:var(--text-dim);text-transform:uppercase;margin-bottom:16px;">Your Soul Pet</div>
-
-      <!-- Mini egg -->
-      <div style="position:relative;width:70px;height:88px;margin:0 auto 20px;">
+    <!-- Egg hero -->
+    <div style="text-align:center;margin-bottom:28px;">
+      <div style="position:relative;width:100px;height:126px;margin:0 auto 16px;">
         <div style="
-          width:70px;height:88px;
+          width:100px;height:126px;
           background:radial-gradient(ellipse at 38% 30%, #f0f0ff 0%, #b0b0d0 45%, #3a3a5a 100%);
           border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;
-          box-shadow:0 0 30px rgba(160,160,220,0.35);
+          box-shadow:0 0 40px rgba(160,160,220,0.4);
           animation: eggFloat 3s ease-in-out infinite;
         "></div>
-        <svg viewBox="0 0 70 88" style="position:absolute;top:0;left:0;width:70px;height:88px;">
-          <polyline points="38,29 36,39 40,43 35,54" stroke="rgba(20,20,40,0.5)" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          <polyline points="36,39 33,43 34,49" stroke="rgba(20,20,40,0.3)" stroke-width="0.9" fill="none" stroke-linecap="round"/>
+        <svg viewBox="0 0 100 126" style="position:absolute;top:0;left:0;width:100px;height:126px;">
+          <polyline points="54,40 50,55 57,62 49,78" stroke="rgba(20,20,40,0.5)" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <polyline points="50,55 45,61 47,70" stroke="rgba(20,20,40,0.3)" stroke-width="1.1" fill="none" stroke-linecap="round"/>
         </svg>
+        <!-- glow pulse ring -->
+        <div style="
+          position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+          width:120px;height:120px;border-radius:50%;
+          border:1px solid rgba(180,180,220,0.15);
+          animation:eggFloat 3s ease-in-out infinite reverse;
+          pointer-events:none;
+        "></div>
       </div>
-
-      <div id="home-stage" style="font-size:18px;font-weight:300;color:var(--text);letter-spacing:0.04em;margin-bottom:8px;">The Controlled Storm</div>
-      <div style="font-size:12px;color:var(--text-dim);letter-spacing:0.06em;">Hatches when you're ready</div>
-    </div>
-
-    <!-- Daily prompt card -->
-    <div style="
-      background:rgba(255,255,255,0.02);
-      border:1px solid rgba(255,255,255,0.06);
-      border-radius:18px;
-      padding:24px;
-      margin-bottom:16px;
-    ">
-      <div style="font-size:11px;letter-spacing:0.14em;color:var(--text-dim);text-transform:uppercase;margin-bottom:12px;">Today's question</div>
-      <div style="font-size:15px;font-weight:300;color:var(--text);line-height:1.6;">What decision are you avoiding right now — and what are you telling yourself about why?</div>
+      <div id="pet-stage" style="font-size:20px;font-weight:300;color:var(--text);letter-spacing:0.04em;margin-bottom:4px;">The Controlled Storm</div>
+      <div style="font-size:12px;color:var(--text-dim);letter-spacing:0.06em;">Hatching in progress</div>
     </div>
 
     <!-- XP bar -->
     <div style="
       background:rgba(255,255,255,0.02);
-      border:1px solid rgba(255,255,255,0.06);
-      border-radius:18px;
-      padding:20px 24px;
+      border:1px solid rgba(255,255,255,0.07);
+      border-radius:16px;
+      padding:18px 20px;
+      margin-bottom:20px;
     ">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
         <div style="font-size:12px;color:var(--text-dim);letter-spacing:0.06em;">Soul XP</div>
         <div style="font-size:12px;color:var(--text-dim);">12 / 100</div>
       </div>
-      <div style="height:3px;background:rgba(255,255,255,0.08);border-radius:2px;">
-        <div style="height:3px;width:12%;background:rgba(200,200,220,0.6);border-radius:2px;transition:width 1s ease;"></div>
+      <div style="height:3px;background:rgba(255,255,255,0.07);border-radius:2px;margin-bottom:14px;">
+        <div style="height:3px;width:12%;background:rgba(200,200,220,0.7);border-radius:2px;"></div>
       </div>
+      <!-- Hatch indicators -->
+      <div style="font-size:11px;letter-spacing:0.1em;color:var(--text-dim);text-transform:uppercase;margin-bottom:10px;">What cracks the shell</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:6px;height:6px;border-radius:50%;background:rgba(200,200,220,0.3);flex-shrink:0;"></div>
+          <div style="font-size:13px;color:var(--text-dim);">Answer a Daily Reflection <span style="color:rgba(200,200,220,0.5);">+10 XP</span></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:6px;height:6px;border-radius:50%;background:rgba(200,200,220,0.3);flex-shrink:0;"></div>
+          <div style="font-size:13px;color:var(--text-dim);">Run a Decision Scan <span style="color:rgba(200,200,220,0.5);">+15 XP</span></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:6px;height:6px;border-radius:50%;background:rgba(200,200,220,0.3);flex-shrink:0;"></div>
+          <div style="font-size:13px;color:var(--text-dim);">Decode a Conversation <span style="color:rgba(200,200,220,0.5);">+12 XP</span></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:6px;height:6px;border-radius:50%;background:rgba(200,200,220,0.3);flex-shrink:0;"></div>
+          <div style="font-size:13px;color:var(--text-dim);">Complete a Pattern Check <span style="color:rgba(200,200,220,0.5);">+20 XP</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Last insight teaser -->
+    <div style="
+      background:rgba(255,255,255,0.02);
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:16px;
+      padding:18px 20px;
+    ">
+      <div style="font-size:11px;letter-spacing:0.14em;color:var(--text-dim);text-transform:uppercase;margin-bottom:10px;">Last insight</div>
+      <div style="font-size:14px;font-weight:300;color:#B0B0C8;line-height:1.6;font-style:italic;">"You extend context to others they haven't earned. But rarely allow yourself to receive the same."</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- SCREEN 7: Home / Explore -->
+<div class="screen" id="screen-home" style="overflow-y:auto;justify-content:flex-start;padding-top:48px;padding-bottom:80px;">
+  <div style="width:100%;max-width:340px;">
+
+    <!-- Top bar -->
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;">
+      <div style="font-size:13px;letter-spacing:0.12em;color:var(--text-dim);text-transform:uppercase;">Explore</div>
+      <div style="font-size:13px;color:var(--text-dim);cursor:pointer;" onclick="goTo('screen-pet')">My Pet ›</div>
+    </div>
+
+    <!-- Section label -->
+    <div style="font-size:11px;letter-spacing:0.16em;color:var(--text-dim);text-transform:uppercase;margin-bottom:14px;">Understand Yourself</div>
+
+    <!-- Activity grid -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px;">
+
+      <!-- Decision Scan -->
+      <div style="
+        background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);
+        border-radius:18px;padding:20px 16px;cursor:pointer;
+      " onclick="alert('Decision Scan — coming soon')">
+        <div style="font-size:22px;margin-bottom:10px;">⚖️</div>
+        <div style="font-size:14px;font-weight:400;color:var(--text);margin-bottom:4px;">Decision Scan</div>
+        <div style="font-size:11px;color:var(--text-dim);line-height:1.4;">Stuck on something? AI breaks down what you actually want.</div>
+        <div style="margin-top:12px;font-size:11px;color:rgba(200,200,220,0.5);">+15 XP</div>
+      </div>
+
+      <!-- Daily Reflection -->
+      <div style="
+        background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);
+        border-radius:18px;padding:20px 16px;cursor:pointer;
+      " onclick="alert('Daily Reflection — coming soon')">
+        <div style="font-size:22px;margin-bottom:10px;">🪞</div>
+        <div style="font-size:14px;font-weight:400;color:var(--text);margin-bottom:4px;">Daily Reflection</div>
+        <div style="font-size:11px;color:var(--text-dim);line-height:1.4;">One moment from today. AI finds the pattern underneath.</div>
+        <div style="margin-top:12px;font-size:11px;color:rgba(200,200,220,0.5);">+10 XP</div>
+      </div>
+
+      <!-- Convo Decoder -->
+      <div style="
+        background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);
+        border-radius:18px;padding:20px 16px;cursor:pointer;
+      " onclick="alert('Convo Decoder — coming soon')">
+        <div style="font-size:22px;margin-bottom:10px;">💬</div>
+        <div style="font-size:14px;font-weight:400;color:var(--text);margin-bottom:4px;">Convo Decoder</div>
+        <div style="font-size:11px;color:var(--text-dim);line-height:1.4;">Paste a convo. AI reads what's really being said.</div>
+        <div style="margin-top:12px;font-size:11px;color:rgba(200,200,220,0.5);">+12 XP</div>
+      </div>
+
+      <!-- Pattern Check -->
+      <div style="
+        background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);
+        border-radius:18px;padding:20px 16px;cursor:pointer;
+      " onclick="alert('Pattern Check — coming soon')">
+        <div style="font-size:22px;margin-bottom:10px;">🔁</div>
+        <div style="font-size:14px;font-weight:400;color:var(--text);margin-bottom:4px;">Pattern Check</div>
+        <div style="font-size:11px;color:var(--text-dim);line-height:1.4;">Describe something that keeps happening. AI names the loop.</div>
+        <div style="margin-top:12px;font-size:11px;color:rgba(200,200,220,0.5);">+20 XP</div>
+      </div>
+
+    </div>
+
+    <!-- Section label -->
+    <div style="font-size:11px;letter-spacing:0.16em;color:var(--text-dim);text-transform:uppercase;margin-bottom:14px;">Understand Others</div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+
+      <!-- Relationship Mirror -->
+      <div style="
+        background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);
+        border-radius:18px;padding:20px 16px;cursor:pointer;
+      " onclick="alert('Relationship Mirror — coming soon')">
+        <div style="font-size:22px;margin-bottom:10px;">🫂</div>
+        <div style="font-size:14px;font-weight:400;color:var(--text);margin-bottom:4px;">Relationship Mirror</div>
+        <div style="font-size:11px;color:var(--text-dim);line-height:1.4;">What does someone bring out in you? AI maps the dynamic.</div>
+        <div style="margin-top:12px;font-size:11px;color:rgba(200,200,220,0.5);">+15 XP</div>
+      </div>
+
+      <!-- Emotion Translator -->
+      <div style="
+        background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);
+        border-radius:18px;padding:20px 16px;cursor:pointer;
+      " onclick="alert('Emotion Translator — coming soon')">
+        <div style="font-size:22px;margin-bottom:10px;">🌊</div>
+        <div style="font-size:14px;font-weight:400;color:var(--text);margin-bottom:4px;">Emotion Translator</div>
+        <div style="font-size:11px;color:var(--text-dim);line-height:1.4;">Feeling something you can't name? AI gives it language.</div>
+        <div style="margin-top:12px;font-size:11px;color:rgba(200,200,220,0.5);">+10 XP</div>
+      </div>
+
     </div>
 
   </div>
@@ -885,11 +996,11 @@
   function goToRead() {
     const profile = getProfile();
     currentStage  = profile.stage;
-    document.getElementById('read-stage').textContent = profile.stage;
+    document.getElementById('read-stage').textContent  = profile.stage;
     document.getElementById('read-body').innerHTML = profile.paragraphs
       .map(p => `<p style="margin-bottom:20px;">${p}</p>`).join('');
-    document.getElementById('read-closer').innerHTML = profile.closer;
-    document.getElementById('home-stage').textContent = profile.stage;
+    document.getElementById('read-closer').innerHTML   = profile.closer;
+    document.getElementById('pet-stage').textContent   = profile.stage;
     goTo('screen-read');
   }
 
