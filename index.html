@@ -2,23 +2,19 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Soul Pet</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Instrument+Serif&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
       --black: #000000;
-      --silver-core: #E8E8E8;
-      --silver-mid: #A0A0B8;
-      --silver-edge: #4A4A6A;
       --text: #E0E0E0;
-      --text-dim: #666666;
-      --accent: rgba(224, 224, 240, 0.15);
-      --font-mono: 'Space Mono', 'SF Mono', 'Courier New', monospace;
+      --text-dim: #555;
+      --font-mono: 'Space Mono', monospace;
       --font-serif: 'Instrument Serif', Georgia, serif;
     }
 
@@ -27,14 +23,11 @@
       color: var(--text);
       font-family: var(--font-mono);
       font-size: 13px;
-      height: 100vh;
+      height: 100dvh;
       overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
 
-    /* ──────────────── SCREENS ──────────────── */
+    /* ── SCREENS ── */
     .screen {
       position: absolute;
       inset: 0;
@@ -42,156 +35,45 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 40px 32px;
+      padding: 40px 28px;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.8s ease;
+      transition: opacity 0.6s ease;
     }
-    .screen.active {
-      opacity: 1;
-      pointer-events: all;
-    }
+    .screen.active { opacity: 1; pointer-events: all; }
 
-    /* ──────────────── SCREEN 0: SPLASH ──────────────── */
-    #screen-splash .orb-wrap {
-      position: relative;
-      width: 180px;
-      height: 180px;
-      margin-bottom: 52px;
-      cursor: pointer;
-    }
-
-    .orb {
-      position: absolute;
-      inset: 0;
-      border-radius: 50%;
-      background: radial-gradient(circle at 38% 38%,
-        #ffffff 0%,
-        var(--silver-core) 20%,
-        var(--silver-mid) 50%,
-        var(--silver-edge) 80%,
-        transparent 100%
-      );
-      box-shadow:
-        0 0 40px 10px rgba(200,200,230,0.18),
-        0 0 100px 30px rgba(160,160,200,0.08);
-      animation: breathe 4s ease-in-out infinite;
-    }
-
-    .orb-ring {
-      position: absolute;
-      inset: -12px;
-      border-radius: 50%;
-      border: 1px solid rgba(200,200,220,0.12);
-      animation: ring-pulse 4s ease-in-out infinite;
-    }
-    .orb-ring-2 {
-      position: absolute;
-      inset: -28px;
-      border-radius: 50%;
-      border: 1px solid rgba(200,200,220,0.06);
-      animation: ring-pulse 4s ease-in-out infinite 0.5s;
-    }
-
-    .ripple {
-      position: absolute;
-      border-radius: 50%;
-      background: rgba(220,220,240,0.3);
-      transform: scale(0);
-      animation: ripple-out 0.8s ease-out forwards;
-      pointer-events: none;
-    }
-
-    @keyframes breathe {
-      0%, 100% { transform: scale(1); opacity: 0.9; }
-      50% { transform: scale(1.06); opacity: 1; }
-    }
-    @keyframes ring-pulse {
-      0%, 100% { transform: scale(1); opacity: 0.5; }
-      50% { transform: scale(1.08); opacity: 1; }
-    }
-    @keyframes ripple-out {
-      to { transform: scale(3); opacity: 0; }
-    }
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(16px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-    @keyframes starBorn {
-      0% { opacity: 0; transform: scale(0); }
-      60% { opacity: 1; transform: scale(1.1); }
-      100% { opacity: 1; transform: scale(1); }
-    }
-
-    #screen-splash .tagline {
-      text-align: center;
-      margin-bottom: 64px;
-    }
-    #screen-splash .line1 {
-      font-family: var(--font-serif);
-      font-size: 26px;
-      font-weight: 400;
-      letter-spacing: 0.01em;
-      color: var(--text);
-      opacity: 0;
-      animation: fadeUp 1s ease 1.2s forwards;
-    }
-    #screen-splash .line2 {
+    /* ── BUTTONS ── */
+    .btn-main {
+      background: #fff;
+      color: #000;
+      border: none;
+      padding: 16px 48px;
       font-family: var(--font-mono);
-      font-size: 12px;
-      font-weight: 400;
-      letter-spacing: 0.1em;
-      color: var(--text-dim);
-      margin-top: 14px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
-      opacity: 0;
-      animation: fadeUp 1s ease 2s forwards;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      width: 100%;
+      max-width: 320px;
     }
-
-    /* ──────────────── BUTTONS ──────────────── */
+    .btn-main:hover { opacity: 0.85; }
     .btn-ghost {
       border: 1px solid rgba(255,255,255,0.2);
       background: transparent;
       color: var(--text);
       padding: 14px 48px;
-      border-radius: 0;
       font-family: var(--font-mono);
       font-size: 11px;
-      font-weight: 400;
       letter-spacing: 0.2em;
       text-transform: uppercase;
       cursor: pointer;
-      transition: border-color 0.3s, background 0.3s;
+      transition: border-color 0.3s;
       opacity: 0;
       animation: fadeIn 0.8s ease 2.8s forwards;
     }
-    .btn-ghost:hover {
-      border-color: rgba(255,255,255,0.6);
-      background: rgba(255,255,255,0.04);
-    }
-    .btn-solid {
-      background: #fff;
-      border: none;
-      color: #000;
-      padding: 16px 52px;
-      border-radius: 0;
-      font-family: var(--font-mono);
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: opacity 0.3s;
-      width: 100%;
-      max-width: 320px;
-    }
-    .btn-solid:hover {
-      opacity: 0.85;
-    }
+    .btn-ghost:hover { border-color: rgba(255,255,255,0.5); }
     .btn-skip {
       background: none;
       border: none;
@@ -202,40 +84,29 @@
       text-transform: uppercase;
       cursor: pointer;
       margin-top: 20px;
-      padding: 8px 20px;
-      transition: color 0.3s;
+      padding: 8px 16px;
     }
     .btn-skip:hover { color: var(--text); }
 
-    /* ──────────────── INPUT SCREENS ──────────────── */
-    .screen-label {
-      font-family: var(--font-mono);
-      font-size: 10px;
-      letter-spacing: 0.25em;
-      color: var(--text-dim);
-      text-transform: uppercase;
-      margin-bottom: 16px;
-    }
-    .screen-question {
-      font-family: var(--font-serif);
-      font-size: 28px;
-      font-weight: 400;
-      letter-spacing: 0.01em;
-      text-align: center;
-      line-height: 1.35;
-      margin-bottom: 48px;
-      color: var(--text);
-    }
+    /* ── TYPOGRAPHY ── */
+    .label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.25em; color: var(--text-dim); text-transform: uppercase; }
+    .heading { font-family: var(--font-serif); font-size: 28px; font-weight: 400; color: var(--text); line-height: 1.3; }
+    .body-text { font-family: var(--font-mono); font-size: 13px; color: #888; line-height: 1.85; }
+    .closer-text { font-family: var(--font-serif); font-size: 18px; font-style: italic; color: var(--text); line-height: 1.5; }
+    .divider { width: 40px; height: 1px; background: rgba(255,255,255,0.15); margin: 12px 0 28px; }
+
+    /* ── PROGRESS ── */
+    .progress-bar { position: absolute; top: 0; left: 0; right: 0; height: 2px; background: rgba(255,255,255,0.05); }
+    .progress-fill { height: 100%; background: #fff; transition: width 0.5s ease; }
+
+    /* ── TEXT INPUT ── */
     .text-input {
       background: transparent;
       border: none;
       border-bottom: 1px solid rgba(255,255,255,0.2);
-      border-radius: 0;
       color: var(--text);
       font-family: var(--font-mono);
       font-size: 18px;
-      font-weight: 400;
-      letter-spacing: 0.04em;
       padding: 16px 4px;
       width: 100%;
       max-width: 320px;
@@ -244,1029 +115,466 @@
       transition: border-color 0.3s;
       margin-bottom: 32px;
     }
-    .text-input:focus {
-      border-color: rgba(255,255,255,0.6);
-    }
+    .text-input:focus { border-color: rgba(255,255,255,0.6); }
     .text-input::placeholder { color: var(--text-dim); font-size: 14px; }
 
-    /* ──────────────── SCREEN 3: IDENTITY PICKER ──────────────── */
-    .identity-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-      width: 100%;
-      max-width: 340px;
-      margin-bottom: 40px;
-    }
-    .identity-tile {
+    /* ── CHIPS ── */
+    .chip-grid { display: grid; gap: 10px; width: 100%; max-width: 340px; margin-bottom: 36px; }
+    .chip-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+    .chip {
       border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 0;
-      padding: 22px 16px;
-      text-align: center;
-      cursor: pointer;
-      transition: border-color 0.25s, background 0.25s;
       background: transparent;
-    }
-    .identity-tile:hover {
-      border-color: rgba(255,255,255,0.4);
-    }
-    .identity-tile.selected {
-      border-color: #fff;
-      background: rgba(255,255,255,0.05);
-    }
-    .identity-tile:active { transform: scale(0.98); }
-    .identity-tile .tile-icon {
-      font-size: 22px;
-      margin-bottom: 10px;
-      display: block;
-    }
-    .identity-tile .tile-name {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--text);
-      margin-bottom: 4px;
-    }
-    .identity-tile .tile-desc {
-      font-size: 11px;
-      color: var(--text-dim);
-      letter-spacing: 0.04em;
-    }
-
-    /* ──────────────── MBTI / ASTRO INPUT SCREENS ──────────────── */
-    .select-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-      width: 100%;
-      max-width: 340px;
-      margin-bottom: 36px;
-    }
-    .select-chip {
-      border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 0;
-      padding: 12px 6px;
-      text-align: center;
-      cursor: pointer;
-      font-family: var(--font-mono);
-      font-size: 11px;
-      font-weight: 400;
-      letter-spacing: 0.08em;
-      color: var(--text-dim);
-      background: transparent;
-      transition: border-color 0.2s, background 0.2s, color 0.2s;
-    }
-    .select-chip:hover {
-      border-color: rgba(255,255,255,0.4);
-      color: var(--text);
-    }
-    .select-chip.chosen {
-      border-color: #fff;
-      background: rgba(255,255,255,0.06);
-      color: var(--text);
-    }
-    .astro-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      width: 100%;
-      max-width: 340px;
-      margin-bottom: 36px;
-    }
-    .astro-chip {
-      border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 0;
       padding: 14px 6px;
       text-align: center;
       cursor: pointer;
-      transition: border-color 0.2s, background 0.2s;
-      background: transparent;
-    }
-    .astro-chip:hover {
-      border-color: rgba(255,255,255,0.4);
-    }
-    .astro-chip.chosen {
-      border-color: #fff;
-      background: rgba(255,255,255,0.06);
-    }
-    .astro-chip .astro-symbol {
-      font-size: 20px;
-      display: block;
-      margin-bottom: 4px;
-    }
-    .astro-chip .astro-name {
+      transition: border-color 0.2s;
       font-family: var(--font-mono);
       font-size: 10px;
-      color: var(--text-dim);
       letter-spacing: 0.08em;
       text-transform: uppercase;
+      color: var(--text-dim);
+    }
+    .chip:hover { border-color: rgba(255,255,255,0.4); color: var(--text); }
+    .chip.chosen { border-color: #fff; background: rgba(255,255,255,0.06); color: var(--text); }
+    .chip .symbol { font-size: 18px; display: block; margin-bottom: 4px; }
+
+    /* ── SPLASH ORB ── */
+    .orb-wrap { position: relative; width: 160px; height: 160px; margin-bottom: 52px; cursor: pointer; }
+    .orb {
+      position: absolute; inset: 0; border-radius: 50%;
+      background: radial-gradient(circle at 38% 38%, #fff 0%, #ccc 25%, #666 55%, transparent 100%);
+      box-shadow: 0 0 40px 8px rgba(200,200,230,0.15);
+      animation: breathe 4s ease-in-out infinite;
+    }
+    .orb-ring { position: absolute; inset: -12px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.08); animation: breathe 4s ease-in-out infinite 0.5s; }
+
+    /* ── EGG ── */
+    .egg-visual {
+      width: 80px; height: 100px;
+      background: radial-gradient(ellipse at 38% 30%, #f0f0ff 0%, #999 50%, #333 100%);
+      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      box-shadow: 0 0 30px rgba(160,160,220,0.25);
+      animation: eggFloat 3s ease-in-out infinite;
+    }
+    .egg-small {
+      width: 48px; height: 60px;
+      background: radial-gradient(ellipse at 38% 30%, #e8e8ff 0%, #888 50%, #333 100%);
+      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      box-shadow: 0 0 20px rgba(160,160,220,0.2);
+      animation: eggFloat 3s ease-in-out infinite;
     }
 
-    /* ──────────────── PROGRESS ──────────────── */
-    .progress-bar {
+    /* ── ASK SCREEN ── */
+    #screen-ask {
+      justify-content: flex-end;
+      padding: 0;
+    }
+    .ask-header {
       position: absolute;
       top: 0; left: 0; right: 0;
-      height: 2px;
-      background: rgba(255,255,255,0.06);
-    }
-    .progress-fill {
-      height: 100%;
-      background: #fff;
-      transition: width 0.5s ease;
-    }
-
-    /* ──────────────── PARTICLE BG ──────────────── */
-    #bg-canvas {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
-    }
-    .screen { z-index: 1; }
-
-    /* ──────────────── INTRO ANIMATION ──────────────── */
-    #intro-overlay {
-      position: fixed;
-      inset: 0;
-      background: #000;
-      z-index: 100;
+      padding: 20px 24px 16px;
       display: flex;
       align-items: center;
+      justify-content: space-between;
+      z-index: 2;
+    }
+    .ask-messages {
+      flex: 1;
+      width: 100%;
+      overflow-y: auto;
+      padding: 80px 24px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .ask-empty {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       justify-content: center;
+      gap: 16px;
+      padding: 80px 24px 24px;
+      text-align: center;
     }
-    #intro-dot {
-      width: 4px;
-      height: 4px;
-      border-radius: 50%;
+    .msg-q {
+      align-self: flex-end;
+      max-width: 80%;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--text);
+      padding: 14px 18px;
+      border: 1px solid rgba(255,255,255,0.15);
+      line-height: 1.6;
+    }
+    .msg-a {
+      align-self: flex-start;
+      max-width: 90%;
+      line-height: 1.8;
+    }
+    .msg-a .answer-body {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: #999;
+      line-height: 1.8;
+    }
+    .msg-a .answer-closer {
+      font-family: var(--font-serif);
+      font-size: 16px;
+      font-style: italic;
+      color: var(--text);
+      margin-top: 12px;
+      line-height: 1.5;
+    }
+    .ask-suggestions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      padding: 0 24px;
+      margin-bottom: 16px;
+    }
+    .suggest-chip {
+      border: 1px solid rgba(255,255,255,0.1);
+      background: transparent;
+      color: var(--text-dim);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      padding: 10px 16px;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+      letter-spacing: 0.02em;
+    }
+    .suggest-chip:hover { border-color: rgba(255,255,255,0.3); color: var(--text); }
+    .ask-input-bar {
+      width: 100%;
+      padding: 12px 24px 28px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-end;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .ask-input {
+      flex: 1;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.12);
+      color: var(--text);
+      font-family: var(--font-mono);
+      font-size: 13px;
+      padding: 14px 16px;
+      outline: none;
+      resize: none;
+      min-height: 48px;
+      max-height: 120px;
+      line-height: 1.5;
+      transition: border-color 0.2s;
+    }
+    .ask-input:focus { border-color: rgba(255,255,255,0.3); }
+    .ask-input::placeholder { color: var(--text-dim); }
+    .ask-send {
       background: #fff;
-      animation: starBorn 1.6s ease 0.5s forwards;
-      opacity: 0;
+      border: none;
+      color: #000;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      padding: 14px 20px;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      flex-shrink: 0;
     }
-  .dot-pulse {
-    width: 6px; height: 6px; border-radius: 50%;
-    background: rgba(200,200,220,0.4);
-    animation: dotPulse 1s ease-in-out infinite;
-  }
-  @keyframes dotPulse {
-    0%, 100% { opacity: 0.3; transform: scale(0.8); }
-    50%       { opacity: 1;   transform: scale(1.2); }
-  }
-  @keyframes soulPulse {
-    0%, 100% { transform: scale(1);   box-shadow: 0 0 40px rgba(160,160,220,0.5); }
-    50%       { transform: scale(1.08); box-shadow: 0 0 60px rgba(160,160,220,0.8); }
-  }
-  @keyframes eggFloat {
-    0%, 100% { transform: translateY(0px); }
-    50%       { transform: translateY(-8px); }
-  }
-  @keyframes eggGlow {
-    0%, 100% { box-shadow: 0 0 50px rgba(160,160,220,0.4); }
-    50%       { box-shadow: 0 0 80px rgba(160,160,220,0.7); }
-  }
+    .ask-send:hover { opacity: 0.8; }
+    .ask-send:disabled { opacity: 0.3; cursor: default; }
+
+    /* ── INSIGHTS SCREEN ── */
+    .insight-card {
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+    .insight-card .insight-q {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-dim);
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+    .insight-card .insight-a {
+      font-family: var(--font-serif);
+      font-size: 17px;
+      color: var(--text);
+      line-height: 1.5;
+      font-style: italic;
+    }
+
+    /* ── NAV ── */
+    .bottom-nav {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      display: flex;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      z-index: 10;
+      background: #000;
+    }
+    .nav-tab {
+      flex: 1;
+      padding: 16px 0 20px;
+      text-align: center;
+      cursor: pointer;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      transition: color 0.2s;
+      background: transparent;
+      border: none;
+    }
+    .nav-tab.active { color: #fff; }
+    .nav-tab:hover { color: #aaa; }
+
+    /* ── ANIMATIONS ── */
+    @keyframes breathe { 0%, 100% { transform: scale(1); opacity: 0.9; } 50% { transform: scale(1.04); opacity: 1; } }
+    @keyframes eggFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes dotPulse { 0%, 100% { opacity: 0.3; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1.2); } }
+    .dot-pulse { width: 5px; height: 5px; border-radius: 50%; background: rgba(255,255,255,0.3); animation: dotPulse 1s ease-in-out infinite; display: inline-block; }
   </style>
 </head>
 <body>
 
-<!-- Particle background -->
-<canvas id="bg-canvas"></canvas>
-
-<!-- Intro animation -->
-<div id="intro-overlay">
-  <div id="intro-dot"></div>
-</div>
-
-<!-- SCREEN 0: Splash -->
+<!-- ═══ SCREEN 0: SPLASH ═══ -->
 <div class="screen active" id="screen-splash">
-  <div class="orb-wrap" id="orb-wrap">
-    <div class="orb-ring-2"></div>
+  <div class="orb-wrap">
     <div class="orb-ring"></div>
-    <div class="orb" id="orb"></div>
+    <div class="orb"></div>
   </div>
-  <div class="tagline">
-    <div class="line1">You already know who you are.</div>
-    <div class="line2">We just see it differently.</div>
+  <div style="text-align:center;margin-bottom:64px;">
+    <div class="heading" style="opacity:0;animation:fadeUp 1s ease 1.2s forwards;">You already know.</div>
+    <div class="label" style="margin-top:14px;opacity:0;animation:fadeUp 1s ease 2s forwards;">Your pet just sees it differently</div>
   </div>
-  <button class="btn-ghost" onclick="goTo('screen-name')">Go deeper</button>
+  <button class="btn-ghost" onclick="goTo('screen-name')">Begin</button>
 </div>
 
-<!-- SCREEN 1: Name -->
+<!-- ═══ SCREEN 1: NAME ═══ -->
 <div class="screen" id="screen-name">
-  <div class="progress-bar"><div class="progress-fill" style="width:20%"></div></div>
-  <div class="screen-label">Step 1 of 4</div>
-  <div class="screen-question">What do we<br/>call you?</div>
+  <div class="progress-bar"><div class="progress-fill" style="width:33%"></div></div>
+  <div class="label" style="margin-bottom:16px;">01</div>
+  <div class="heading" style="text-align:center;margin-bottom:48px;">What do we<br/>call you?</div>
   <input class="text-input" id="input-name" type="text" placeholder="Your name" autocomplete="off" />
-  <button class="btn-solid" onclick="goTo('screen-age')">Continue</button>
+  <button class="btn-main" onclick="goTo('screen-astro')">Continue</button>
 </div>
 
-<!-- SCREEN 2: Age -->
-<div class="screen" id="screen-age">
-  <div class="progress-bar"><div class="progress-fill" style="width:40%"></div></div>
-  <div class="screen-label">Step 2 of 4</div>
-  <div class="screen-question">How many years<br/>have you been you?</div>
-  <input class="text-input" id="input-age" type="number" placeholder="Age" min="16" max="99" />
-  <button class="btn-solid" onclick="goTo('screen-identity')">Continue</button>
-</div>
-
-<!-- SCREEN 3: Identity Selector -->
-<div class="screen" id="screen-identity">
-  <div class="progress-bar"><div class="progress-fill" style="width:70%"></div></div>
-  <div class="screen-label">Step 3 of 4</div>
-  <div class="screen-question">How do you<br/>understand yourself?</div>
-  <div class="identity-grid">
-    <div class="identity-tile" id="tile-mbti" onclick="toggleTile('mbti')">
-      <span class="tile-icon">✦</span>
-      <div class="tile-name">MBTI</div>
-      <div class="tile-desc">Personality type</div>
-    </div>
-    <div class="identity-tile" id="tile-astro" onclick="toggleTile('astro')">
-      <span class="tile-icon">☽</span>
-      <div class="tile-name">Astrology</div>
-      <div class="tile-desc">Birth chart & sign</div>
-    </div>
-    <div class="identity-tile" id="tile-num" onclick="toggleTile('num')">
-      <span class="tile-icon">∞</span>
-      <div class="tile-name">Numerology</div>
-      <div class="tile-desc">Life path number</div>
-    </div>
-    <div class="identity-tile" id="tile-attach" onclick="toggleTile('attach')">
-      <span class="tile-icon">♡</span>
-      <div class="tile-name">Attachment</div>
-      <div class="tile-desc">How you love</div>
-    </div>
-  </div>
-  <button class="btn-solid" onclick="afterIdentity()">Continue</button>
-  <button class="btn-skip" onclick="goTo('screen-ready')">I'll discover this later</button>
-</div>
-
-<!-- SCREEN 3b: MBTI Input -->
-<div class="screen" id="screen-mbti">
-  <div class="progress-bar"><div class="progress-fill" style="width:75%"></div></div>
-  <div class="screen-label">MBTI</div>
-  <div class="screen-question">What's your<br/>personality type?</div>
-  <div class="select-grid" id="mbti-grid">
-    <!-- filled by JS -->
-  </div>
-  <button class="btn-solid" id="btn-mbti-continue" onclick="afterMbti()">Continue</button>
-  <button class="btn-skip" onclick="afterMbti()">Not sure yet</button>
-</div>
-
-<!-- SCREEN 3c: Astrology Input -->
+<!-- ═══ SCREEN 2: ASTRO ═══ -->
 <div class="screen" id="screen-astro">
-  <div class="progress-bar"><div class="progress-fill" style="width:85%"></div></div>
-  <div class="screen-label">Astrology</div>
-  <div class="screen-question">What's your<br/>sun sign?</div>
-  <div class="astro-grid" id="astro-grid">
-    <!-- filled by JS -->
-  </div>
-  <button class="btn-solid" onclick="afterAstro()">Continue</button>
-  <button class="btn-skip" onclick="afterAstro()">Not sure yet</button>
+  <div class="progress-bar"><div class="progress-fill" style="width:66%"></div></div>
+  <div class="label" style="margin-bottom:16px;">02</div>
+  <div class="heading" style="text-align:center;margin-bottom:48px;">What's your<br/>sun sign?</div>
+  <div class="chip-grid cols-3" id="astro-grid"></div>
+  <button class="btn-main" onclick="goTo('screen-unseen')">Continue</button>
+  <button class="btn-skip" onclick="goTo('screen-unseen')">Skip</button>
 </div>
 
-<!-- SCREEN 3d: The real question -->
+<!-- ═══ SCREEN 3: THE REAL QUESTION ═══ -->
 <div class="screen" id="screen-unseen">
-  <div class="progress-bar"><div class="progress-fill" style="width:95%"></div></div>
-  <div class="screen-label">One last thing</div>
-  <div class="screen-question" style="font-size:24px;">What do you wish people<br/>knew about you —<br/>but no one ever gets it?</div>
-  <textarea
-    id="input-unseen"
-    placeholder="Type anything. No wrong answers."
-    style="
-      background: transparent;
-      border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 0;
-      color: var(--text);
-      font-family: var(--font-mono);
-      font-size: 13px;
-      font-weight: 400;
-      letter-spacing: 0.02em;
-      line-height: 1.7;
-      padding: 18px 20px;
-      width: 100%;
-      max-width: 320px;
-      min-height: 120px;
-      resize: none;
-      outline: none;
-      transition: border-color 0.3s;
-      margin-bottom: 28px;
-    "
-    oninput="this.style.borderColor = this.value ? 'rgba(200,200,220,0.4)' : 'rgba(255,255,255,0.12)'"
-  ></textarea>
-  <button class="btn-solid" onclick="goToRead()">Continue</button>
-  <button class="btn-skip" onclick="goToRead()">Skip for now</button>
+  <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+  <div class="label" style="margin-bottom:16px;">03</div>
+  <div class="heading" style="text-align:center;font-size:24px;margin-bottom:40px;">What do you wish<br/>people understood<br/>about you?</div>
+  <textarea id="input-unseen" placeholder="No wrong answers." style="
+    background:transparent;
+    border:1px solid rgba(255,255,255,0.12);
+    color:var(--text);
+    font-family:var(--font-mono);
+    font-size:13px;
+    line-height:1.7;
+    padding:18px 20px;
+    width:100%;
+    max-width:320px;
+    min-height:120px;
+    resize:none;
+    outline:none;
+    transition:border-color 0.3s;
+    margin-bottom:28px;
+  " oninput="this.style.borderColor=this.value?'rgba(255,255,255,0.3)':'rgba(255,255,255,0.12)'"></textarea>
+  <button class="btn-main" onclick="goToRead()">Show me</button>
+  <button class="btn-skip" onclick="goToRead()">Skip</button>
 </div>
 
-<!-- SCREEN 4: Soul Read (report) -->
-<div class="screen" id="screen-read" style="overflow-y:auto;justify-content:flex-start;padding-top:60px;padding-bottom:60px;">
+<!-- ═══ SCREEN 4: SOUL READ ═══ -->
+<div class="screen" id="screen-read" style="overflow-y:auto;justify-content:flex-start;padding-top:60px;padding-bottom:80px;">
   <div style="width:100%;max-width:340px;">
-    <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.25em;color:var(--text-dim);text-transform:uppercase;margin-bottom:12px;">Your Soul Stage</div>
-    <div id="read-stage" style="font-family:var(--font-serif);font-size:32px;font-weight:400;letter-spacing:0.01em;color:var(--text);margin-bottom:8px;line-height:1.2;">The Controlled Storm</div>
-    <div style="width:40px;height:1px;background:rgba(255,255,255,0.2);margin-bottom:32px;"></div>
-
-    <div id="read-body" style="font-family:var(--font-mono);font-size:13px;font-weight:400;color:#999;line-height:1.85;letter-spacing:0.01em;">
-      <!-- filled by JS -->
-    </div>
-
-    <div id="read-closer" style="margin-top:36px;font-family:var(--font-serif);font-size:18px;font-style:italic;color:var(--text);line-height:1.5;padding-left:0;">
-      <!-- filled by JS -->
-    </div>
-
-    <button class="btn-solid" onclick="goTo('screen-unbox')" style="margin-top:48px;width:100%;">See Your Pet</button>
+    <div class="label" style="margin-bottom:12px;">Your Soul Stage</div>
+    <div id="read-stage" class="heading" style="font-size:32px;margin-bottom:4px;">...</div>
+    <div class="divider"></div>
+    <div id="read-body" class="body-text"></div>
+    <div id="read-closer" class="closer-text" style="margin-top:32px;"></div>
+    <button class="btn-main" onclick="goTo('screen-unbox')" style="margin-top:48px;">Meet your pet</button>
   </div>
 </div>
 
-<!-- SCREEN 5: Unboxing -->
+<!-- ═══ SCREEN 5: UNBOX ═══ -->
 <div class="screen" id="screen-unbox">
-  <div style="font-size:12px;letter-spacing:0.16em;color:var(--text-dim);text-transform:uppercase;margin-bottom:48px;">Something is forming</div>
-
-  <!-- Soul particle burst → egg -->
-  <div id="unbox-stage" style="position:relative;width:160px;height:200px;margin-bottom:48px;">
-
-    <!-- Particle ring (pre-egg) -->
-    <div id="soul-ring" style="
-      position:absolute;inset:0;
-      display:flex;align-items:center;justify-content:center;
-    ">
-      <div id="soul-orb" style="
-        width:80px;height:80px;border-radius:50%;
-        background:radial-gradient(circle at 40% 35%, #e8e8ff 0%, #9090c0 40%, #2a2a4a 100%);
-        box-shadow:0 0 40px rgba(160,160,220,0.5);
-        animation: soulPulse 1.5s ease-in-out infinite;
-        opacity:1;
-        transition: opacity 0.8s ease, transform 0.8s ease;
-      "></div>
+  <div class="label" style="margin-bottom:48px;">Something is forming</div>
+  <div style="position:relative;margin-bottom:48px;">
+    <div id="soul-orb" style="
+      width:70px;height:70px;border-radius:50%;
+      background:radial-gradient(circle at 40% 35%, #e8e8ff 0%, #777 50%, #222 100%);
+      box-shadow:0 0 30px rgba(160,160,220,0.4);
+      transition:opacity 0.8s,transform 0.8s;
+    "></div>
+    <div id="egg-reveal" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);opacity:0;transition:opacity 1s;">
+      <div class="egg-visual"></div>
     </div>
-
-    <!-- Egg (post-transform) -->
-    <div id="egg-shape" style="
-      position:absolute;inset:0;
-      display:flex;align-items:center;justify-content:center;
-      opacity:0;
-      transition: opacity 1s ease;
-    ">
-      <div style="position:relative;width:90px;height:114px;">
-        <!-- Egg body -->
-        <div style="
-          width:90px;height:114px;
-          background:radial-gradient(ellipse at 38% 30%, #f0f0ff 0%, #b0b0d0 45%, #3a3a5a 100%);
-          border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;
-          box-shadow:0 0 50px rgba(160,160,220,0.4), inset 0 -10px 30px rgba(80,80,120,0.3);
-          animation: eggFloat 3s ease-in-out infinite;
-        "></div>
-        <!-- Crack SVG overlay -->
-        <svg id="egg-crack" viewBox="0 0 90 114" style="
-          position:absolute;top:0;left:0;
-          width:90px;height:114px;
-          opacity:0;
-          transition:opacity 0.8s ease;
-        ">
-          <polyline points="50,38 46,50 52,56 45,70" stroke="rgba(20,20,40,0.55)" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          <polyline points="46,50 42,55 44,62" stroke="rgba(20,20,40,0.35)" stroke-width="1" fill="none" stroke-linecap="round"/>
-        </svg>
-      </div>
-    </div>
-
   </div>
-
-  <div id="unbox-label" style="font-size:16px;font-weight:300;color:var(--text);letter-spacing:0.06em;text-align:center;margin-bottom:8px;">
-    Reading your soul...
-  </div>
-  <div id="unbox-sub" style="font-size:13px;color:var(--text-dim);text-align:center;letter-spacing:0.04em;margin-bottom:48px;">
-    Your pet knows you're here.
-  </div>
-
-  <button id="btn-enter" class="btn-solid" onclick="goTo('screen-pet')" style="opacity:0;transition:opacity 0.8s ease;pointer-events:none;">
-    Enter the app
-  </button>
+  <div id="unbox-label" class="label" style="font-size:12px;letter-spacing:0.12em;margin-bottom:8px;">Reading your soul...</div>
+  <div id="unbox-sub" style="font-family:var(--font-mono);font-size:11px;color:var(--text-dim);margin-bottom:48px;">Your pet knows you're here.</div>
+  <button id="btn-enter" class="btn-main" onclick="enterApp()" style="opacity:0;pointer-events:none;transition:opacity 0.8s;">Enter</button>
 </div>
 
-<!-- SCREEN 6: Pet Screen (personal) -->
-<div class="screen" id="screen-pet" style="overflow-y:auto;justify-content:flex-start;padding-top:48px;padding-bottom:80px;">
-  <div style="width:100%;max-width:340px;">
-
-    <!-- Top bar -->
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;">
-      <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.2em;color:var(--text-dim);text-transform:uppercase;">My Pet</div>
-      <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.1em;color:var(--text-dim);cursor:pointer;text-transform:uppercase;" onclick="goTo('screen-home')">Explore ›</div>
-    </div>
-
-    <!-- Egg hero -->
-    <div style="text-align:center;margin-bottom:28px;">
-      <div style="position:relative;width:100px;height:126px;margin:0 auto 16px;">
-        <div style="
-          width:100px;height:126px;
-          background:radial-gradient(ellipse at 38% 30%, #f0f0ff 0%, #b0b0d0 45%, #3a3a5a 100%);
-          border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;
-          box-shadow:0 0 40px rgba(160,160,220,0.4);
-          animation: eggFloat 3s ease-in-out infinite;
-        "></div>
-        <svg viewBox="0 0 100 126" style="position:absolute;top:0;left:0;width:100px;height:126px;">
-          <polyline points="54,40 50,55 57,62 49,78" stroke="rgba(20,20,40,0.5)" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          <polyline points="50,55 45,61 47,70" stroke="rgba(20,20,40,0.3)" stroke-width="1.1" fill="none" stroke-linecap="round"/>
-        </svg>
-        <!-- glow pulse ring -->
-        <div style="
-          position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-          width:120px;height:120px;border-radius:50%;
-          border:1px solid rgba(180,180,220,0.15);
-          animation:eggFloat 3s ease-in-out infinite reverse;
-          pointer-events:none;
-        "></div>
-      </div>
-      <div id="pet-stage" style="font-family:var(--font-serif);font-size:22px;font-weight:400;color:var(--text);letter-spacing:0.01em;margin-bottom:4px;">The Controlled Storm</div>
-      <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-dim);letter-spacing:0.15em;text-transform:uppercase;">Hatching in progress</div>
-    </div>
-
-    <!-- XP bar -->
-    <div style="
-      background:rgba(255,255,255,0.02);
-      border:1px solid rgba(255,255,255,0.07);
-      border-radius:0;
-      padding:18px 20px;
-      margin-bottom:20px;
-    ">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-        <div style="font-size:12px;color:var(--text-dim);letter-spacing:0.06em;">Soul XP</div>
-        <div style="font-size:12px;color:var(--text-dim);">12 / 100</div>
-      </div>
-      <div style="height:3px;background:rgba(255,255,255,0.07);border-radius:2px;margin-bottom:14px;">
-        <div style="height:3px;width:12%;background:rgba(200,200,220,0.7);border-radius:2px;"></div>
-      </div>
-      <!-- Hatch indicators -->
-      <div style="font-size:11px;letter-spacing:0.1em;color:var(--text-dim);text-transform:uppercase;margin-bottom:10px;">What cracks the shell</div>
-      <div style="display:flex;flex-direction:column;gap:8px;">
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div style="width:6px;height:6px;border-radius:50%;background:rgba(200,200,220,0.3);flex-shrink:0;"></div>
-          <div style="font-size:13px;color:var(--text-dim);">Answer a Daily Reflection <span style="color:rgba(200,200,220,0.5);">+10 XP</span></div>
-        </div>
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div style="width:6px;height:6px;border-radius:50%;background:rgba(200,200,220,0.3);flex-shrink:0;"></div>
-          <div style="font-size:13px;color:var(--text-dim);">Run a Decision Scan <span style="color:rgba(200,200,220,0.5);">+15 XP</span></div>
-        </div>
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div style="width:6px;height:6px;border-radius:50%;background:rgba(200,200,220,0.3);flex-shrink:0;"></div>
-          <div style="font-size:13px;color:var(--text-dim);">Decode a Conversation <span style="color:rgba(200,200,220,0.5);">+12 XP</span></div>
-        </div>
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div style="width:6px;height:6px;border-radius:50%;background:rgba(200,200,220,0.3);flex-shrink:0;"></div>
-          <div style="font-size:13px;color:var(--text-dim);">Use the Relationship Mirror <span style="color:rgba(200,200,220,0.5);">+15 XP</span></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Last insight teaser -->
-    <div style="
-      background:rgba(255,255,255,0.02);
-      border:1px solid rgba(255,255,255,0.06);
-      border-radius:0;
-      padding:18px 20px;
-    ">
-      <div style="font-size:11px;letter-spacing:0.14em;color:var(--text-dim);text-transform:uppercase;margin-bottom:10px;">Last insight</div>
-      <div style="font-family:var(--font-serif);font-size:16px;font-weight:400;color:var(--text);line-height:1.5;font-style:italic;">"You extend context to others they haven't earned. But rarely allow yourself to receive the same."</div>
-    </div>
-
-  </div>
-</div>
-
-<!-- SCREEN 7: Home / Explore -->
-<div class="screen" id="screen-home" style="overflow-y:auto;justify-content:flex-start;padding-top:48px;padding-bottom:80px;">
-  <div style="width:100%;max-width:340px;">
-
-    <!-- Top bar -->
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;">
-      <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.2em;color:var(--text-dim);text-transform:uppercase;">Explore</div>
-      <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.1em;color:var(--text-dim);cursor:pointer;text-transform:uppercase;" onclick="goTo('screen-pet')">My Pet ›</div>
-    </div>
-
-    <!-- Activity grid — 4 cards, no dupes -->
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:0;">
-
-      <!-- 1. Daily Reflection -->
-      <div style="
-        background:transparent;border:1px solid rgba(255,255,255,0.1);
-        border-radius:0;padding:24px 16px;cursor:pointer;
-        transition:border-color 0.2s;
-      " onclick="goTo('screen-emotion')" onmouseover="this.style.borderColor='rgba(255,255,255,0.3)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.1)'">
-        <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.2em;color:var(--text-dim);text-transform:uppercase;margin-bottom:12px;">01</div>
-        <div style="font-family:var(--font-serif);font-size:18px;color:var(--text);margin-bottom:6px;">Daily Reflection</div>
-        <div style="font-family:var(--font-mono);font-size:11px;color:var(--text-dim);line-height:1.5;">Pick a colour. Name what you feel.</div>
-        <div style="margin-top:14px;font-family:var(--font-mono);font-size:10px;color:rgba(255,255,255,0.25);letter-spacing:0.1em;">+10 XP</div>
-      </div>
-
-      <!-- 2. Decision Scan -->
-      <div style="
-        background:transparent;border:1px solid rgba(255,255,255,0.1);
-        border-radius:0;padding:24px 16px;cursor:pointer;
-        transition:border-color 0.2s;
-      " onclick="goTo('screen-decision')" onmouseover="this.style.borderColor='rgba(255,255,255,0.3)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.1)'">
-        <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.2em;color:var(--text-dim);text-transform:uppercase;margin-bottom:12px;">02</div>
-        <div style="font-family:var(--font-serif);font-size:18px;color:var(--text);margin-bottom:6px;">Decision Scan</div>
-        <div style="font-family:var(--font-mono);font-size:11px;color:var(--text-dim);line-height:1.5;">Say it out loud. See why you're stuck.</div>
-        <div style="margin-top:14px;font-family:var(--font-mono);font-size:10px;color:rgba(255,255,255,0.25);letter-spacing:0.1em;">+15 XP</div>
-      </div>
-
-      <!-- 3. Relationship Mirror -->
-      <div style="
-        background:transparent;border:1px solid rgba(255,255,255,0.1);
-        border-radius:0;padding:24px 16px;cursor:pointer;
-        transition:border-color 0.2s;
-      " onclick="goTo('screen-person')" onmouseover="this.style.borderColor='rgba(255,255,255,0.3)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.1)'">
-        <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.2em;color:var(--text-dim);text-transform:uppercase;margin-bottom:12px;">03</div>
-        <div style="font-family:var(--font-serif);font-size:18px;color:var(--text);margin-bottom:6px;">Relationship Mirror</div>
-        <div style="font-family:var(--font-mono);font-size:11px;color:var(--text-dim);line-height:1.5;">Who hurt you. What it reveals about you.</div>
-        <div style="margin-top:14px;font-family:var(--font-mono);font-size:10px;color:rgba(255,255,255,0.25);letter-spacing:0.1em;">+15 XP</div>
-      </div>
-
-      <!-- 4. Convo Decoder — coming soon -->
-      <div style="
-        background:transparent;border:1px solid rgba(255,255,255,0.05);
-        border-radius:0;padding:24px 16px;cursor:default;opacity:0.4;
-      ">
-        <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.2em;color:var(--text-dim);text-transform:uppercase;margin-bottom:12px;">04</div>
-        <div style="font-family:var(--font-serif);font-size:18px;color:var(--text);margin-bottom:6px;">Convo Decoder</div>
-        <div style="font-family:var(--font-mono);font-size:11px;color:var(--text-dim);line-height:1.5;">Paste a conversation. Read between the lines.</div>
-        <div style="margin-top:14px;font-family:var(--font-mono);font-size:10px;color:rgba(255,255,255,0.15);letter-spacing:0.1em;">COMING SOON</div>
-      </div>
-
-    </div>
-
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════════
-     ACTIVITY: Emotion Color Picker (Daily Reflection)
-     ═══════════════════════════════════════════ -->
-<div class="screen" id="screen-emotion" style="justify-content:flex-start;padding-top:48px;padding-bottom:40px;">
-  <div style="width:100%;max-width:340px;display:flex;flex-direction:column;align-items:center;">
-
-    <!-- Header -->
-    <div style="width:100%;display:flex;align-items:center;gap:12px;margin-bottom:32px;">
-      <div onclick="goTo('screen-home')" style="font-size:18px;color:var(--text-dim);cursor:pointer;">‹</div>
+<!-- ═══ SCREEN 6: ASK YOUR PET ═══ -->
+<div class="screen" id="screen-ask">
+  <!-- Header -->
+  <div class="ask-header">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div class="egg-small"></div>
       <div>
-        <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.2em;color:var(--text-dim);text-transform:uppercase;">Daily Reflection</div>
-        <div style="font-family:var(--font-serif);font-size:20px;font-weight:400;color:var(--text);">What does today feel like?</div>
+        <div id="ask-stage" style="font-family:var(--font-serif);font-size:16px;color:var(--text);">Your Pet</div>
+        <div class="label" style="margin-top:2px;">Ask anything</div>
       </div>
     </div>
+  </div>
 
-    <!-- Color field -->
-    <div style="position:relative;margin-bottom:16px;">
-      <canvas id="emotion-canvas" width="300" height="240" style="border-radius:0;cursor:crosshair;touch-action:none;display:block;"></canvas>
-      <!-- Crosshair cursor -->
-      <div id="emotion-cursor" style="
-        position:absolute;width:22px;height:22px;
-        border-radius:50%;border:2px solid rgba(255,255,255,0.9);
-        box-shadow:0 0 12px rgba(0,0,0,0.6);
-        pointer-events:none;transform:translate(-50%,-50%);
-        left:50%;top:50%;transition:left 0.05s,top 0.05s;
-        display:none;
-      "></div>
+  <!-- Messages or empty state -->
+  <div id="ask-empty" class="ask-empty">
+    <div class="egg-visual" style="margin-bottom:8px;"></div>
+    <div class="heading" style="font-size:22px;">Ask me anything.</div>
+    <div class="body-text" style="max-width:260px;text-align:center;font-size:12px;">
+      I already know who you are.<br/>Now ask what you're afraid to.
     </div>
+  </div>
 
-    <!-- Axis labels -->
-    <div style="width:300px;display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:1fr 1fr;gap:0;margin-bottom:20px;position:relative;height:32px;">
-      <div style="font-size:10px;color:rgba(255,255,255,0.25);letter-spacing:0.08em;grid-column:1;text-align:left;">inward</div>
-      <div style="font-size:10px;color:rgba(255,255,255,0.25);letter-spacing:0.08em;grid-column:3;text-align:right;">outward</div>
-    </div>
+  <div id="ask-messages" class="ask-messages" style="display:none;"></div>
 
-    <!-- Emotion label -->
-    <div id="emotion-label" style="
-      font-size:22px;font-weight:300;color:var(--text);
-      letter-spacing:0.06em;text-align:center;min-height:32px;margin-bottom:6px;
-      transition:all 0.3s ease;
-    ">—</div>
-    <div id="emotion-sub" style="font-size:12px;color:var(--text-dim);text-align:center;min-height:18px;margin-bottom:24px;">tap the field to place your feeling</div>
+  <!-- Suggestions -->
+  <div id="ask-suggestions" class="ask-suggestions">
+    <div class="suggest-chip" onclick="askSuggestion(this)">Am I settling?</div>
+    <div class="suggest-chip" onclick="askSuggestion(this)">Why can't I let go?</div>
+    <div class="suggest-chip" onclick="askSuggestion(this)">What am I really afraid of?</div>
+    <div class="suggest-chip" onclick="askSuggestion(this)">Why do I push people away?</div>
+  </div>
 
-    <!-- What happened -->
-    <textarea id="emotion-text" placeholder="What happened today that left this feeling?" style="
-      background:rgba(255,255,255,0.04);
-      border:1px solid rgba(255,255,255,0.1);
-      border-radius:0;color:var(--text);
-      font-size:13px;font-weight:400;font-family:var(--font-mono);
-      line-height:1.6;padding:16px;width:100%;
-      min-height:90px;resize:none;outline:none;
-      transition:border-color 0.3s;margin-bottom:20px;
-    " oninput="this.style.borderColor=this.value?'rgba(200,200,220,0.35)':'rgba(255,255,255,0.1)'"></textarea>
+  <!-- Input bar -->
+  <div class="ask-input-bar">
+    <textarea class="ask-input" id="ask-input" placeholder="Ask your pet..." rows="1"
+      oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,120)+'px';"
+      onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendAsk();}"></textarea>
+    <button class="ask-send" id="ask-send" onclick="sendAsk()">Ask</button>
+  </div>
 
-    <button class="btn-solid" style="width:100%;" onclick="submitEmotion()">Reflect</button>
+  <!-- Nav -->
+  <div class="bottom-nav">
+    <button class="nav-tab active" onclick="goTo('screen-ask')">Ask</button>
+    <button class="nav-tab" onclick="goTo('screen-insights')">Insights</button>
   </div>
 </div>
 
-<!-- Emotion Result -->
-<div class="screen" id="screen-emotion-result" style="justify-content:flex-start;padding-top:48px;padding-bottom:40px;overflow-y:auto;">
-  <div style="width:100%;max-width:340px;">
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:32px;">
-      <div onclick="goTo('screen-home')" style="font-size:18px;color:var(--text-dim);cursor:pointer;">‹</div>
-      <div style="font-family:var(--font-serif);font-size:22px;font-weight:400;color:var(--text);">What this is</div>
+<!-- ═══ SCREEN 7: DAILY INSIGHTS ═══ -->
+<div class="screen" id="screen-insights" style="justify-content:flex-start;padding-top:24px;padding-bottom:80px;overflow-y:auto;">
+  <div style="width:100%;max-width:360px;">
+    <div style="padding:0 4px 24px;">
+      <div class="label" style="margin-bottom:8px;">Daily Insights</div>
+      <div class="heading" style="font-size:22px;">What you've been learning</div>
     </div>
-    <!-- Color swatch -->
-    <div id="result-swatch" style="width:48px;height:48px;border-radius:12px;margin-bottom:20px;"></div>
-    <div id="result-emotion-name" style="font-family:var(--font-serif);font-size:28px;font-weight:400;color:var(--text);margin-bottom:24px;"></div>
-    <div id="result-emotion-body" style="font-family:var(--font-mono);font-size:13px;font-weight:400;color:#888;line-height:1.85;"></div>
-    <div style="margin-top:32px;padding:16px;border-left:1px solid rgba(255,255,255,0.1);">
-      <div id="result-emotion-closer" style="font-family:var(--font-serif);font-size:16px;font-style:italic;color:var(--text);line-height:1.5;"></div>
-    </div>
-    <div style="margin-top:32px;background:transparent;border:1px solid rgba(255,255,255,0.08);border-radius:0;padding:14px 16px;display:flex;align-items:center;gap:10px;">
-      <div style="font-size:18px;">✦</div>
-      <div style="font-family:var(--font-mono);font-size:11px;color:var(--text-dim);">+10 XP earned — your egg felt this too.</div>
-    </div>
-    <button class="btn-solid" style="width:100%;margin-top:24px;" onclick="goTo('screen-home')">Done</button>
-  </div>
-</div>
-
-
-<!-- ═══════════════════════════════════════════
-     ACTIVITY: Why Does This Person Treat Me This Way
-     ═══════════════════════════════════════════ -->
-<div class="screen" id="screen-person" style="justify-content:flex-start;padding-top:48px;padding-bottom:40px;overflow-y:auto;">
-  <div style="width:100%;max-width:340px;">
-
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:32px;">
-      <div onclick="goTo('screen-home')" style="font-size:18px;color:var(--text-dim);cursor:pointer;">‹</div>
-      <div>
-        <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.2em;color:var(--text-dim);text-transform:uppercase;">Relationship Mirror</div>
-        <div style="font-family:var(--font-serif);font-size:20px;font-weight:400;color:var(--text);">Why do they treat me this way?</div>
+    <div id="insights-list">
+      <div style="text-align:center;padding:60px 20px;">
+        <div class="label" style="margin-bottom:12px;">Nothing here yet</div>
+        <div class="body-text" style="font-size:12px;">Ask your pet something first.<br/>Insights appear as you talk.</div>
       </div>
     </div>
-
-    <!-- Who -->
-    <div style="font-size:11px;letter-spacing:0.12em;color:var(--text-dim);text-transform:uppercase;margin-bottom:8px;">Who is this person?</div>
-    <input id="person-who" type="text" placeholder="e.g. my best friend, my ex, my boss" style="
-      background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);
-      border-radius:0;color:var(--text);font-size:14px;font-family:inherit;
-      padding:14px 16px;width:100%;outline:none;margin-bottom:20px;
-      transition:border-color 0.3s;
-    " oninput="this.style.borderColor=this.value?'rgba(200,200,220,0.35)':'rgba(255,255,255,0.1)'"/>
-
-    <!-- What they do -->
-    <div style="font-size:11px;letter-spacing:0.12em;color:var(--text-dim);text-transform:uppercase;margin-bottom:8px;">What do they do that confuses or hurts you?</div>
-    <textarea id="person-what" placeholder="Describe the behaviour. Be specific." style="
-      background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);
-      border-radius:0;color:var(--text);font-size:14px;font-family:inherit;
-      line-height:1.6;padding:14px 16px;width:100%;min-height:100px;
-      resize:none;outline:none;transition:border-color 0.3s;margin-bottom:20px;
-    " oninput="this.style.borderColor=this.value?'rgba(200,200,220,0.35)':'rgba(255,255,255,0.1)'"></textarea>
-
-    <!-- Screenshot or text toggle -->
-    <div style="font-size:11px;letter-spacing:0.12em;color:var(--text-dim);text-transform:uppercase;margin-bottom:8px;">Got a screenshot? (optional)</div>
-    <div style="
-      border:1px dashed rgba(255,255,255,0.12);border-radius:0;
-      padding:20px;text-align:center;cursor:pointer;margin-bottom:24px;
-    " onclick="document.getElementById('person-upload').click()">
-      <div style="font-size:20px;margin-bottom:6px;">📎</div>
-      <div style="font-size:13px;color:var(--text-dim);">Tap to upload a conversation screenshot</div>
-      <div style="font-size:11px;color:rgba(255,255,255,0.2);margin-top:4px;">Vision analysis coming soon</div>
-    </div>
-    <input id="person-upload" type="file" accept="image/*" style="display:none;" />
-
-    <button class="btn-solid" style="width:100%;" onclick="submitPerson()">Show me the mirror</button>
   </div>
-</div>
-
-<!-- Person Result -->
-<div class="screen" id="screen-person-result" style="justify-content:flex-start;padding-top:48px;padding-bottom:40px;overflow-y:auto;">
-  <div style="width:100%;max-width:340px;">
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:32px;">
-      <div onclick="goTo('screen-home')" style="font-size:18px;color:var(--text-dim);cursor:pointer;">‹</div>
-      <div style="font-family:var(--font-serif);font-size:22px;font-weight:400;color:var(--text);">The mirror</div>
-    </div>
-    <div id="result-person-title" style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.2em;color:var(--text-dim);text-transform:uppercase;margin-bottom:8px;"></div>
-    <div id="result-person-body" style="font-family:var(--font-mono);font-size:13px;font-weight:400;color:#888;line-height:1.85;"></div>
-    <div style="margin-top:28px;padding:16px;border-left:1px solid rgba(255,255,255,0.1);">
-      <div id="result-person-closer" style="font-family:var(--font-serif);font-size:16px;font-style:italic;color:var(--text);line-height:1.5;"></div>
-    </div>
-    <div style="margin-top:32px;background:transparent;border:1px solid rgba(255,255,255,0.08);border-radius:0;padding:14px 16px;display:flex;align-items:center;gap:10px;">
-      <div style="font-size:18px;">✦</div>
-      <div style="font-family:var(--font-mono);font-size:11px;color:var(--text-dim);">+15 XP earned — your egg felt this shift.</div>
-    </div>
-    <button class="btn-solid" style="width:100%;margin-top:24px;" onclick="goTo('screen-home')">Done</button>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════════
-     ACTIVITY: Decision Scan (Voice)
-     ═══════════════════════════════════════════ -->
-<div class="screen" id="screen-decision" style="justify-content:flex-start;padding-top:48px;padding-bottom:40px;">
-  <div style="width:100%;max-width:340px;display:flex;flex-direction:column;align-items:center;">
-
-    <!-- Header -->
-    <div style="width:100%;display:flex;align-items:center;gap:12px;margin-bottom:40px;">
-      <div onclick="goTo('screen-home')" style="font-size:18px;color:var(--text-dim);cursor:pointer;">‹</div>
-      <div>
-        <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.2em;color:var(--text-dim);text-transform:uppercase;">Decision Scan</div>
-        <div style="font-family:var(--font-serif);font-size:20px;font-weight:400;color:var(--text);">Say what you're stuck on.</div>
-      </div>
-    </div>
-
-    <!-- Voice button -->
-    <div style="position:relative;margin-bottom:36px;">
-      <!-- Ripple rings -->
-      <div id="voice-ring-2" style="
-        position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-        width:130px;height:130px;border-radius:50%;
-        border:1px solid rgba(200,200,220,0.08);
-        pointer-events:none;transition:transform 0.3s,opacity 0.3s;
-      "></div>
-      <div id="voice-ring-1" style="
-        position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-        width:106px;height:106px;border-radius:50%;
-        border:1px solid rgba(200,200,220,0.15);
-        pointer-events:none;transition:transform 0.3s,opacity 0.3s;
-      "></div>
-      <!-- Core button -->
-      <div id="voice-btn" style="
-        width:86px;height:86px;border-radius:50%;
-        background:radial-gradient(circle at 38% 35%, #d0d0f0 0%, #7070a0 60%, #2a2a4a 100%);
-        box-shadow:0 0 30px rgba(140,140,200,0.35);
-        display:flex;align-items:center;justify-content:center;
-        cursor:pointer;user-select:none;
-        transition:transform 0.15s,box-shadow 0.15s;
-        position:relative;z-index:1;
-      "
-        onmousedown="startVoice()" onmouseup="stopVoice()"
-        ontouchstart="startVoice(event)" ontouchend="stopVoice()"
-      >
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="1.8" stroke-linecap="round">
-          <path d="M12 2a3 3 0 0 1 3 3v7a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z"/>
-          <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
-          <line x1="12" y1="19" x2="12" y2="23"/>
-          <line x1="8" y1="23" x2="16" y2="23"/>
-        </svg>
-      </div>
-    </div>
-
-    <!-- Status label -->
-    <div id="voice-status" style="font-size:13px;color:var(--text-dim);letter-spacing:0.08em;text-align:center;margin-bottom:24px;">
-      Hold to speak
-    </div>
-
-    <!-- Transcript -->
-    <div id="voice-transcript-wrap" style="
-      width:100%;min-height:80px;
-      background:rgba(255,255,255,0.03);
-      border:1px solid rgba(255,255,255,0.08);
-      border-radius:14px;padding:16px;
-      margin-bottom:20px;display:none;
-    ">
-      <div style="font-size:11px;letter-spacing:0.12em;color:var(--text-dim);text-transform:uppercase;margin-bottom:8px;">What you said</div>
-      <div id="voice-transcript" style="font-size:14px;font-weight:300;color:var(--text);line-height:1.6;"></div>
-    </div>
-
-    <!-- Edit fallback -->
-    <textarea id="decision-text" placeholder="Or type it here instead..." style="
-      background:rgba(255,255,255,0.03);
-      border:1px solid rgba(255,255,255,0.08);
-      border-radius:0;color:var(--text);
-      font-size:13px;font-weight:400;font-family:var(--font-mono);
-      line-height:1.6;padding:16px;width:100%;
-      min-height:70px;resize:none;outline:none;
-      transition:border-color 0.3s;margin-bottom:20px;
-    " oninput="this.style.borderColor=this.value?'rgba(200,200,220,0.3)':'rgba(255,255,255,0.08)'"></textarea>
-
-    <button class="btn-solid" style="width:100%;" onclick="submitDecision()">Scan it</button>
-  </div>
-</div>
-
-<!-- Decision Scan Result -->
-<div class="screen" id="screen-decision-result" style="justify-content:flex-start;padding-top:48px;padding-bottom:40px;overflow-y:auto;">
-  <div style="width:100%;max-width:340px;">
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:32px;">
-      <div onclick="goTo('screen-home')" style="font-size:18px;color:var(--text-dim);cursor:pointer;">‹</div>
-      <div style="font-family:var(--font-serif);font-size:22px;font-weight:400;color:var(--text);">Why you're stuck</div>
-    </div>
-    <div id="result-decision-stage" style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.2em;color:var(--text-dim);text-transform:uppercase;margin-bottom:8px;"></div>
-    <div id="result-decision-body" style="font-family:var(--font-mono);font-size:13px;font-weight:400;color:#888;line-height:1.85;"></div>
-    <div style="margin-top:28px;padding:16px;border-left:1px solid rgba(255,255,255,0.1);">
-      <div id="result-decision-q" style="font-family:var(--font-serif);font-size:16px;font-style:italic;color:var(--text);line-height:1.5;"></div>
-    </div>
-    <div style="margin-top:32px;background:transparent;border:1px solid rgba(255,255,255,0.08);border-radius:0;padding:14px 16px;display:flex;align-items:center;gap:10px;">
-      <div style="font-size:18px;">✦</div>
-      <div style="font-family:var(--font-mono);font-size:11px;color:var(--text-dim);">+15 XP earned — crack deepens.</div>
-    </div>
-    <button class="btn-solid" style="width:100%;margin-top:24px;" onclick="goTo('screen-home')">Done</button>
+  <div class="bottom-nav">
+    <button class="nav-tab" onclick="goTo('screen-ask')">Ask</button>
+    <button class="nav-tab active" onclick="goTo('screen-insights')">Insights</button>
   </div>
 </div>
 
 <script>
-  // ── Particle background ──
-  const canvas = document.getElementById('bg-canvas');
-  const ctx = canvas.getContext('2d');
-  let W, H, particles = [];
-
-  function resize() {
-    W = canvas.width = window.innerWidth;
-    H = canvas.height = window.innerHeight;
-  }
-  resize();
-  window.addEventListener('resize', resize);
-
-  for (let i = 0; i < 60; i++) {
-    particles.push({
-      x: Math.random() * 1000,
-      y: Math.random() * 1000,
-      r: Math.random() * 1.2 + 0.2,
-      a: Math.random(),
-      speed: Math.random() * 0.003 + 0.001,
-      phase: Math.random() * Math.PI * 2
-    });
-  }
-
-  function drawParticles(t) {
-    ctx.clearRect(0, 0, W, H);
-    particles.forEach(p => {
-      p.a = 0.15 + 0.1 * Math.sin(t * p.speed + p.phase);
-      ctx.beginPath();
-      ctx.arc(
-        (p.x / 1000) * W,
-        (p.y / 1000) * H,
-        p.r, 0, Math.PI * 2
-      );
-      ctx.fillStyle = `rgba(200,200,220,${p.a})`;
-      ctx.fill();
-    });
-    requestAnimationFrame(drawParticles);
-  }
-  requestAnimationFrame(drawParticles);
-
-  // ── Intro overlay ──
-  setTimeout(() => {
-    const overlay = document.getElementById('intro-overlay');
-    overlay.style.transition = 'opacity 1.2s ease';
-    overlay.style.opacity = '0';
-    setTimeout(() => overlay.remove(), 1200);
-  }, 2000);
-
-  // ── Orb ripple on touch ──
-  document.getElementById('orb-wrap').addEventListener('click', function(e) {
-    const rect = this.getBoundingClientRect();
-    const ripple = document.createElement('div');
-    ripple.className = 'ripple';
-    const size = 60;
-    ripple.style.cssText = `
-      width:${size}px;height:${size}px;
-      left:${e.clientX - rect.left - size/2}px;
-      top:${e.clientY - rect.top - size/2}px;
-    `;
-    this.appendChild(ripple);
-    setTimeout(() => ripple.remove(), 800);
-  });
-
-  // ── Screen transitions ──
-  function goTo(id) {
-    document.querySelectorAll('.screen').forEach(s => {
-      s.classList.remove('active');
-    });
-    const next = document.getElementById(id);
-    if (next) {
-      setTimeout(() => next.classList.add('active'), 50);
-      if (id === 'screen-ready') updateReadyText();
-    }
-  }
-
-  // ── Identity tile toggle ──
-  const selected = new Set();
-  function toggleTile(key) {
-    const tile = document.getElementById('tile-' + key);
-    if (selected.has(key)) {
-      selected.delete(key);
-      tile.classList.remove('selected');
-    } else {
-      selected.add(key);
-      tile.classList.add('selected');
-    }
-  }
-
-  // ── Identity continue: route through MBTI/Astro if selected, always end at unseen ──
-  function afterIdentity() {
-    if (selected.has('mbti')) {
-      goTo('screen-mbti');
-    } else if (selected.has('astro')) {
-      goTo('screen-astro');
-    } else {
-      goTo('screen-unseen');
-    }
-  }
-
-  function afterMbti() {
-    if (selected.has('astro')) {
-      goTo('screen-astro');
-    } else {
-      goTo('screen-unseen');
-    }
-  }
-
-  function afterAstro() {
-    goTo('screen-unseen');
-  }
-
-  // ── MBTI chips ──
-  const mbtiTypes = ['INTJ','INTP','ENTJ','ENTP','INFJ','INFP','ENFJ','ENFP','ISTJ','ISFJ','ESTJ','ESFJ','ISTP','ISFP','ESTP','ESFP'];
-  let chosenMbti = null;
-  const mbtiGrid = document.getElementById('mbti-grid');
-  mbtiTypes.forEach(t => {
-    const chip = document.createElement('div');
-    chip.className = 'select-chip';
-    chip.textContent = t;
-    chip.onclick = () => {
-      document.querySelectorAll('#mbti-grid .select-chip').forEach(c => c.classList.remove('chosen'));
-      chip.classList.add('chosen');
-      chosenMbti = t;
-    };
-    mbtiGrid.appendChild(chip);
-  });
-
-  // ── Astro chips ──
-  const zodiac = [
-    { name: 'Aries',       symbol: '♈' },
-    { name: 'Taurus',      symbol: '♉' },
-    { name: 'Gemini',      symbol: '♊' },
-    { name: 'Cancer',      symbol: '♋' },
-    { name: 'Leo',         symbol: '♌' },
-    { name: 'Virgo',       symbol: '♍' },
-    { name: 'Libra',       symbol: '♎' },
-    { name: 'Scorpio',     symbol: '♏' },
-    { name: 'Sagittarius', symbol: '♐' },
-    { name: 'Capricorn',   symbol: '♑' },
-    { name: 'Aquarius',    symbol: '♒' },
-    { name: 'Pisces',      symbol: '♓' },
-  ];
+  // ── State ──
   let chosenAstro = null;
-  const astroGrid = document.getElementById('astro-grid');
+  let currentStage = 'Your Pet';
+  let userName = '';
+  let unseenAnswer = '';
+  const chatHistory = []; // {role:'user'|'pet', text:'...'}
+  const insights = []; // {q:'...', closer:'...', timestamp:...}
+
+  // ── Screen nav ──
+  function goTo(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    const next = document.getElementById(id);
+    if (next) setTimeout(() => next.classList.add('active'), 50);
+    // Update nav active state
+    if (id === 'screen-ask' || id === 'screen-insights') {
+      document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.nav-tab').forEach(t => {
+        if ((id === 'screen-ask' && t.textContent === 'Ask') ||
+            (id === 'screen-insights' && t.textContent === 'Insights'))
+          t.classList.add('active');
+      });
+    }
+    if (id === 'screen-unbox') setTimeout(startUnboxing, 400);
+  }
+
+  // ── Astro grid ──
+  const zodiac = [
+    {n:'Aries',s:'♈'},{n:'Taurus',s:'♉'},{n:'Gemini',s:'♊'},
+    {n:'Cancer',s:'♋'},{n:'Leo',s:'♌'},{n:'Virgo',s:'♍'},
+    {n:'Libra',s:'♎'},{n:'Scorpio',s:'♏'},{n:'Sagittarius',s:'♐'},
+    {n:'Capricorn',s:'♑'},{n:'Aquarius',s:'♒'},{n:'Pisces',s:'♓'},
+  ];
+  const ag = document.getElementById('astro-grid');
   zodiac.forEach(z => {
-    const chip = document.createElement('div');
-    chip.className = 'astro-chip';
-    chip.innerHTML = `<span class="astro-symbol">${z.symbol}</span><div class="astro-name">${z.name}</div>`;
-    chip.onclick = () => {
-      document.querySelectorAll('#astro-grid .astro-chip').forEach(c => c.classList.remove('chosen'));
-      chip.classList.add('chosen');
-      chosenAstro = z.name;
+    const c = document.createElement('div');
+    c.className = 'chip';
+    c.innerHTML = `<span class="symbol">${z.s}</span>${z.n}`;
+    c.onclick = () => {
+      document.querySelectorAll('#astro-grid .chip').forEach(x => x.classList.remove('chosen'));
+      c.classList.add('chosen');
+      chosenAstro = z.n;
     };
-    astroGrid.appendChild(chip);
+    ag.appendChild(c);
   });
 
-  // ── Soul Read: stage profiles ──
+  // ── Soul Read profiles (fallback) ──
   const readProfiles = {
     default: {
       stage: 'The Controlled Storm',
       paragraphs: [
         'You process the world faster than most. You read the room before anyone else has even settled in — and you\'ve already mapped three possible outcomes before the conversation begins.',
-        'The problem is you process <em>yourself</em> just as fast. Which means you\'ve already talked yourself out of half the things you actually need — before anyone else gets a chance to give them to you.',
+        'The problem is you process yourself just as fast. Which means you\'ve already talked yourself out of half the things you actually need — before anyone else gets a chance to give them to you.',
         'You understand people quickly and deeply. But that same ability makes real intimacy feel risky. If you can already see how something ends, why let it start?',
-        'The version of you that the world sees is real — but it\'s curated. There\'s a warmer, messier, more uncertain version underneath that only surfaces when you genuinely feel safe. Most people never get there.',
+        'The version of you that the world sees is real — but it\'s curated. There\'s a warmer, messier, more uncertain version underneath that only surfaces when you genuinely feel safe.',
       ],
       closer: 'You don\'t want to be saved. You want someone who doesn\'t need you to explain yourself.'
-    },
-    growth: {
-      stage: 'The Becoming',
-      paragraphs: [
-        'You\'re in the middle of something. You can feel it — a version of yourself that\'s still forming, not quite who you were and not yet who you\'re going to be.',
-        'You absorb information fast and you apply it faster. But the real work you\'re doing isn\'t external — it\'s the slow, unglamorous process of unlearning what you were taught to want.',
-        'People sense something alive in you. An intensity that\'s hard to name. It\'s not ambition exactly — it\'s more like urgency. Like something in you already knows what it\'s moving toward, even if your conscious mind hasn\'t caught up yet.',
-        'The hardest part isn\'t the growth itself. It\'s resisting the pressure to have it all figured out before you\'ve actually lived it.',
-      ],
-      closer: 'The most interesting chapter of you hasn\'t been written yet. That\'s not a problem. That\'s the whole point.'
-    },
-    seen: {
-      stage: 'The Unseen Depth',
-      paragraphs: [
-        'People have categories for you. You\'ve heard them your whole life. Quiet. Intense. Hard to read. Too much, sometimes. Not enough, other times. None of them are wrong — they\'re just looking at one layer.',
-        'You understand others quickly and generously. You extend them context they haven\'t earned. But the same openness you give freely to others — you rarely allow yourself to receive.',
-        'There\'s something in you that\'s been waiting to be properly witnessed. Not validated — you don\'t need approval. Just seen. Someone who takes one look and gets it without you having to translate yourself.',
-        'What you actually want is rare: a person who can keep up, stay curious, and not flinch when you finally show them the parts you usually keep under glass.',
-      ],
-      closer: 'You\'re not complicated. You\'re layered. There\'s a difference — and the right people already know it.'
     }
   };
 
-  function getProfile() {
-    const unseen = (document.getElementById('input-unseen')?.value || '').toLowerCase();
-    if (unseen.includes('grow') || unseen.includes('learn') || unseen.includes('becom')) return readProfiles.growth;
-    if (unseen.includes('understand') || unseen.includes('seen') || unseen.includes('feel') || unseen.includes('deep')) return readProfiles.seen;
-    return readProfiles.default;
-  }
+  function cleanMd(s) { return s.replace(/\*\*/g,'').replace(/\*/g,'').replace(/_/g,'').replace(/^\[|\]$/g,'').trim(); }
+  function isTitle(s) { const w = s.split(/\s+/); return w.length >= 2 && w.length <= 8 && !s.includes(',') && !s.endsWith('.'); }
 
-  let currentStage = 'The Controlled Storm';
-
+  // ── Onboarding → Soul Read ──
   async function goToRead() {
-    const unseen = (document.getElementById('input-unseen')?.value || '').trim();
-    const name   = (document.getElementById('input-name')?.value   || '').trim();
+    unseenAnswer = (document.getElementById('input-unseen')?.value || '').trim();
+    userName = (document.getElementById('input-name')?.value || '').trim();
 
-    // Show screen immediately with loading state
     document.getElementById('read-stage').textContent = '...';
-    document.getElementById('read-body').innerHTML    = `<div style="display:flex;gap:6px;align-items:center;padding:12px 0;">
-      <div class="dot-pulse"></div>
-      <div class="dot-pulse" style="animation-delay:0.2s"></div>
-      <div class="dot-pulse" style="animation-delay:0.4s"></div>
-    </div>`;
-    document.getElementById('read-closer').innerHTML  = '';
+    document.getElementById('read-body').innerHTML = '<div style="display:flex;gap:6px;padding:12px 0;"><div class="dot-pulse"></div><div class="dot-pulse" style="animation-delay:0.2s"></div><div class="dot-pulse" style="animation-delay:0.4s"></div></div>';
+    document.getElementById('read-closer').innerHTML = '';
     goTo('screen-read');
 
-    // Fall back to static profile if no input or API fails
-    const fallback = getProfile();
-
-    if (!unseen && !name) {
-      renderReadProfile(fallback); return;
-    }
+    const fallback = readProfiles.default;
+    if (!unseenAnswer && !userName) { renderProfile(fallback); return; }
 
     try {
       const res = await fetch('/api/reflect', {
@@ -1274,20 +582,135 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           activity: 'onboarding',
-          input: unseen || 'I just want to be understood without having to explain myself.',
+          input: unseenAnswer || 'I just want to be understood without having to explain myself.',
+          context: { name: userName || 'her', mbti: 'unknown', astro: chosenAstro || 'unknown' }
+        })
+      });
+      if (!res.ok) throw new Error('fail');
+
+      const fullText = await streamToText(res);
+      parseOnboarding(fullText);
+    } catch { renderProfile(fallback); }
+  }
+
+  function renderProfile(p) {
+    currentStage = p.stage;
+    document.getElementById('read-stage').textContent = p.stage;
+    document.getElementById('read-body').innerHTML = p.paragraphs.map(t => `<p style="margin-bottom:16px;">${t}</p>`).join('');
+    document.getElementById('read-closer').textContent = p.closer;
+    document.getElementById('ask-stage').textContent = p.stage;
+  }
+
+  function parseOnboarding(text) {
+    const parts = text.trim().split('\n\n').map(p => cleanMd(p)).filter(Boolean);
+    if (!parts.length) { renderProfile(readProfiles.default); return; }
+
+    const first = parts[0];
+    let stage, body, closer;
+    if (isTitle(first)) {
+      stage = first;
+      closer = parts.length > 2 ? parts[parts.length - 1] : '';
+      body = parts.length > 2 ? parts.slice(1, -1) : parts.slice(1);
+    } else {
+      stage = 'The Controlled Storm';
+      closer = parts.length > 1 ? parts[parts.length - 1] : '';
+      body = parts.length > 1 ? parts.slice(0, -1) : parts;
+    }
+
+    currentStage = stage;
+    document.getElementById('read-stage').textContent = stage;
+    document.getElementById('ask-stage').textContent = stage;
+    document.getElementById('read-body').innerHTML = body.map(p => `<p style="margin-bottom:16px;">${p}</p>`).join('');
+    document.getElementById('read-closer').textContent = closer;
+  }
+
+  // ── Unboxing ──
+  function startUnboxing() {
+    const orb = document.getElementById('soul-orb');
+    const egg = document.getElementById('egg-reveal');
+    const label = document.getElementById('unbox-label');
+    const sub = document.getElementById('unbox-sub');
+    const btn = document.getElementById('btn-enter');
+
+    setTimeout(() => {
+      orb.style.transform = 'scale(0.1)'; orb.style.opacity = '0';
+    }, 1000);
+    setTimeout(() => {
+      egg.style.opacity = '1';
+      label.textContent = 'Your pet is here.';
+    }, 1800);
+    setTimeout(() => {
+      sub.textContent = currentStage;
+      btn.style.opacity = '1'; btn.style.pointerEvents = 'all';
+    }, 3000);
+  }
+
+  function enterApp() {
+    goTo('screen-ask');
+  }
+
+  // ── ASK YOUR PET ──
+  function askSuggestion(el) {
+    document.getElementById('ask-input').value = el.textContent;
+    sendAsk();
+  }
+
+  async function sendAsk() {
+    const input = document.getElementById('ask-input');
+    const q = input.value.trim();
+    if (!q) return;
+    input.value = '';
+    input.style.height = 'auto';
+
+    // Hide empty state, show messages
+    document.getElementById('ask-empty').style.display = 'none';
+    const msgEl = document.getElementById('ask-messages');
+    msgEl.style.display = 'flex';
+
+    // Hide suggestions after first ask
+    document.getElementById('ask-suggestions').style.display = chatHistory.length > 2 ? 'none' : 'flex';
+
+    // Add question bubble
+    const qDiv = document.createElement('div');
+    qDiv.className = 'msg-q';
+    qDiv.textContent = q;
+    msgEl.appendChild(qDiv);
+
+    // Add answer placeholder
+    const aDiv = document.createElement('div');
+    aDiv.className = 'msg-a';
+    aDiv.innerHTML = '<div class="answer-body"><div class="dot-pulse" style="display:inline-block"></div> <div class="dot-pulse" style="display:inline-block;animation-delay:0.2s"></div> <div class="dot-pulse" style="display:inline-block;animation-delay:0.4s"></div></div>';
+    msgEl.appendChild(aDiv);
+    msgEl.scrollTop = msgEl.scrollHeight;
+
+    // Track in history
+    chatHistory.push({ role: 'user', text: q });
+
+    // Disable send
+    document.getElementById('ask-send').disabled = true;
+
+    try {
+      const res = await fetch('/api/reflect', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          activity: 'ask',
+          input: q,
           context: {
-            name:  name  || 'her',
-            mbti:  chosenMbti  || 'unknown',
-            astro: chosenAstro || 'unknown'
+            name: userName,
+            stage: currentStage,
+            astro: chosenAstro || 'unknown',
+            unseen: unseenAnswer,
+            history: chatHistory.slice(-10) // last 10 messages for context
           }
         })
       });
 
-      if (!res.ok) throw new Error('api fail');
+      if (!res.ok) throw new Error('fail');
 
-      const reader  = res.body.getReader();
+      const reader = res.body.getReader();
       const decoder = new TextDecoder();
-      let buf = '', fullText = '', stageSet = false;
+      let buf = '', fullText = '', started = false;
 
       while (true) {
         const { done, value } = await reader.read();
@@ -1300,535 +723,105 @@
           try {
             const data = JSON.parse(line.slice(6));
             if (data.text) {
+              if (!started) { started = true; }
               fullText += data.text;
-              renderOnboardingStream(fullText, stageSet);
-              if (!stageSet && fullText.includes('\n')) stageSet = true;
+              renderAnswer(aDiv, fullText, false);
+              msgEl.scrollTop = msgEl.scrollHeight;
             }
           } catch {}
         }
-
         if (done) break;
       }
 
-      // Final parse after stream complete
-      parseAndRenderOnboarding(fullText);
-    } catch (e) {
-      renderReadProfile(fallback);
-    }
-  }
+      renderAnswer(aDiv, fullText, true);
+      chatHistory.push({ role: 'pet', text: fullText });
 
-  function renderReadProfile(profile) {
-    currentStage = profile.stage;
-    document.getElementById('read-stage').textContent  = profile.stage;
-    document.getElementById('read-body').innerHTML     = profile.paragraphs
-      .map(p => `<p style="margin-bottom:20px;">${p}</p>`).join('');
-    document.getElementById('read-closer').innerHTML   = profile.closer;
-    document.getElementById('pet-stage').textContent   = profile.stage;
-  }
-
-  function cleanMarkdown(s) {
-    return s.replace(/\*\*/g, '').replace(/\*/g, '').replace(/_/g, '')
-            .replace(/^\[|\]$/g, '').trim();
-  }
-
-  function isValidStageName(s) {
-    // Must be short (≤8 words), no sentence-ending punctuation mid-text
-    const words = s.split(/\s+/);
-    return words.length >= 2 && words.length <= 8 && !s.includes(',') && !s.endsWith('.');
-  }
-
-  function renderOnboardingStream(text) {
-    const parts = text.trim().split('\n\n');
-    const firstLine = cleanMarkdown((text.split('\n')[0] || '').trim());
-
-    // Only set stage name if first line looks like a title
-    if (firstLine && isValidStageName(firstLine)) {
-      document.getElementById('read-stage').textContent = firstLine;
-      currentStage = firstLine;
-      document.getElementById('pet-stage').textContent  = firstLine;
-    }
-
-    // Body: everything after first paragraph, streamed as-is
-    const bodyParts = parts.slice(1);
-    if (bodyParts.length) {
-      document.getElementById('read-body').innerHTML = bodyParts
-        .map(p => `<p style="margin-bottom:20px;">${cleanMarkdown(p.trim())}</p>`).join('');
-    }
-  }
-
-  function parseAndRenderOnboarding(text) {
-    const parts = text.trim().split('\n\n').map(p => cleanMarkdown(p.trim())).filter(Boolean);
-    if (!parts.length) return;
-
-    const firstLine = parts[0];
-    let stage, bodyParts, closer;
-
-    if (isValidStageName(firstLine)) {
-      stage     = firstLine;
-      closer    = parts.length > 2 ? parts[parts.length - 1] : '';
-      bodyParts = parts.length > 2 ? parts.slice(1, -1) : parts.slice(1);
-    } else {
-      // Gemini didn't put title on its own line — use fallback name, all as body
-      stage     = 'The Controlled Storm';
-      closer    = parts.length > 1 ? parts[parts.length - 1] : '';
-      bodyParts = parts.length > 1 ? parts.slice(0, -1) : parts;
-    }
-
-    currentStage = stage;
-    document.getElementById('read-stage').textContent = stage;
-    document.getElementById('pet-stage').textContent  = stage;
-    document.getElementById('read-body').innerHTML    = bodyParts
-      .map(p => `<p style="margin-bottom:20px;">${p}</p>`).join('');
-    document.getElementById('read-closer').innerHTML  = closer;
-  }
-
-  // ── Unboxing animation ──
-  function startUnboxing() {
-    const soul  = document.getElementById('soul-orb');
-    const egg   = document.getElementById('egg-shape');
-    const crack = document.getElementById('egg-crack');
-    const label = document.getElementById('unbox-label');
-    const sub   = document.getElementById('unbox-sub');
-    const btn   = document.getElementById('btn-enter');
-
-    // Phase 1: soul pulses fast
-    soul.style.animation = 'soulPulse 0.6s ease-in-out infinite';
-
-    // Phase 2: collapse inward
-    setTimeout(() => {
-      soul.style.transition = 'transform 0.5s ease-in, opacity 0.5s ease-in';
-      soul.style.transform  = 'scale(0.1)';
-      soul.style.opacity    = '0';
-    }, 1000);
-
-    // Phase 3: egg emerges
-    setTimeout(() => {
-      egg.style.opacity = '1';
-      label.textContent = 'Your Soul Pet is forming.';
-    }, 1700);
-
-    // Phase 4: crack appears
-    setTimeout(() => {
-      crack.style.opacity = '1';
-      label.textContent   = 'Something is trying to get out.';
-      sub.textContent     = 'Come back tomorrow to see what hatches.';
-    }, 3000);
-
-    // Phase 5: CTA appears
-    setTimeout(() => {
-      btn.style.opacity      = '1';
-      btn.style.pointerEvents = 'all';
-    }, 4200);
-  }
-
-  // Override goTo to trigger unboxing when entering screen-unbox
-  const _goTo = goTo;
-  // patch goTo to intercept screen-unbox
-  window.addEventListener('DOMContentLoaded', () => {});
-
-  // Re-patch after scripts load
-  const origGoTo = goTo;
-  function goTo(id) {
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    const next = document.getElementById(id);
-    if (next) {
-      setTimeout(() => {
-        next.classList.add('active');
-        if (id === 'screen-unbox') setTimeout(startUnboxing, 400);
-        if (id === 'screen-emotion') setTimeout(initEmotionCanvas, 100);
-      }, 50);
-    }
-  }
-
-  // ══════════════════════════════════════════
-  // EMOTION COLOR PICKER
-  // ══════════════════════════════════════════
-  let emotionColor = null;
-  let emotionQuadrant = null;
-
-  const emotionMap = [
-    // [xRange, yRange, name, subtitle, aiRegister]
-    { x:[0,.5], y:[0,.5], name:'Grief',        sub:'heavy, still, far away',        register:'cool-dark'  },
-    { x:[.5,1], y:[0,.5], name:'Shame',        sub:'hot, shrinking, exposed',        register:'warm-dark'  },
-    { x:[0,.5], y:[.5,1], name:'Longing',      sub:'soft, searching, unfinished',   register:'cool-light' },
-    { x:[.5,1], y:[.5,1], name:'Hope',         sub:'warm, cautious, opening',        register:'warm-light' },
-  ];
-
-  // Richer zone grid (3×3)
-  const emotionGrid = [
-    // row 0 (top = light), cols left→right (cool→warm)
-    ['Peace',     'Clarity',    'Joy'      ],
-    ['Longing',   'Stillness',  'Warmth'   ],
-    ['Grief',     'Numbness',   'Shame'    ],
-  ];
-  const emotionSubs = {
-    Peace:    'quiet, settled, enough',
-    Clarity:  'sharp, clean, unhurried',
-    Joy:      'bright, spilling outward',
-    Longing:  'soft, searching, unfinished',
-    Stillness:'flat, waiting, suspended',
-    Warmth:   'close, open, tender',
-    Grief:    'heavy, still, far away',
-    Numbness: 'hollow, distant, muffled',
-    Shame:    'hot, shrinking, exposed',
-  };
-
-  function initEmotionCanvas() {
-    const canvas = document.getElementById('emotion-canvas');
-    if (!canvas || canvas._init) return;
-    canvas._init = true;
-    const ctx = canvas.getContext('2d');
-    const W = canvas.width, H = canvas.height;
-
-    // Build 2D gradient field
-    // X: cool (left) → warm (right)
-    // Y: light (top) → dark (bottom)
-    const imageData = ctx.createImageData(W, H);
-    for (let y = 0; y < H; y++) {
-      for (let x = 0; x < W; x++) {
-        const nx = x / W; // 0=cool, 1=warm
-        const ny = y / H; // 0=light, 1=dark
-
-        // Base hue: cool=220 (blue-violet), warm=10 (red-orange)
-        const hue = 220 - nx * 210;
-        // Saturation: more saturated in corners, desaturated center
-        const sat = 40 + 40 * Math.abs(nx - 0.5) * 2 * 0.5 + 20 * Math.abs(ny - 0.5) * 2;
-        // Lightness: top=65%, bottom=18%
-        const lig = 65 - ny * 47;
-
-        const [r, g, b] = hslToRgb(hue / 360, sat / 100, lig / 100);
-        const i = (y * W + x) * 4;
-        imageData.data[i]   = r;
-        imageData.data[i+1] = g;
-        imageData.data[i+2] = b;
-        imageData.data[i+3] = 255;
-      }
-    }
-    ctx.putImageData(imageData, 0, 0);
-
-    // Subtle grid lines
-    ctx.strokeStyle = 'rgba(0,0,0,0.08)';
-    ctx.lineWidth = 1;
-    ctx.beginPath(); ctx.moveTo(W/3,0); ctx.lineTo(W/3,H); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(2*W/3,0); ctx.lineTo(2*W/3,H); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(0,H/3); ctx.lineTo(W,H/3); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(0,2*H/3); ctx.lineTo(W,2*H/3); ctx.stroke();
-
-    const cursor = document.getElementById('emotion-cursor');
-
-    function onPick(e) {
-      const rect = canvas.getBoundingClientRect();
-      const cx = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
-      const cy = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
-      const nx = Math.max(0, Math.min(1, cx / rect.width));
-      const ny = Math.max(0, Math.min(1, cy / rect.height));
-
-      // Map to canvas pixel
-      const px = Math.floor(nx * W);
-      const py = Math.floor(ny * H);
-      const px2 = Math.min(px, W-1), py2 = Math.min(py, H-1);
-      const d = ctx.getImageData(px2, py2, 1, 1).data;
-      emotionColor = `rgb(${d[0]},${d[1]},${d[2]})`;
-
-      // Zone
-      const col = Math.floor(nx * 3);
-      const row = Math.floor(ny * 3);
-      const name = emotionGrid[Math.min(row,2)][Math.min(col,2)];
-      emotionQuadrant = { nx, ny, name };
-
-      document.getElementById('emotion-label').textContent = name;
-      document.getElementById('emotion-sub').textContent   = emotionSubs[name] || '';
-
-      cursor.style.display = 'block';
-      cursor.style.left    = (cx / rect.width  * 300) + 'px';
-      cursor.style.top     = (cy / rect.height * 240) + 'px';
-      cursor.style.background = emotionColor;
-    }
-
-    canvas.addEventListener('click',      onPick);
-    canvas.addEventListener('mousemove',  e => { if (e.buttons) onPick(e); });
-    canvas.addEventListener('touchstart', e => { e.preventDefault(); onPick(e); }, {passive:false});
-    canvas.addEventListener('touchmove',  e => { e.preventDefault(); onPick(e); }, {passive:false});
-  }
-
-  function hslToRgb(h, s, l) {
-    let r, g, b;
-    if (s === 0) { r = g = b = l; }
-    else {
-      const hue2rgb = (p, q, t) => {
-        if (t < 0) t += 1; if (t > 1) t -= 1;
-        if (t < 1/6) return p + (q-p)*6*t;
-        if (t < 1/2) return q;
-        if (t < 2/3) return p + (q-p)*(2/3-t)*6;
-        return p;
-      };
-      const q = l < 0.5 ? l*(1+s) : l+s-l*s;
-      const p = 2*l - q;
-      r = hue2rgb(p, q, h + 1/3);
-      g = hue2rgb(p, q, h);
-      b = hue2rgb(p, q, h - 1/3);
-    }
-    return [Math.round(r*255), Math.round(g*255), Math.round(b*255)];
-  }
-
-  // Emotion result profiles
-  const emotionProfiles = {
-    Peace:    { body: 'This is the quiet that comes after something has been accepted — not forced, not performed. You\'re not suppressing anything right now. Something settled, and you let it.\n\nPeace isn\'t the absence of everything difficult. It\'s the presence of something that no longer needs resolving.', closer: 'Notice what you did today that made room for this. Do more of that.' },
-    Clarity:  { body: 'Your mind cut through something today. The noise dropped, and you could see the shape of things clearly — maybe a decision, maybe a relationship, maybe just yourself.\n\nClarity is rarely comfortable when it arrives. But it\'s always honest.', closer: 'What you saw clearly today — don\'t let tomorrow\'s noise bury it.' },
-    Joy:      { body: 'Something today opened you outward. Joy isn\'t always big — sometimes it\'s just a moment where life asked nothing of you and you said yes anyway.\n\nYou let it in. That matters more than you think.', closer: 'The parts of you that know how to receive joy are the same parts that know how to give it.' },
-    Longing:  { body: 'You\'re reaching toward something that isn\'t here yet — or isn\'t here anymore. Longing is one of the most honest emotions there is. It knows exactly what it wants. The painful part is the distance.\n\nThis isn\'t sadness. It\'s direction.', closer: 'What you\'re longing for is telling you something about what you actually value. Listen to it.' },
-    Stillness:{ body: 'You\'re between things. Not numb — suspended. The world kept moving today and you watched it from somewhere slightly outside of it.\n\nStillness can be avoidance. But it can also be the thing that happens right before something clarifies.', closer: 'You\'re not stuck. You\'re waiting for something to become obvious. Give it a little more time.' },
-    Warmth:   { body: 'Someone or something today made you feel close. Not just connected — seen. That\'s a different feeling and it\'s rarer than people admit.\n\nYou let yourself be affected today. That takes more courage than people name.', closer: 'The warmth you felt is evidence that you\'re still open. Don\'t take that for granted.' },
-    Grief:    { body: 'Something is absent today that used to be present. It doesn\'t have to be a death — grief shows up for versions of people, of futures, of who we thought we were becoming.\n\nThe weight of it is real. You don\'t have to explain it or resolve it right now.', closer: 'Grief is love with nowhere to go. It doesn\'t mean something went wrong. It means it mattered.' },
-    Numbness: { body: 'You\'re buffered right now. The feelings are there but they\'re arriving through glass — muted, distant, slightly unreal. This is usually protection, not emptiness.\n\nSomething happened — maybe recently, maybe a while ago — that your system decided was too much to process all at once.', closer: 'You\'re not broken. You\'re pacing yourself. The feeling will come back when you\'re ready.' },
-    Shame:    { body: 'Something today made you feel like you shouldn\'t be exactly as you are. That\'s the specific texture of shame — it\'s not about what you did, it\'s about what that makes you.\n\nThe sting of it is real. But shame lies about permanence. What it\'s telling you about who you are is almost always wrong.', closer: 'The fact that you can feel this means your values are intact. Shame and integrity come from the same place.' },
-  };
-
-  async function submitEmotion() {
-    if (!emotionQuadrant) {
-      document.getElementById('emotion-sub').textContent = 'Tap the colour field first.';
-      return;
-    }
-    const text = document.getElementById('emotion-text').value.trim();
-    if (!text) {
-      document.getElementById('emotion-text').style.borderColor = 'rgba(200,200,220,0.4)';
-      document.getElementById('emotion-text').placeholder = 'Tell me what happened first.';
-      return;
-    }
-
-    const name   = emotionQuadrant.name;
-    const swatch = document.getElementById('result-swatch');
-    swatch.style.background = emotionColor;
-    document.getElementById('result-emotion-name').textContent = name;
-    document.getElementById('result-emotion-body').innerHTML   = '';
-    document.getElementById('result-emotion-closer').textContent = '';
-    goTo('screen-emotion-result');
-
-    await streamReflection('emotion', text, {
-      emotionName: name,
-      register: emotionQuadrant.ny < 0.4 ? 'light' : emotionQuadrant.ny > 0.7 ? 'dark' : 'mid',
-      texture: emotionSubs[name] || ''
-    }, 'result-emotion-body', 'result-emotion-closer');
-  }
-
-  // ══════════════════════════════════════════
-  // RELATIONSHIP MIRROR
-  // ══════════════════════════════════════════
-  const personProfiles = [
-    {
-      keywords: ['cold','distant','ignore','ignores','pulls away','withdraws'],
-      title: 'What their distance activates in you',
-      body: 'The way they pull back triggers something specific in you — a particular kind of reaching, or a particular kind of shutting down. That reaction isn\'t random.\n\nPeople who go cold tend to surface one of two things: either a wound around abandonment (the feeling that closeness is never safe to count on), or a wound around worth (the fear that their withdrawal means something true about you).\n\nThe question isn\'t why they go cold. It\'s: what story do you tell yourself in the silence?',
-      closer: 'Their behaviour is data about them. Your reaction is data about you. Only one of those is yours to work with.'
-    },
-    {
-      keywords: ['rude','dismissive','disrespect','doesn\'t listen','talks over','belittles'],
-      title: 'What their dismissal reveals',
-      body: 'Being dismissed by someone who matters to you doesn\'t just sting — it confirms something you\'ve been quietly afraid of. That\'s what makes it land so hard.\n\nThe question worth sitting with: why does this person\'s opinion of you carry that much weight? Not everyone\'s dismissal hits equally. The ones that land hard are the ones where, somewhere underneath, you\'ve been hoping for the opposite.\n\nTheir behaviour is probably not about you. Your response almost certainly is.',
-      closer: 'You can\'t control who sees you clearly. You can control who gets to matter.'
-    },
-    {
-      keywords: ['hot and cold','inconsistent','unpredictable','sometimes nice','blows hot'],
-      title: 'What inconsistency does to you',
-      body: 'Inconsistency is one of the most psychologically destabilising things another person can do — not because it\'s cruel, but because it keeps you in a state of constant recalibration. You can\'t settle. You can\'t trust the good moments. You\'re always waiting for the shift.\n\nWhat this reveals about you: you\'re probably someone who reads people quickly and accurately. Which means the inconsistency genuinely confuses you — you keep trying to find the pattern that explains it. There isn\'t one. That\'s the pattern.',
-      closer: 'You\'re not failing to understand them. They\'re genuinely unresolved. That\'s theirs to carry, not yours to solve.'
-    },
-  ];
-
-  // ══════════════════════════════════════════
-  // DECISION SCAN — Voice
-  // ══════════════════════════════════════════
-  let recognition = null;
-  let voiceActive = false;
-
-  function startVoice(e) {
-    if (e) e.preventDefault();
-    const btn    = document.getElementById('voice-btn');
-    const status = document.getElementById('voice-status');
-    const ring1  = document.getElementById('voice-ring-1');
-    const ring2  = document.getElementById('voice-ring-2');
-
-    voiceActive = true;
-    btn.style.transform  = 'scale(0.93)';
-    btn.style.boxShadow  = '0 0 50px rgba(140,140,220,0.7)';
-    status.textContent   = 'Listening...';
-    ring1.style.transform = 'translate(-50%,-50%) scale(1.15)';
-    ring2.style.transform = 'translate(-50%,-50%) scale(1.25)';
-    ring1.style.borderColor = 'rgba(200,200,220,0.35)';
-    ring2.style.borderColor = 'rgba(200,200,220,0.18)';
-
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SpeechRecognition) {
-      status.textContent = 'Voice not supported — type below';
-      return;
-    }
-    recognition = new SpeechRecognition();
-    recognition.continuous    = true;
-    recognition.interimResults = true;
-    recognition.lang          = 'en-US';
-
-    let finalText = '';
-    recognition.onresult = e => {
-      let interim = '';
-      for (let i = e.resultIndex; i < e.results.length; i++) {
-        if (e.results[i].isFinal) finalText += e.results[i][0].transcript + ' ';
-        else interim = e.results[i][0].transcript;
-      }
-      const display = (finalText + interim).trim();
-      document.getElementById('voice-transcript').textContent = display;
-      document.getElementById('decision-text').value          = display;
-      document.getElementById('voice-transcript-wrap').style.display = 'block';
-    };
-
-    recognition.onerror = () => { status.textContent = 'Couldn\'t hear that — type below'; };
-    recognition.start();
-  }
-
-  function stopVoice() {
-    if (!voiceActive) return;
-    voiceActive = false;
-    const btn    = document.getElementById('voice-btn');
-    const status = document.getElementById('voice-status');
-    const ring1  = document.getElementById('voice-ring-1');
-    const ring2  = document.getElementById('voice-ring-2');
-
-    btn.style.transform  = 'scale(1)';
-    btn.style.boxShadow  = '0 0 30px rgba(140,140,200,0.35)';
-    ring1.style.transform = 'translate(-50%,-50%) scale(1)';
-    ring2.style.transform = 'translate(-50%,-50%) scale(1)';
-    ring1.style.borderColor = 'rgba(200,200,220,0.15)';
-    ring2.style.borderColor = 'rgba(200,200,220,0.08)';
-    status.textContent   = 'Done — tap Scan or edit below';
-
-    if (recognition) { try { recognition.stop(); } catch(e) {} }
-  }
-
-  const decisionProfiles = [
-    {
-      keywords: ['job','work','career','quit','leave','stay','offer','salary','promotion'],
-      stage: 'The Safety Trap',
-      body: 'You already know what you want to do. The fact that you\'re describing this as a decision is the first signal — real uncertainty doesn\'t feel like being stuck, it feels like not knowing. Being stuck means you know, and something is blocking the move.\n\nWhat\'s usually underneath a career decision isn\'t the logic of the options. It\'s the identity threat. One path says something about who you are that you\'re not sure you\'re ready to own yet.\n\nThe fear isn\'t failure. It\'s visibility — that if you choose the thing you actually want, you become someone who can be judged for wanting it.',
-      q: 'What does choosing the thing you want make you responsible for?'
-    },
-    {
-      keywords: ['relationship','him','her','they','partner','together','break','leave','stay','love','feelings'],
-      stage: 'The Attachment Calculation',
-      body: 'You\'re not weighing two options. You\'re weighing what you\'ve already invested against what you actually want going forward — and those are different problems.\n\nThe pull to stay is often not about the present reality. It\'s about who this person was, or who you were when it was good. Leaving means letting that version of the story end.\n\nThe pull to go is usually clearer than you\'re letting yourself admit. You already know which parts of this aren\'t working. The question is whether you believe something better is possible — for you, specifically.',
-      q: 'What are you protecting by not deciding yet?'
-    },
-    {
-      keywords: ['move','city','country','relocate','home','where','place','live'],
-      stage: 'The Roots Question',
-      body: 'This kind of decision drags because it\'s not really about logistics — it\'s about identity. Where you live shapes who you become, who you meet, what version of yourself you get to be.\n\nThe place you\'re considering leaving holds a version of you. The place you\'re considering going holds a version you haven\'t met yet. That unknown can feel like excitement or threat depending on where your baseline is right now.',
-      q: 'Which version of yourself are you afraid to leave behind — and which one are you afraid won\'t survive the move?'
-    },
-    {
-      keywords: [],
-      stage: 'The Known Unknown',
-      body: 'The reason this feels like a decision is that both paths require you to give something up — and you haven\'t fully grieved what you\'d lose on either side yet.\n\nMost stuckness isn\'t about not knowing the answer. It\'s about not being ready to bear the cost of knowing. The answer is usually already there, quieter than the noise around it.\n\nThe question worth sitting with: if no one in your life would ever know which option you chose, which would you take? That answer is the signal underneath all the analysis.',
-      q: 'What does staying stuck protect you from having to own?'
-    },
-  ];
-
-  async function submitDecision() {
-    const text = (document.getElementById('decision-text').value || '').trim();
-    if (!text) return;
-
-    document.getElementById('result-decision-stage').textContent = '';
-    document.getElementById('result-decision-body').innerHTML    = '';
-    document.getElementById('result-decision-q').textContent     = '';
-    goTo('screen-decision-result');
-
-    await streamReflection('decision', text, {}, 'result-decision-body', 'result-decision-q');
-  }
-
-  async function submitPerson() {
-    const who  = (document.getElementById('person-who').value  || '').trim();
-    const what = (document.getElementById('person-what').value || '').trim();
-    if (!what) return;
-
-    document.getElementById('result-person-title').textContent = who ? `You and ${who}` : 'The mirror';
-    document.getElementById('result-person-body').innerHTML    = '';
-    document.getElementById('result-person-closer').textContent = '';
-    goTo('screen-person-result');
-
-    await streamReflection('person', what, { who }, 'result-person-body', 'result-person-closer');
-  }
-
-  // ══════════════════════════════════════════
-  // STREAMING ENGINE
-  // ══════════════════════════════════════════
-  async function streamReflection(activity, input, context, bodyEl, closerEl) {
-    const body   = document.getElementById(bodyEl);
-    const closer = document.getElementById(closerEl);
-
-    // Loading state
-    body.innerHTML = `<div id="stream-loading" style="display:flex;gap:5px;align-items:center;padding:8px 0;">
-      <div class="dot-pulse"></div><div class="dot-pulse" style="animation-delay:0.2s"></div><div class="dot-pulse" style="animation-delay:0.4s"></div>
-    </div>`;
-
-    try {
-      const res = await fetch('/api/reflect', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ activity, input, context })
-      });
-
-      if (!res.ok) throw new Error(`API error ${res.status}`);
-
-      const reader = res.body.getReader();
-      const decoder = new TextDecoder();
-      let buffer = '';
-      let fullText = '';
-      let started = false;
-
-      while (true) {
-        const { done, value } = await reader.read();
-        buffer += decoder.decode(value ?? new Uint8Array(), { stream: !done });
-        const lines = buffer.split('\n');
-        buffer = done ? '' : lines.pop();
-
-        for (const line of lines) {
-          if (!line.startsWith('data: ')) continue;
-          try {
-            const data = JSON.parse(line.slice(6));
-            if (data.text) {
-              if (!started) { body.innerHTML = ''; started = true; }
-              fullText += data.text;
-              renderStreamText(fullText, body, closer, false);
-            }
-          } catch {}
+      // Extract closer for insights
+      const paras = fullText.trim().split('\n\n').filter(Boolean);
+      if (paras.length > 1) {
+        const closer = cleanMd(paras[paras.length - 1]);
+        if (closer.length < 160) {
+          insights.unshift({ q, closer, timestamp: Date.now() });
+          renderInsights();
         }
-
-        if (done) break;
       }
 
-      // Final render with closer splitting
-      if (fullText) renderStreamText(fullText, body, closer, true);
-    } catch (err) {
-      body.innerHTML = `<p style="color:rgba(200,200,220,0.5);">Couldn't reach the mirror right now. Try again.</p>`;
+    } catch {
+      aDiv.innerHTML = '<div class="answer-body" style="color:var(--text-dim);">I couldn\'t reach through right now. Try again.</div>';
     }
+
+    document.getElementById('ask-send').disabled = false;
+    msgEl.scrollTop = msgEl.scrollHeight;
   }
 
-  function renderStreamText(text, bodyEl, closerEl, isFinal = false) {
-    const paras = text.split(/\n\n+/).filter(p => p.trim());
+  function renderAnswer(el, text, isFinal) {
+    const paras = text.split(/\n\n+/).map(p => cleanMd(p)).filter(Boolean);
     if (!paras.length) return;
 
-    // Only split closer on final render — never mid-stream
     if (isFinal && paras.length > 1) {
-      const last = paras[paras.length - 1] || '';
-      const isCloser = last.startsWith('*') || last.startsWith('"') || last.startsWith('_') ||
-        (last.length < 140 && !last.endsWith('...'));
-      const bodyParas  = isCloser ? paras.slice(0, -1) : paras;
-      const closerText = isCloser ? last.replace(/^\*+|\*+$/g, '').replace(/^_+|_+$/g, '') : '';
-      bodyEl.innerHTML = bodyParas.map(p =>
-        `<p style="margin-bottom:18px;">${p}</p>`).join('');
-      if (closerText) closerEl.textContent = closerText;
+      const last = paras[paras.length - 1];
+      const isCloser = last.length < 160 && !last.endsWith('...');
+      const bodyParas = isCloser ? paras.slice(0, -1) : paras;
+      const closerText = isCloser ? last : '';
+      el.innerHTML =
+        `<div class="answer-body">${bodyParas.map(p => `<p style="margin-bottom:12px;">${p}</p>`).join('')}</div>` +
+        (closerText ? `<div class="answer-closer">${closerText}</div>` : '');
     } else {
-      // Mid-stream: render everything as body, don't touch closer
-      bodyEl.innerHTML = paras.map(p =>
-        `<p style="margin-bottom:18px;">${p}</p>`).join('');
+      el.innerHTML = `<div class="answer-body">${paras.map(p => `<p style="margin-bottom:12px;">${p}</p>`).join('')}</div>`;
     }
+  }
+
+  // ── INSIGHTS ──
+  function renderInsights() {
+    const list = document.getElementById('insights-list');
+    if (!insights.length) return;
+
+    list.innerHTML = insights.map(i => {
+      const time = new Date(i.timestamp);
+      const timeStr = time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      return `<div class="insight-card">
+        <div class="insight-q">${i.q} · ${timeStr}</div>
+        <div class="insight-a">"${i.closer}"</div>
+      </div>`;
+    }).join('');
+  }
+
+  // ── Stream helper ──
+  async function streamToText(res) {
+    const reader = res.body.getReader();
+    const decoder = new TextDecoder();
+    let buf = '', fullText = '';
+
+    while (true) {
+      const { done, value } = await reader.read();
+      buf += decoder.decode(value ?? new Uint8Array(), { stream: !done });
+      const lines = buf.split('\n');
+      buf = done ? '' : lines.pop();
+
+      for (const line of lines) {
+        if (!line.startsWith('data: ')) continue;
+        try {
+          const data = JSON.parse(line.slice(6));
+          if (data.text) {
+            fullText += data.text;
+            // Stream to read screen as it arrives
+            const parts = fullText.trim().split('\n\n').map(p => cleanMd(p)).filter(Boolean);
+            if (parts.length) {
+              const first = parts[0];
+              if (isTitle(first)) {
+                document.getElementById('read-stage').textContent = first;
+                document.getElementById('ask-stage').textContent = first;
+                currentStage = first;
+              }
+              const body = isTitle(parts[0]) ? parts.slice(1) : parts;
+              document.getElementById('read-body').innerHTML = body.map(p => `<p style="margin-bottom:16px;">${p}</p>`).join('');
+            }
+          }
+        } catch {}
+      }
+      if (done) break;
+    }
+    return fullText;
   }
 </script>
 </body>
