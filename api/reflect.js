@@ -71,7 +71,7 @@ What they do: "${input}"`;
   }
 
   const apiKey = process.env.GEMINI_API_KEY;
-  const model  = 'gemini-2.0-flash';
+  const model  = 'gemini-3-pro-preview';
   const url    = `https://generativelanguage.googleapis.com/v1beta/models/${model}:streamGenerateContent?alt=sse&key=${apiKey}`;
 
   const geminiBody = {
