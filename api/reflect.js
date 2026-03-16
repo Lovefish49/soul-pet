@@ -142,6 +142,8 @@ What they do: "${input}"`;
     const name = (context?.name || '').trim();
     userMessage = `${name ? `Her name: ${name}` : 'She did not share her name.'}
 Sun sign: ${context?.astro || 'unknown'}
+MBTI: ${context?.mbti || 'unknown'}
+Attachment style: ${context?.attachment || 'unknown'}
 Soul stage: ${context?.stage || 'unknown'}
 What she wishes people understood: "${context?.unseen || 'not shared'}"
 
@@ -152,17 +154,19 @@ Respond in 2-4 short paragraphs. End with one closing line after a blank line. P
     userMessage = `Name: ${context?.name || 'unknown'}
 MBTI: ${context?.mbti || 'unknown'}
 Sun sign: ${context?.astro || 'unknown'}
+Attachment style: ${context?.attachment || 'unknown'}
 What they wish people knew about them: "${input}"`;
   }
 
   const apiKey = process.env.GEMINI_API_KEY;
-  const model  = 'gemini-3-pro-preview';
+  // Use Flash for ask (fast, cheap, conversational) — Pro for onboarding (quality matters)
+  const model  = activity === 'ask' ? 'gemini-2.5-flash' : 'gemini-3-pro-preview';
   const url    = `https://generativelanguage.googleapis.com/v1beta/models/${model}:streamGenerateContent?alt=sse&key=${apiKey}`;
 
   const geminiBody = {
     system_instruction: { parts: [{ text: systemPrompt }] },
     contents: [{ role: 'user', parts: [{ text: userMessage }] }],
-    generationConfig: { maxOutputTokens: activity === 'ask' ? 600 : 900, temperature: 0.85 }
+    generationConfig: { maxOutputTokens: 1024, temperature: 0.85 }
   };
 
   const upstream = await fetch(url, {

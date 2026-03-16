@@ -341,6 +341,18 @@
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     @keyframes dotPulse { 0%, 100% { opacity: 0.3; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1.2); } }
     .dot-pulse { width: 5px; height: 5px; border-radius: 50%; background: rgba(255,255,255,0.3); animation: dotPulse 1s ease-in-out infinite; display: inline-block; }
+
+    /* ── IDENTITY TILES ── */
+    .identity-tile {
+      border: 1px solid rgba(255,255,255,0.12);
+      padding: 22px 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      background: transparent;
+    }
+    .identity-tile:hover { border-color: rgba(255,255,255,0.35); }
+    .identity-tile.selected { border-color: #fff; background: rgba(255,255,255,0.05); }
   </style>
 </head>
 <body>
@@ -364,23 +376,91 @@
   <div class="label" style="margin-bottom:16px;">01</div>
   <div class="heading" style="text-align:center;margin-bottom:48px;">What do we<br/>call you?</div>
   <input class="text-input" id="input-name" type="text" placeholder="Your name" autocomplete="off" />
-  <button class="btn-main" onclick="goTo('screen-astro')">Continue</button>
+  <button class="btn-main" onclick="goTo('screen-identity')">Continue</button>
 </div>
 
-<!-- ═══ SCREEN 2: ASTRO ═══ -->
-<div class="screen" id="screen-astro">
-  <div class="progress-bar"><div class="progress-fill" style="width:66%"></div></div>
+<!-- ═══ SCREEN 2: IDENTITY SELECTOR ═══ -->
+<div class="screen" id="screen-identity">
+  <div class="progress-bar"><div class="progress-fill" style="width:40%"></div></div>
   <div class="label" style="margin-bottom:16px;">02</div>
+  <div class="heading" style="text-align:center;margin-bottom:40px;">How do you<br/>understand yourself?</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;max-width:320px;margin-bottom:36px;">
+    <div class="identity-tile" id="tile-mbti" onclick="toggleTile('mbti')">
+      <span style="font-size:20px;display:block;margin-bottom:8px;">✦</span>
+      <div style="font-family:var(--font-mono);font-size:10px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--text);margin-bottom:4px;">MBTI</div>
+      <div style="font-size:11px;color:var(--text-dim);">Personality type</div>
+    </div>
+    <div class="identity-tile" id="tile-astro" onclick="toggleTile('astro')">
+      <span style="font-size:20px;display:block;margin-bottom:8px;">☽</span>
+      <div style="font-family:var(--font-mono);font-size:10px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--text);margin-bottom:4px;">Astrology</div>
+      <div style="font-size:11px;color:var(--text-dim);">Sun sign</div>
+    </div>
+    <div class="identity-tile" id="tile-attach" onclick="toggleTile('attach')">
+      <span style="font-size:20px;display:block;margin-bottom:8px;">♡</span>
+      <div style="font-family:var(--font-mono);font-size:10px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--text);margin-bottom:4px;">Attachment</div>
+      <div style="font-size:11px;color:var(--text-dim);">How you love</div>
+    </div>
+    <div class="identity-tile" id="tile-num" onclick="toggleTile('num')">
+      <span style="font-size:20px;display:block;margin-bottom:8px;">∞</span>
+      <div style="font-family:var(--font-mono);font-size:10px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--text);margin-bottom:4px;">Numerology</div>
+      <div style="font-size:11px;color:var(--text-dim);">Life path</div>
+    </div>
+  </div>
+  <button class="btn-main" onclick="afterIdentity()">Continue</button>
+  <button class="btn-skip" onclick="goTo('screen-unseen')">Discover later</button>
+</div>
+
+<!-- ═══ SCREEN 2b: MBTI ═══ -->
+<div class="screen" id="screen-mbti">
+  <div class="progress-bar"><div class="progress-fill" style="width:55%"></div></div>
+  <div class="label" style="margin-bottom:16px;">MBTI</div>
+  <div class="heading" style="text-align:center;margin-bottom:48px;">What's your type?</div>
+  <div class="chip-grid" style="grid-template-columns:repeat(4,1fr);" id="mbti-grid"></div>
+  <button class="btn-main" onclick="afterMbti()">Continue</button>
+  <button class="btn-skip" onclick="afterMbti()">Not sure</button>
+</div>
+
+<!-- ═══ SCREEN 2c: ASTRO ═══ -->
+<div class="screen" id="screen-astro">
+  <div class="progress-bar"><div class="progress-fill" style="width:70%"></div></div>
+  <div class="label" style="margin-bottom:16px;">Astrology</div>
   <div class="heading" style="text-align:center;margin-bottom:48px;">What's your<br/>sun sign?</div>
   <div class="chip-grid cols-3" id="astro-grid"></div>
-  <button class="btn-main" onclick="goTo('screen-unseen')">Continue</button>
-  <button class="btn-skip" onclick="goTo('screen-unseen')">Skip</button>
+  <button class="btn-main" onclick="afterAstro()">Continue</button>
+  <button class="btn-skip" onclick="afterAstro()">Skip</button>
+</div>
+
+<!-- ═══ SCREEN 2d: ATTACHMENT ═══ -->
+<div class="screen" id="screen-attach">
+  <div class="progress-bar"><div class="progress-fill" style="width:75%"></div></div>
+  <div class="label" style="margin-bottom:16px;">Attachment</div>
+  <div class="heading" style="text-align:center;margin-bottom:40px;">How do you<br/>love?</div>
+  <div style="display:flex;flex-direction:column;gap:10px;width:100%;max-width:320px;margin-bottom:36px;">
+    <div class="chip" style="padding:16px;text-align:left;" onclick="chooseAttach(this,'Secure')">
+      <div style="font-size:12px;color:var(--text);margin-bottom:2px;">Secure</div>
+      <div style="font-size:10px;color:var(--text-dim);text-transform:none;letter-spacing:0.02em;">Comfortable with closeness and independence</div>
+    </div>
+    <div class="chip" style="padding:16px;text-align:left;" onclick="chooseAttach(this,'Anxious')">
+      <div style="font-size:12px;color:var(--text);margin-bottom:2px;">Anxious</div>
+      <div style="font-size:10px;color:var(--text-dim);text-transform:none;letter-spacing:0.02em;">Crave closeness, fear abandonment</div>
+    </div>
+    <div class="chip" style="padding:16px;text-align:left;" onclick="chooseAttach(this,'Avoidant')">
+      <div style="font-size:12px;color:var(--text);margin-bottom:2px;">Avoidant</div>
+      <div style="font-size:10px;color:var(--text-dim);text-transform:none;letter-spacing:0.02em;">Value independence, pull away from closeness</div>
+    </div>
+    <div class="chip" style="padding:16px;text-align:left;" onclick="chooseAttach(this,'Fearful-Avoidant')">
+      <div style="font-size:12px;color:var(--text);margin-bottom:2px;">Fearful-Avoidant</div>
+      <div style="font-size:10px;color:var(--text-dim);text-transform:none;letter-spacing:0.02em;">Want closeness but fear it too</div>
+    </div>
+  </div>
+  <button class="btn-main" onclick="afterAttach()">Continue</button>
+  <button class="btn-skip" onclick="afterAttach()">Not sure</button>
 </div>
 
 <!-- ═══ SCREEN 3: THE REAL QUESTION ═══ -->
 <div class="screen" id="screen-unseen">
-  <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
-  <div class="label" style="margin-bottom:16px;">03</div>
+  <div class="progress-bar"><div class="progress-fill" style="width:90%"></div></div>
+  <div class="label" style="margin-bottom:16px;">One last thing</div>
   <div class="heading" style="text-align:center;font-size:24px;margin-bottom:40px;">What do you wish<br/>people understood<br/>about you?</div>
   <textarea id="input-unseen" placeholder="No wrong answers." style="
     background:transparent;
@@ -503,11 +583,47 @@
 <script>
   // ── State ──
   let chosenAstro = null;
+  let chosenMbti = null;
+  let chosenAttach = null;
   let currentStage = 'Your Pet';
   let userName = '';
   let unseenAnswer = '';
-  const chatHistory = []; // {role:'user'|'pet', text:'...'}
-  const insights = []; // {q:'...', closer:'...', timestamp:...}
+  const selectedTiles = new Set();
+  const chatHistory = [];
+  const insights = [];
+
+  // ── Identity tile logic ──
+  function toggleTile(key) {
+    const tile = document.getElementById('tile-' + key);
+    if (selectedTiles.has(key)) { selectedTiles.delete(key); tile.classList.remove('selected'); }
+    else { selectedTiles.add(key); tile.classList.add('selected'); }
+  }
+
+  function afterIdentity() {
+    if (selectedTiles.has('mbti')) goTo('screen-mbti');
+    else if (selectedTiles.has('astro')) goTo('screen-astro');
+    else if (selectedTiles.has('attach')) goTo('screen-attach');
+    else goTo('screen-unseen');
+  }
+
+  function afterMbti() {
+    if (selectedTiles.has('astro')) goTo('screen-astro');
+    else if (selectedTiles.has('attach')) goTo('screen-attach');
+    else goTo('screen-unseen');
+  }
+
+  function afterAstro() {
+    if (selectedTiles.has('attach') && !chosenAttach) goTo('screen-attach');
+    else goTo('screen-unseen');
+  }
+
+  function afterAttach() { goTo('screen-unseen'); }
+
+  function chooseAttach(el, val) {
+    document.querySelectorAll('#screen-attach .chip').forEach(c => c.classList.remove('chosen'));
+    el.classList.add('chosen');
+    chosenAttach = val;
+  }
 
   // ── Screen nav ──
   function goTo(id) {
@@ -525,6 +641,21 @@
     }
     if (id === 'screen-unbox') setTimeout(startUnboxing, 400);
   }
+
+  // ── MBTI grid ──
+  const mbtiTypes = ['INTJ','INTP','ENTJ','ENTP','INFJ','INFP','ENFJ','ENFP','ISTJ','ISFJ','ESTJ','ESFJ','ISTP','ISFP','ESTP','ESFP'];
+  const mg = document.getElementById('mbti-grid');
+  mbtiTypes.forEach(t => {
+    const c = document.createElement('div');
+    c.className = 'chip';
+    c.textContent = t;
+    c.onclick = () => {
+      document.querySelectorAll('#mbti-grid .chip').forEach(x => x.classList.remove('chosen'));
+      c.classList.add('chosen');
+      chosenMbti = t;
+    };
+    mg.appendChild(c);
+  });
 
   // ── Astro grid ──
   const zodiac = [
@@ -583,7 +714,7 @@
         body: JSON.stringify({
           activity: 'onboarding',
           input: unseenAnswer || 'I just want to be understood without having to explain myself.',
-          context: { name: userName || 'her', mbti: 'unknown', astro: chosenAstro || 'unknown' }
+          context: { name: userName || 'her', mbti: chosenMbti || 'unknown', astro: chosenAstro || 'unknown', attachment: chosenAttach || 'unknown' }
         })
       });
       if (!res.ok) throw new Error('fail');
@@ -700,8 +831,10 @@
             name: userName,
             stage: currentStage,
             astro: chosenAstro || 'unknown',
+            mbti: chosenMbti || 'unknown',
+            attachment: chosenAttach || 'unknown',
             unseen: unseenAnswer,
-            history: chatHistory.slice(-10) // last 10 messages for context
+            history: chatHistory.slice(-10)
           }
         })
       });
