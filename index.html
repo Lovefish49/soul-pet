@@ -677,7 +677,7 @@
         </div>
         <div style="display:flex;align-items:center;gap:10px;">
           <div style="width:6px;height:6px;border-radius:50%;background:rgba(200,200,220,0.3);flex-shrink:0;"></div>
-          <div style="font-size:13px;color:var(--text-dim);">Complete a Pattern Check <span style="color:rgba(200,200,220,0.5);">+20 XP</span></div>
+          <div style="font-size:13px;color:var(--text-dim);">Use the Relationship Mirror <span style="color:rgba(200,200,220,0.5);">+15 XP</span></div>
         </div>
       </div>
     </div>
@@ -706,13 +706,10 @@
       <div style="font-size:13px;color:var(--text-dim);cursor:pointer;" onclick="goTo('screen-pet')">My Pet ›</div>
     </div>
 
-    <!-- Section label -->
-    <div style="font-size:11px;letter-spacing:0.16em;color:var(--text-dim);text-transform:uppercase;margin-bottom:14px;">Understand Yourself</div>
+    <!-- Activity grid — 4 cards, no dupes -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:0;">
 
-    <!-- Activity grid -->
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px;">
-
-      <!-- Daily Reflection shortcut -->
+      <!-- 1. Daily Reflection -->
       <div style="
         background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);
         border-radius:18px;padding:20px 16px;cursor:pointer;
@@ -723,29 +720,7 @@
         <div style="margin-top:12px;font-size:11px;color:rgba(200,200,220,0.5);">+10 XP</div>
       </div>
 
-      <!-- Daily Reflection -->
-      <div style="
-        background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);
-        border-radius:18px;padding:20px 16px;cursor:pointer;
-      " onclick="alert('Daily Reflection — coming soon')">
-        <div style="font-size:22px;margin-bottom:10px;">🪞</div>
-        <div style="font-size:14px;font-weight:400;color:var(--text);margin-bottom:4px;">Daily Reflection</div>
-        <div style="font-size:11px;color:var(--text-dim);line-height:1.4;">One moment from today. AI finds the pattern underneath.</div>
-        <div style="margin-top:12px;font-size:11px;color:rgba(200,200,220,0.5);">+10 XP</div>
-      </div>
-
-      <!-- Convo Decoder -->
-      <div style="
-        background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);
-        border-radius:18px;padding:20px 16px;cursor:pointer;
-      " onclick="alert('Convo Decoder — coming soon')">
-        <div style="font-size:22px;margin-bottom:10px;">💬</div>
-        <div style="font-size:14px;font-weight:400;color:var(--text);margin-bottom:4px;">Convo Decoder</div>
-        <div style="font-size:11px;color:var(--text-dim);line-height:1.4;">Paste a convo. AI reads what's really being said.</div>
-        <div style="margin-top:12px;font-size:11px;color:rgba(200,200,220,0.5);">+12 XP</div>
-      </div>
-
-      <!-- Decision Scan -->
+      <!-- 2. Decision Scan -->
       <div style="
         background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);
         border-radius:18px;padding:20px 16px;cursor:pointer;
@@ -756,14 +731,7 @@
         <div style="margin-top:12px;font-size:11px;color:rgba(200,200,220,0.5);">+15 XP</div>
       </div>
 
-    </div>
-
-    <!-- Section label -->
-    <div style="font-size:11px;letter-spacing:0.16em;color:var(--text-dim);text-transform:uppercase;margin-bottom:14px;">Understand Others</div>
-
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-
-      <!-- Relationship Mirror -->
+      <!-- 3. Relationship Mirror -->
       <div style="
         background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);
         border-radius:18px;padding:20px 16px;cursor:pointer;
@@ -774,15 +742,15 @@
         <div style="margin-top:12px;font-size:11px;color:rgba(200,200,220,0.5);">+15 XP</div>
       </div>
 
-      <!-- Emotion Translator -->
+      <!-- 4. Convo Decoder — coming soon placeholder -->
       <div style="
-        background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);
-        border-radius:18px;padding:20px 16px;cursor:pointer;
-      " onclick="goTo('screen-emotion')">
-        <div style="font-size:22px;margin-bottom:10px;">🌊</div>
-        <div style="font-size:14px;font-weight:400;color:var(--text);margin-bottom:4px;">Daily Reflection</div>
-        <div style="font-size:11px;color:var(--text-dim);line-height:1.4;">Pick a colour. AI names what you're feeling and why.</div>
-        <div style="margin-top:12px;font-size:11px;color:rgba(200,200,220,0.5);">+10 XP</div>
+        background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);
+        border-radius:18px;padding:20px 16px;cursor:default;opacity:0.5;
+      ">
+        <div style="font-size:22px;margin-bottom:10px;">💬</div>
+        <div style="font-size:14px;font-weight:400;color:var(--text);margin-bottom:4px;">Convo Decoder</div>
+        <div style="font-size:11px;color:var(--text-dim);line-height:1.4;">Paste a convo. AI reads what's really being said.</div>
+        <div style="margin-top:12px;font-size:11px;color:rgba(200,200,220,0.3);">Coming soon</div>
       </div>
 
     </div>
