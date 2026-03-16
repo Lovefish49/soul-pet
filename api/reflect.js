@@ -9,19 +9,15 @@ Use her name once, naturally, early. Weave MBTI and astro as texture only — ne
 
 Never use: journey, healing, self-care, boundaries, growth mindset, empath, old soul. Never be generic.
 
-Output exactly this structure — nothing else:
+Output exactly this structure — nothing else. No brackets, no labels, no markdown:
 
-[2-5 word poetic title]
+A Quiet Crown of Static
 
-[Paragraph about how she processes the world]
+You process the world like a radio dialed just between stations — catching frequencies others miss entirely, but never quite landing on a clear signal yourself.
 
-[Paragraph about her core paradox — what makes her hard to fully know]
+[continue this pattern for all 4 paragraphs and closing line]
 
-[Paragraph about what she gives freely vs what she rarely lets herself receive]
-
-[Paragraph about what she actually wants — not what she says, what she really wants]
-
-[One closing sentence — the kind she'll screenshot at 1am]`,
+The title goes on line 1 alone. Then a blank line. Then each paragraph separated by blank lines. Then the closing sentence alone on the last line.`,
 
   emotion: `You are a quiet, precise witness. The user couldn't find words for what they felt today — so they pointed at a colour instead. They've told you what happened. Your job is to give them the word they couldn't find, explain the logic underneath it, and leave them feeling seen — not coached, not fixed, not redirected.
 
@@ -126,7 +122,7 @@ What they wish people knew about them: "${input}"`;
   const geminiBody = {
     system_instruction: { parts: [{ text: systemPrompt }] },
     contents: [{ role: 'user', parts: [{ text: userMessage }] }],
-    generationConfig: { maxOutputTokens: 500, temperature: 0.85 }
+    generationConfig: { maxOutputTokens: 900, temperature: 0.85 }
   };
 
   const upstream = await fetch(url, {
@@ -156,10 +152,9 @@ What they wish people knew about them: "${input}"`;
     try {
       while (true) {
         const { done, value } = await reader.read();
-        if (done) break;
-        buf += decoder.decode(value, { stream: true });
+        buf += decoder.decode(value ?? new Uint8Array(), { stream: !done });
         const lines = buf.split('\n');
-        buf = lines.pop();
+        buf = done ? '' : lines.pop();
 
         for (const line of lines) {
           if (!line.startsWith('data: ')) continue;
@@ -173,6 +168,8 @@ What they wish people knew about them: "${input}"`;
             }
           } catch {}
         }
+
+        if (done) break;
       }
       await writer.write(encoder.encode(`data: ${JSON.stringify({ done: true })}\n\n`));
     } catch (e) {

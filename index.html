@@ -1299,7 +1299,8 @@
   }
 
   function cleanMarkdown(s) {
-    return s.replace(/\*\*/g, '').replace(/\*/g, '').replace(/_/g, '').trim();
+    return s.replace(/\*\*/g, '').replace(/\*/g, '').replace(/_/g, '')
+            .replace(/^\[|\]$/g, '').trim();
   }
 
   function isValidStageName(s) {
